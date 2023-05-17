@@ -1,13 +1,27 @@
 # volumes:
+volumes:
+  postgres-data:
+    external: true
 services:
   fastapi:
     build:
-      context: sample_service
+      context: users
       dockerfile: Dockerfile.dev
     ports:
       - 8000:8000
     volumes:
-      - ./sample_service:/app
+      - ./users:/app
+  postgres:
+    build:
+      context: ./relational-data
+      dockerfile: ./Dockerfile.dev
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+    environment:
+        - POSTGRES_MULTIPLE_DATABASES=postgres_data
+        - POSTGRES_PASSWORD=test-databases
+    ports:
+        - 15432:5432
 
   ghi:
     image: node:lts-bullseye
