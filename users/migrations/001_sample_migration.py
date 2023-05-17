@@ -3,15 +3,14 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE users (
-            id SERIAL NOT NULL UNIQUE,
+            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             email TEXT NOT NULL UNIQUE,
             profile_picture VARCHAR(1000),
             display_name VARCHAR(100),
             header_image VARCHAR(1000),
-            first_name  VARCHAR(100) DEFAULT "",
-            last_name  VARCHAR(100) DEFAULT "",
-            category  VARCHAR(100) DEFAULT ""
-            PRIMARY KEY(id)
+            first_name  VARCHAR(100) DEFAULT NULL,
+            last_name  VARCHAR(100) DEFAULT NULL,
+            category  VARCHAR(100) DEFAULT NULL
         );
         """,
         # "Down" SQL statement
@@ -23,14 +22,10 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE connections(
-            id SERIAL NOT NULL UNIQUE,
-            user_id INT,
+            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+            user_id INT REFERENCES users (id),
             following_id INT,
-            following BOOLEAN DEFAULT false,
-            PRIMARY KEY(id)
-            CONSTRAINT fk_user_id
-                FOREIGN KEY(user_id)
-                REFERENCES users(id)
+            following BOOLEAN DEFAULT false
         );
         """,
         # "Down" SQL statement
@@ -42,13 +37,9 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE image_carousel(
-            id SERIAL NOT NULL UNIQUE,
-            user_id INT,
-            image_href VARCHAR(1000) DEFAULT ""
-            PRIMARY KEY(id)
-            CONSTRAINT fk_user_id
-                FOREIGN KEY(user_id)
-                REFERENCES users(id)
+            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+            user_id INT REFERENCES users (id),
+            image_href VARCHAR(1000) DEFAULT NULL
         );
         """,
         # "Down" SQL statement
@@ -60,13 +51,9 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE socials(
-            id SERIAL NOT NULL UNIQUE,
-            user_id INT,
-            link VARCHAR(1000) DEFAULT ""
-            PRIMARY KEY(id)
-            CONSTRAINT fk_user_id
-                FOREIGN KEY(user_id)
-                REFERENCES users(id)
+            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+            user_id INT REFERENCES users (id),
+            link VARCHAR(1000) DEFAULT NULL
         );
         """,
         # "Down" SQL statement
@@ -74,4 +61,48 @@ steps = [
         DROP TABLE socials;
         """
     ],
+    [
+        # "Up" SQL statement
+        """
+        CREATE TABLE posts (
+            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+            user_id INT NOT NULL REFERENCES users (id),
+            text VARCHAR(600) DEFAULT NULL,
+            image VARCHAR(1000) DEFAULT NULL,
+            created TIMESTAMP DEFAULT NOW()
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE posts;
+        """
+    ],
+    [
+        # "Up" SQL statement
+        """
+        CREATE TABLE comments(
+            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+            post_id INT NOT NULL REFERENCES posts (id),
+            text VARCHAR(600) NOT NULL
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE comments;
+        """
+    ],
+    [
+        # "Up" SQL statement
+        """
+        CREATE TABLE likes(
+            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+            post_id INT NOT NULL REFERENCES posts (id),
+            user_id INT NOT NULL
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE likes;
+        """
+    ]
 ]
