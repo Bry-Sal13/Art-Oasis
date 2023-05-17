@@ -1,0 +1,1 @@
+On May 16, 2023 we finalized our excalidraw, which includes models and endpoints. Additionally we delegated specific tasks and sections for each person to complete. Tomorrow is the big day where will embark on our coding journey for the ArtOasis project.
