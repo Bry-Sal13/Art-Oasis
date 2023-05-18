@@ -1,6 +1,9 @@
 from pydantic import BaseModel
 from typing import List
-from queries.pool.py import pool
+from psycopg_pool import ConnectionPool
+import os
+
+pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
 
 class CarouselIn(BaseModel):
