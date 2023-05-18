@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List
-from pool.py import pool
+from queries.pool.py import pool
 
 
 # IN MODEL
@@ -24,7 +24,7 @@ class UserIn(BaseModel):
 class UserOut(BaseModel):
     user_id: str
     email: str
-    password: str
+    hashed_password: str
     first_name: str
     last_name: str
     profile_picture: str
@@ -56,7 +56,7 @@ class UserRepository:
                         results.append(user)
                     return results
         except Exception:
-            return {"message": "Could not get all accounts"}
+            return {"message": "Could not get all users"}
 
     def get_user(self, id):
         with pool.connection() as conn:
@@ -123,7 +123,8 @@ class UserRepository:
                     data.profile_picture,
                     data.display_name,
                     data.header_image,
-                    data.category
+                    data.category,
+                    user_id
                 ]
                 cur.execute(
                     """

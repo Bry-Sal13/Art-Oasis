@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List
-from pool.py import pool
+from queries.pool.py import pool
 
 
 class CarouselIn(BaseModel):
