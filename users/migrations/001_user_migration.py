@@ -10,6 +10,8 @@ steps = [
             header_image VARCHAR(1000),
             first_name  VARCHAR(100) DEFAULT NULL,
             last_name  VARCHAR(100) DEFAULT NULL,
+            password VARCHAR(20) NOT NULL,
+            username VARCHAR(20) UNIQUE NOT NULL,
             category  VARCHAR(100) DEFAULT NULL
         );
         """,
