@@ -13,7 +13,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE posts;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -22,13 +22,14 @@ steps = [
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             post_id INT NOT NULL,
             user_id INT NOT NULL,
-            text VARCHAR(600) NOT NULL
+            text VARCHAR(600) NOT NULL,
+            created TIMESTAMP DEFAULT NOW()
         );
         """,
         # "Down" SQL statement
         """
         DROP TABLE comments;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -42,6 +43,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE likes;
-        """
-    ]
+        """,
+    ],
 ]
