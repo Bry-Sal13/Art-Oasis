@@ -3,7 +3,7 @@ volumes:
   postgres-data:
     external: true
 services:
-  fastapi:
+  users-api:
     build:
       context: users
       dockerfile: Dockerfile.dev
@@ -11,6 +11,11 @@ services:
       - 8000:8000
     volumes:
       - ./users:/app
+    environment:
+      DATABASE_URL: postgresql://postgres_data:password@postgres:5432/postgres_data
+      WAIT_HOSTS: postgres:5432
+    depends_on:
+      - postgres
   postgres:
     build:
       context: ./relational-data
