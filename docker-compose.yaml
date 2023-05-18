@@ -12,7 +12,20 @@ services:
     volumes:
       - ./users:/app
     environment:
-      DATABASE_URL: postgresql://postgres_data:password@postgres:5432/postgres_data
+      DATABASE_URL: postgresql://users:password@postgres:5432/users
+      WAIT_HOSTS: postgres:5432
+    depends_on:
+      - postgres
+  posts-api:
+    build:
+      context: posts
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8010:8000
+    volumes:
+      - ./posts:/app
+    environment:
+      DATABASE_URL: postgresql://posts:password@postgres:5432/posts
       WAIT_HOSTS: postgres:5432
     depends_on:
       - postgres
@@ -23,7 +36,7 @@ services:
     volumes:
         - postgres-data:/var/lib/postgresql/data
     environment:
-        - POSTGRES_MULTIPLE_DATABASES=postgres_data
+        - POSTGRES_MULTIPLE_DATABASES=users,posts
         - POSTGRES_PASSWORD=test-databases
     ports:
         - 15432:5432
