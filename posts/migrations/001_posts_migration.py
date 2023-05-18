@@ -21,6 +21,7 @@ steps = [
         CREATE TABLE comments(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             post_id INT NOT NULL,
+            user_id INT NOT NULL,
             text VARCHAR(600) NOT NULL
         );
         """,
