@@ -1,6 +1,9 @@
 from pydantic import BaseModel
 from typing import List
-from queries.pool.py import pool
+from psycopg_pool import ConnectionPool
+import os
+
+pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
 
 class socials(BaseModel):
@@ -12,7 +15,7 @@ class SocialsOut(BaseModel):
     user_id: int
     link: str
 
-class SocialsRepo:
+class SocialsRepository:
     def get_social(self, id):
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -65,7 +68,7 @@ class SocialsRepo:
                     print("social output", social)
                 return social
 
-    def get_socials(self) -> list[SocialsOut]:
+    def get_socials(self) -> List[SocialsOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
