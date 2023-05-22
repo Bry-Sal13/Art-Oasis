@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from psycopg_pool import ConnectionPool
 import os
 
@@ -14,13 +14,14 @@ class DuplicateUserError(ValueError):
 class UserIn(BaseModel):
     email: str
     password: str
-    first_name: str
-    last_name: str
-    profile_picture: str
-    display_name: str
-    header_image: str
+    first_name: Optional[str]
+    last_name: Optional[str]
+    profile_picture: Optional[str]
+    display_name: Optional[str]
+    header_image: Optional[str]
     username: str
-    category: str
+    category: Optional[str]
+
 
 # OUT MODEL
 

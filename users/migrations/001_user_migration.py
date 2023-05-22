@@ -5,9 +5,9 @@ steps = [
         CREATE TABLE users (
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             email TEXT NOT NULL UNIQUE,
-            profile_picture VARCHAR(1000),
-            display_name VARCHAR(100),
-            header_image VARCHAR(1000),
+            profile_picture VARCHAR(1000) DEFAULT NULL,
+            display_name VARCHAR(100) DEFAULT NULL,
+            header_image VARCHAR(1000) DEFAULT NULL,
             first_name  VARCHAR(100) DEFAULT NULL,
             last_name  VARCHAR(100) DEFAULT NULL,
             password VARCHAR(20) NOT NULL,
