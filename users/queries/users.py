@@ -8,8 +8,10 @@ pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
 # IN MODEL
 
+
 class DuplicateUserError(ValueError):
     pass
+
 
 class UserIn(BaseModel):
     email: str
@@ -25,10 +27,10 @@ class UserIn(BaseModel):
 
 # OUT MODEL
 
+
 class UserOut(BaseModel):
-    user_id: str
+    user_id: int
     email: str
-    hashed_password: str
     first_name: str
     last_name: str
     profile_picture: str
@@ -37,8 +39,13 @@ class UserOut(BaseModel):
     username: str
     category: str
 
+
+class UserOutWithPassword(UserOut):
+    hashed_password: str
+
+
 class UserRepository:
-    def get_users(self) -> List[UserOut]:
+    def get_users(self) -> List[UserOutWithPassword]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -50,19 +57,24 @@ class UserRepository:
                     )
                     results = []
                     for record in cur:
-                        user = UserOut(
-                            user_id = record[0], email=record[1], 
-                            password=record[2], first_name=record[3],
-                            last_name=record[4], profile_picture=record[5],
-                            display_name=record[6], header_image=record[7],
-                            username=record[8], category=record[9]
+                        user = UserOutWithPassword(
+                            user_id=record[0],
+                            email=record[1],
+                            password=record[2],
+                            first_name=record[3],
+                            last_name=record[4],
+                            profile_picture=record[5],
+                            display_name=record[6],
+                            header_image=record[7],
+                            username=record[8],
+                            category=record[9],
                         )
                         results.append(user)
                     return results
         except Exception:
             return {"message": "Could not get all users"}
 
-    def get_user(self, id):
+    def get_user(self, username: str) -> Optional[UserOutWithPassword]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
@@ -71,49 +83,62 @@ class UserRepository:
                         username, password, profile_picture,
                         display_name, header_image, category
                     FROM users
-                    WHERE id = %s
+                    WHERE username = %s
                     """,
-                    [id],
+                    [username],
+                )
+                record = cur.fetchone()
+                if record is None:
+                    return None
+                return UserOutWithPassword(
+                    user_id=record[0],
+                    first_name=record[1],
+                    last_name=record[2],
+                    email=record[3],
+                    username=record[4],
+                    hashed_password=record[5],
+                    profile_picture=record[6],
+                    display_name=record[7],
+                    header_image=record[8],
+                    category=record[9],
                 )
 
-                record = None
-                row = cur.fetchone()
-                if row is not None:
-                    record = {}
-                    for i, column in enumerate(cur.description):
-                        record[column.name] = row[i]
-                return record
-
-    def create_user(self, data):
+    def create_user(self, data: UserIn, hashed_password: str):
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 params = [
                     data.first_name,
                     data.last_name,
+                    data.profile_picture,
                     data.email,
                     data.username,
-                    data.password,
-                    data.profile_picture,
-                    data.display_name,
+                    hashed_password,
                     data.header_image,
-                    data.category
+                    data.display_name,
+                    data.category,
                 ]
-                cur.execute(
+                result = cur.execute(
                     """
                     INSERT INTO users (first_name, last_name, profile_picture, email, username, password, header_image, display_name, category)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    RETURNING id, first_name, last_name, profile_picture, email, username, passwrod, header_image, display_name, category
+                    RETURNING *;
                     """,
                     params,
                 )
 
-                record = None
-                row = cur.fetchOne()
-                if row is not None:
-                    record = {}
-                    for i, column in enumerate(cur.description):
-                        record[column.name] = row[i]
-                return record
+                id = result.fetchone()[0]
+                old_data = data.dict()
+                old_data["hashed_password"] = hashed_password
+                old_data["user_id"] = id
+                return UserOutWithPassword(**old_data)
+
+                # if row is not None:
+                #     record = {}
+                #     print(result)
+                #     for i, column in enumerate(result.description):
+                #         record[column.name] = row[i]
+                # record["password"] = hashed_password
+                # return record
 
     def update_user(self, user_id, data):
         with pool.connection() as conn:
@@ -128,7 +153,6 @@ class UserRepository:
                     data.display_name,
                     data.header_image,
                     data.category,
-                    user_id
                 ]
                 cur.execute(
                     """
@@ -162,7 +186,9 @@ class UserRepository:
                     DELETE FROM users
                     where id = %s
                     """,
-                    [user_id]
+                    [user_id],
                 )
 
-
+    def to_user_out(self, id: int, user: UserIn):
+        data = user.dict()
+        return UserOutWithPassword(id=id, **data)
