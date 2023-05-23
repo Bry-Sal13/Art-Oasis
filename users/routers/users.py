@@ -14,7 +14,7 @@ from queries.users import (
     UserIn,
     UserOut,
     UserRepository,
-    DuplicateUserError,
+    Error,
 )
 
 
@@ -59,7 +59,7 @@ async def create_user(
     hashed_password = authenticator.hash_password(info.password)
     try:
         user = repo.create_user(info, hashed_password)
-    except DuplicateUserError:
+    except Error:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot create an account with those credentials",
