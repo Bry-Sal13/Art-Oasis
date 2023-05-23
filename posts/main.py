@@ -4,6 +4,7 @@ from routers import comments
 import os
 
 app = FastAPI()
+app.include_router(authenticator.router)
 
 app.include_router(comments.router)
 

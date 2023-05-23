@@ -5,12 +5,12 @@ steps = [
         CREATE TABLE users (
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             email TEXT NOT NULL UNIQUE,
-            profile_picture VARCHAR(1000),
-            display_name VARCHAR(100),
-            header_image VARCHAR(1000),
+            profile_picture VARCHAR(1000) DEFAULT NULL,
+            display_name VARCHAR(100) DEFAULT NULL,
+            header_image VARCHAR(1000) DEFAULT NULL,
             first_name  VARCHAR(100) DEFAULT NULL,
             last_name  VARCHAR(100) DEFAULT NULL,
-            password VARCHAR(20) NOT NULL,
+            password VARCHAR(128) NOT NULL,
             username VARCHAR(20) UNIQUE NOT NULL,
             category  VARCHAR(100) DEFAULT NULL
         );
@@ -18,7 +18,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE users;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -33,7 +33,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE connections;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -47,7 +47,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE image_carousel;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -61,6 +61,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE socials;
-        """
-    ]
+        """,
+    ],
 ]
