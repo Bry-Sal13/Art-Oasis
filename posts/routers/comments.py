@@ -7,7 +7,7 @@ from queries.comments import (
     CommentsOut,
 )
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
 
 @router.post("/comments", response_model=Union[CommentsOut, Error])
@@ -20,7 +20,7 @@ def create_comment(
 
 
 @router.get("/comments", response_model=Union[List[CommentsOut], Error])
-def get_all(
+def get_all_comments(
     repo: CommentsRepository = Depends(),
 ):
     return repo.get_all()
@@ -30,16 +30,22 @@ def get_all(
 def update_comment(
     comment_id: int,
     comment: CommentsIn,
+    response: Response,
     repo: CommentsRepository = Depends(),
 ) -> Union[CommentsOut, Error]:
+    if ArithmeticError:
+        response.status_code = 404
     return repo.update(comment_id, comment)
 
 
 @router.delete("/comments/{comment_id}", response_model=bool)
 def delete_comment(
     comment_id: int,
+    response: Response,
     repo: CommentsRepository = Depends(),
 ) -> bool:
+    if ArithmeticError:
+        response.status_code = 404
     return repo.delete(comment_id)
 
 
