@@ -32,8 +32,6 @@ def delete_like(
     response: Response,
     repo: LikesRepository = Depends(),
 ) -> bool:
-    if ArithmeticError:
-        response.status_code = 404
     return repo.delete(like_id)
 
 
