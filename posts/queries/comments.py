@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Union
 from datetime import datetime
 from queries.pool import pool
+from fastapi import HTTPException, status
 
 
 # Error
@@ -116,11 +117,13 @@ class CommentsRepository:
                         [comment_id],
                     )
                     if db.rowcount <= 0:
-                        raise ArithmeticError
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Comment not found",
+                        )
                     return True
-        except ArithmeticError as a:
-            print(a)
-            return False
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return False
@@ -150,11 +153,13 @@ class CommentsRepository:
                         ],
                     )
                     if db.rowcount <= 0:
-                        raise ArithmeticError
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Comment not found",
+                        )
                     return self.comment_in_to_out(comment_id, comment)
-        except ArithmeticError as a:
-            print(a)
-            return {"message": "Could not find comment to update"}
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return {"message": "Could not update Comment"}

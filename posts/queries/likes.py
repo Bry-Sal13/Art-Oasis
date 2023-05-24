@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional, Union
 from queries.pool import pool
+from fastapi import HTTPException, status
 
 
 # Error
@@ -104,11 +105,13 @@ class LikesRepository:
                         [like_id],
                     )
                     if db.rowcount <= 0:
-                        raise Exception
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Like not found",
+                        )
                     return True
-        except ArithmeticError as a:
-            print(a)
-            return False
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return False
