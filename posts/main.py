@@ -1,9 +1,12 @@
 from fastapi import FastAPI
+from routers import posts
 from fastapi.middleware.cors import CORSMiddleware
 from routers import comments, likes
 import os
 
 app = FastAPI()
+app.include_router(posts.router)
+
 
 app.include_router(comments.router)
 app.include_router(likes.router)
