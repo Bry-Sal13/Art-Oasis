@@ -202,10 +202,10 @@ class UserRepository:
                         , display_name = %s
                         , header_image = %s
                         , category = %s
+                        where id = %s
                         """,
                         params,
                     )
-
 
                     old_data = data.dict()
                     return UserOut(**old_data)
