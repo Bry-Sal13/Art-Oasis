@@ -14,3 +14,24 @@ for a couple hours with no luck before getting help from the SEIR Martey who hel
 the idea that finalized how we set up the database
 
 Today, we found out we can store user info inside the token, allowing us to keep our services on two different databases without having a poller
+
+
+## May 22nd, 2023
+
+Today, I worked on:
+- troubleshooting Auth with the whole group working together and refactoring my queries
+
+## May 23rd, 2023
+
+Today, I worked on:
+
+- refactoring my queries and databases so they would actually work, and added debugging statements for our queries to return proper
+  status codes
+
+
+##  May 24th, 2023
+
+Today, I worked on:
+
+- troubleshooting Auth and get method for getting tokens from Auth, refactored and wrote the routes for creating and getting links for users
+  and started working on refactoring users and getting a list of users and updating users and their respesctive routes
