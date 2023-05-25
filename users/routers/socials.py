@@ -62,6 +62,4 @@ def delete_social(
     response: Response,
     repo: SocialsRepository = Depends(),
 ) -> bool:
-    if not repo.delete_social(social_id):
-        response.status_code = 404
     return repo.delete_social(social_id)
