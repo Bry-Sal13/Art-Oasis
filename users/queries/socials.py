@@ -77,7 +77,7 @@ class SocialsRepository:
                     data.user_id,
                     data.link
                 ]
-                cur.execute(
+                res = cur.execute(
                     """
                     INSERT INTO socials (user_id, link)
                     VALUES (%s, %s)
@@ -85,8 +85,9 @@ class SocialsRepository:
                     """,
                     params,
                 )
-
+                id = res.fetchone()[0]
                 data = data.dict()
+                data["id"] = id
                 return SocialsOut(**data)
 
     def update_social(self, social_id: int, data: SocialsIn) -> Union[SocialsOut, Error]:
@@ -104,7 +105,7 @@ class SocialsRepository:
                         UPDATE socials
                         SET user_id = %s
                         , link = %s
-                        where id = %s
+                        WHERE id = %s
                         """,
                         params,
                     )
@@ -120,25 +121,27 @@ class SocialsRepository:
             print(e)
             return {"message": "Could not update a social/link with that ID"}
 
+
     def delete_social(self, social_id: int) -> Union[bool, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        DELETE FROM users
+                        DELETE FROM socials
                         where id = %s
                         """,
                         [social_id]
                     )
                     if cur.rowcount <= 0:
                         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Social not found")
-                    return cur.rowcount > 0
+                    return True
         except HTTPException:
             raise
         except Exception as e:
             print(e)
             return False
+
 
     def to_social_out(self, id: int, user: SocialsIn):
         data = user.dict()
