@@ -1,34 +1,29 @@
 import { useEffect, useState } from "react";
-import Construct from "./Construct.js";
-import ErrorNotification from "./ErrorNotification";
-import Nav from "./Nav.js";
+import React from 'react';
+// import SignUpForm from './components/SignUpForm';
+import Nav from './Nav';
 import "./App.css";
 
 function App() {
-  const [launchInfo, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);
+
+  const [users, setUsers] = useState([]);
+
+  const GetUserData = async () => {
+    const usersUrl = "http://localhost:8000/api/users";
+    const response = await fetch(usersUrl);
+    if (response.ok) {
+      const data = await response.json();
+      setUsers(data.manufacturers);
+    }
+  }
 
   useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_SAMPLE_SERVICE_API_HOST}/api/launch-details`;
-      console.log("fastapi url: ", url);
-      let response = await fetch(url);
-      console.log("------- hello? -------");
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-  }, []);
+    GetUserData()
+  },[])
 
   return (
     <div>
+      {/* <SignUpForm /> */}
       <Nav/>
     </div>
   );
