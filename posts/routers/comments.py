@@ -33,8 +33,6 @@ def update_comment(
     response: Response,
     repo: CommentsRepository = Depends(),
 ) -> Union[CommentsOut, Error]:
-    if ArithmeticError:
-        response.status_code = 404
     return repo.update(comment_id, comment)
 
 
@@ -44,8 +42,6 @@ def delete_comment(
     response: Response,
     repo: CommentsRepository = Depends(),
 ) -> bool:
-    if ArithmeticError:
-        response.status_code = 404
     return repo.delete(comment_id)
 
 
