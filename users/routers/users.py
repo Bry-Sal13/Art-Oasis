@@ -6,13 +6,14 @@ from fastapi import (
     Response,
     Request,
 )
-from typing import List
+from typing import List, Union
 from pydantic import BaseModel
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from queries.users import (
     UserIn,
     UserOut,
+    UserOutWithPassword,
     UserRepository,
     Error,
 )
@@ -67,3 +68,41 @@ async def create_user(
     form = UserForm(username=info.username, password=info.password)
     token = await authenticator.login(response, request, form, repo)
     return UserToken(user=user, **token.dict())
+
+
+@router.get("/api/users", response_model=List[UserOut] | HttpError)
+async def get_users(
+    repo: UserRepository = Depends()
+):
+    return repo.get_users()
+
+
+# @router.get("/api/users/{username}/d", response_model=UserOutWithPassword | HttpError)
+# async def get_one_user(
+#     username: str,
+#     response: Response,
+#     repo: UserRepository = Depends()
+# ) -> UserOutWithPassword:
+#     if not repo.get_user(username):
+#         response.status_code = 404
+#     return repo.get_user(username)
+
+
+@router.get("/api/users/{username}", response_model=UserOut | HttpError)
+async def get_one_fe_user(
+    username: str,
+    response: Response,
+    repo: UserRepository = Depends()
+) -> UserOut:
+    if not repo.fe_get_user(username):
+        response.status_code = 404
+    return repo.fe_get_user(username)
+
+
+@router.put("/api/users/{username}", response_model=UserOut | HttpError)
+async def update_user(
+    user: UserIn,
+    username: str,
+    repo: UserRepository = Depends()
+) -> Union[UserOut, Error]:
+    return repo.update_user(username, user)
