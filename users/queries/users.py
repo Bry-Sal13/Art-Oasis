@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional, Union
 from psycopg_pool import ConnectionPool
+from fastapi import HTTPException, status
 import os
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
@@ -31,13 +32,13 @@ class UserIn(BaseModel):
 class UserOut(BaseModel):
     user_id: int
     email: str
-    first_name: str
-    last_name: str
-    profile_picture: str
-    display_name: str
-    header_image: str
+    first_name: Optional[str]
+    last_name: Optional[str]
+    profile_picture: Optional[str]
+    display_name: Optional[str]
+    header_image: Optional[str]
     username: str
-    category: str
+    category: Optional[str]
 
 
 class UserOutWithPassword(UserOut):
@@ -65,8 +66,8 @@ class UserRepository:
                             profile_picture=record[4],
                             display_name=record[5],
                             header_image=record[6],
-                            username=record[7],
-                            category=record[8],
+                            username=record[8],
+                            category=record[9],
                         )
                         results.append(user)
                     return results
@@ -89,6 +90,8 @@ class UserRepository:
                         """,
                         [username],
                     )
+                    if cur.rowcount <= 0:
+                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Social not found")
                     record = cur.fetchone()
                     if record is None:
                         return None
@@ -104,6 +107,8 @@ class UserRepository:
                         header_image=record[8],
                         category=record[9],
                     )
+        except HTTPException:
+            raise 
         except Exception as e:
             print(e)
             return {"message": "User with that ID does not exist"}
@@ -122,10 +127,12 @@ class UserRepository:
                         """,
                         [username],
                     )
+                    if cur.rowcount <= 0:
+                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
                     record = cur.fetchone()
                     if record is None:
                         return None
-                    return UserOutWithPassword(
+                    return UserOut(
                         user_id=record[0],
                         first_name=record[1],
                         last_name=record[2],
@@ -136,6 +143,8 @@ class UserRepository:
                         header_image=record[7],
                         category=record[8],
                     )
+        except HTTPException:
+            raise 
         except Exception as e:
             print(e)
             return {"message": "User with that ID does not exist"}
@@ -174,7 +183,7 @@ class UserRepository:
             return {"message": "Could not create user, check the data you inputted"}
 
 
-    def update_user(self, user_id: int, data: UserIn) -> Union[UserOut, Error]:
+    def update_user(self, username: str, data: UserIn) -> Union[UserOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -183,12 +192,11 @@ class UserRepository:
                         data.last_name,
                         data.email,
                         data.username,
-                        data.password,
                         data.profile_picture,
                         data.display_name,
                         data.header_image,
                         data.category,
-                        user_id
+                        username
                     ]
                     cur.execute(
                         """
@@ -197,18 +205,25 @@ class UserRepository:
                         , last_name = %s
                         , email = %s
                         , username = %s
-                        , password = %s
                         , profile_picture = %s
                         , display_name = %s
                         , header_image = %s
                         , category = %s
+                        WHERE username = %s
+                        RETURNING *;
                         """,
                         params,
                     )
-
-
+                    
+                    id = cur.fetchone()[0]
+                    if cur.rowcount <= 0:
+                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found for username: {username}")
                     old_data = data.dict()
+                    old_data["user_id"] = id
+                    print("user_out:", UserOut(**old_data))
                     return UserOut(**old_data)
+        except HTTPException:
+            raise 
         except Exception as e:
             print(e)
             return {"message": "Could not update a user with that ID"}
