@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Construct from "./Construct.js";
 import ErrorNotification from "./ErrorNotification";
+import Nav from "./Nav.js";
 import "./App.css";
 
 function App() {
@@ -28,8 +29,7 @@ function App() {
 
   return (
     <div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
+      <Nav/>
     </div>
   );
 }
