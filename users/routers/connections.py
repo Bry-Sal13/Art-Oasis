@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
+from authenticator import authenticator
 from queries.connections import(
     ConnectionIn,
     ConnectionOut,
@@ -15,6 +16,7 @@ def create_connection(
     social: ConnectionIn,
     response: Response,
     repo: ConnectionRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.create_connection(social)
 
@@ -22,6 +24,7 @@ def create_connection(
 @router.get("/connections", response_model=Union[List[ConnectionOut], Error])
 def get_connections(
     repo: ConnectionRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ):
     connections = repo.get_connections()
     if not connections:
@@ -37,6 +40,7 @@ def get_one_connection(
     connection_id: int,
     response: Response,
     repo: ConnectionRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> ConnectionOut:
     
     
@@ -52,6 +56,7 @@ def update_connection(
     connection: ConnectionIn,
     response: Response,
     repo: ConnectionRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[ConnectionOut, Error]:
     
     return repo.update_connection(connection_id, connection)
@@ -62,5 +67,6 @@ def delete_connection(
     connection_id: int,
     response: Response,
     repo: ConnectionRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     return repo.delete_connection(connection_id)

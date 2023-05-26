@@ -72,7 +72,8 @@ async def create_user(
 
 @router.get("/api/users", response_model=List[UserOut] | HttpError)
 async def get_users(
-    repo: UserRepository = Depends()
+    repo: UserRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_users()
 
@@ -92,7 +93,8 @@ async def get_users(
 async def get_one_fe_user(
     username: str,
     response: Response,
-    repo: UserRepository = Depends()
+    repo: UserRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> UserOut:
     if not repo.fe_get_user(username):
         response.status_code = 404
@@ -103,6 +105,7 @@ async def get_one_fe_user(
 async def update_user(
     user: UserIn,
     username: str,
-    repo: UserRepository = Depends()
+    repo: UserRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[UserOut, Error]:
     return repo.update_user(username, user)
