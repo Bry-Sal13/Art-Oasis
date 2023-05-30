@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [profilePicture, setProfilePicture] = useState("default_picture");
-  const [displayName, setDisplayName] = useState("Default Display Name");
-  const [headerImage, setHeaderImage] = useState("default_header");
-  const [firstName, setFirstName] = useState("First Name");
-  const [lastName, setLastName] = useState("Last Name");
-  const [category, setCategory] = useState("Default Category");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [profilePicture, _] = useState("default_picture");
+  const [displayName, __] = useState("Default Display Name");
+  const [headerImage, ___] = useState("default_header");
+  const [firstName, ____] = useState("First Name");
+  const [lastName, ______] = useState("Last Name");
+  const [category, _______] = useState("Default Category");
+  const navigate = useNavigate();
 
+  
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -22,6 +26,10 @@ const SignUpForm = () => {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
   };
 
 const handleSubmit = async (event) => {
@@ -43,21 +51,32 @@ const handleSubmit = async (event) => {
     method: "post",
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
   };
 
   try {
-    const response = await fetch(userUrl, fetchConfig);
+    if (password === confirmPassword){
+      const response = await fetch(userUrl, fetchConfig);
 
-    if (response.ok) {
-      console.log("Form submission successful!");
-      setUsername("");
-      setEmail("");
-      setPassword("");
-    } else {
-      console.log("Form submission failed!");
+      if (response.ok) {
+        const newUser = await response.json();
+        console.log(newUser);
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        
+        // navigate("/name");
+      } else {
+        console.log("Form submission failed!");
+      }
     }
+    else{
+      throw new Error("Passwords do not match!")
+      //TODO: Maybe put an alert here?
+    }
+   
   } catch (error) {
     console.log("Error submitting form:", error);
   }
@@ -88,9 +107,21 @@ const handleSubmit = async (event) => {
         />
       </label>
       <br />
-      <button type="submit">Sign up</button>
+      <label>
+        Confirm password
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+        />
+      </label>
+      <br />
+      <button style={{display:"None"}} type="submit">Done</button>
+      <button>Next</button>
     </form>
   );
 };
 
 export default SignUpForm;
+
+// Should we have to register the email first, send the user an email to register?
