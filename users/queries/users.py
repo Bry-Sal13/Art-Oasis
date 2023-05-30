@@ -70,7 +70,7 @@ class UserRepository:
                             category=record[9],
                         )
                         results.append(user)
-                    return results
+                    return  results
         except Exception as e:
             print(e)
             return {"message": "Could not get all users"}

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
+from authenticator import authenticator
 from queries.socials import(
     SocialsIn,
     SocialsOut,
@@ -62,6 +63,4 @@ def delete_social(
     response: Response,
     repo: SocialsRepository = Depends(),
 ) -> bool:
-    if not repo.delete_social(social_id):
-        response.status_code = 404
     return repo.delete_social(social_id)
