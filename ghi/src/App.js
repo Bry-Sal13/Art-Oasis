@@ -38,7 +38,6 @@ function App() {
     getUsers();
     // getToken();
   }, []);
-
   // TODO: Focus on users and how tokenUrl is used.
 
   return (
