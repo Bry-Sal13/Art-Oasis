@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
-const NameForm = () => {
+const NameForm = ({userData}) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const { token } = useAuthContext();
   const navigate = useNavigate();
-
-
+  
   
 
   const handleFirstNameChange = (event) => {
@@ -24,23 +21,25 @@ const NameForm = () => {
     console.log("First Name:", firstName);
     console.log("Last Name:", lastName);
 
-    const data = {
-      first_name: firstName,
-      last_name: lastName,
-    };
+    const data = userData.user;
+    data.first_name = firstName;
+    data.last_name = lastName;
 
-    const userUrl = `http://localhost:8000/api/users/`;
+    const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     };
 
     try {
       const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
+        const newData = await response.json();
+        console.log(newData);
         navigate("/category");
       }
     } catch (error) {
@@ -52,12 +51,12 @@ const NameForm = () => {
     <form onSubmit={handleSubmit}>
       <label>
         First Name
-        <input type="text" value={firstName} onChange={handleFirstNameChange} />
+        <input type="string" value={firstName} onChange={handleFirstNameChange} />
       </label>
       <br />
       <label>
         Last Name
-        <input type="text" value={lastName} onChange={handleLastNameChange} />
+        <input type="string" value={lastName} onChange={handleLastNameChange} />
       </label>
       <br />
       <button type="submit">Continue</button>
