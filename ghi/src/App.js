@@ -13,7 +13,6 @@ import "./App.css";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [token, setToken] = useState("");
 
   // const getToken = async () => {
   //   const tokenUrl = "http://localhost:8000/token";
@@ -27,7 +26,7 @@ function App() {
 
   const getUsers = async () => {
     const usersUrl = "http://localhost:8000/api/users";
-    const response = await fetch(usersUrl);
+    const response = await fetch(usersUrl, {credentials: "include"});
     if (response.ok) {
       const data = await response.json();
       setUsers(data);
