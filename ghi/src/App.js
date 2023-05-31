@@ -3,6 +3,7 @@ import React from 'react';
 // import SignUpForm from './components/SignUpForm';
 import Nav from './Nav';
 import "./App.css";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
 
@@ -22,10 +23,9 @@ function App() {
   },[])
 
   return (
-    <div>
-      {/* <SignUpForm /> */}
-      <Nav/>
-    </div>
+    <BrowserRouter>
+      <Nav users= {users} />
+    </BrowserRouter>
   );
 }
 
