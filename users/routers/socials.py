@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
+from authenticator import authenticator
 from queries.socials import(
     SocialsIn,
     SocialsOut,
