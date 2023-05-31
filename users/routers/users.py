@@ -103,7 +103,7 @@ async def get_one_fe_user(
 
 @router.put("/api/users/{username}", response_model=UserOut | HttpError)
 async def update_user(
-    user: UserIn,
+    user: UserOut,
     username: str,
     repo: UserRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
