@@ -71,24 +71,29 @@ class SocialsRepository:
             return {"message": "Could not get all socials"}
 
     def create_social(self, data: SocialsIn):
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                params = [
-                    data.user_id,
-                    data.link
-                ]
-                res = cur.execute(
-                    """
-                    INSERT INTO socials (user_id, link)
-                    VALUES (%s, %s)
-                    RETURNING id, user_id, link
-                    """,
-                    params,
-                )
-                id = res.fetchone()[0]
-                data = data.dict()
-                data["id"] = id
-                return SocialsOut(**data)
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    params = [
+                        data.user_id,
+                        data.link
+                    ]
+                    res = cur.execute(
+                        """
+                        INSERT INTO socials (user_id, link)
+                        VALUES (%s, %s)
+                        RETURNING id, user_id, link
+                        """,
+                        params,
+                    )
+                    id = res.fetchone()[0]
+                    data = data.dict()
+                    data["id"] = id
+                    return SocialsOut(**data)
+        except Exception as e:
+            print(e)
+            return {"message": "Could not create a social/link with that data"}
+
 
     def update_social(self, social_id: int, data: SocialsIn) -> Union[SocialsOut, Error]:
         try:

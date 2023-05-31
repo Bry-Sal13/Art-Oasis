@@ -32,13 +32,13 @@ class UserIn(BaseModel):
 class UserOut(BaseModel):
     user_id: int
     email: str
-    first_name: str
-    last_name: str
-    profile_picture: str
-    display_name: str
-    header_image: str
+    first_name: Optional[str]
+    last_name: Optional[str]
+    profile_picture: Optional[str]
+    display_name: Optional[str]
+    header_image: Optional[str]
     username: str
-    category: str
+    category: Optional[str]
 
 
 class UserOutWithPassword(UserOut):
@@ -61,16 +61,16 @@ class UserRepository:
                         user = UserOut(
                             user_id=record[0],
                             email=record[1],
-                            first_name=record[2],
-                            last_name=record[3],
-                            profile_picture=record[4],
-                            display_name=record[5],
+                            first_name=record[5],
+                            last_name=record[6],
+                            profile_picture=record[2],
+                            display_name=record[3],
                             header_image=record[6],
                             username=record[8],
                             category=record[9],
                         )
                         results.append(user)
-                    return results
+                    return  results
         except Exception as e:
             print(e)
             return {"message": "Could not get all users"}
