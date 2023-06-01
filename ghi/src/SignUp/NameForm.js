@@ -6,7 +6,6 @@ const NameForm = ({userData, setUserData }) => {
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
 
-
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
   };
@@ -50,7 +49,11 @@ const NameForm = ({userData, setUserData }) => {
     <form onSubmit={handleSubmit}>
       <label>
         First Name
-        <input type="string" value={firstName} onChange={handleFirstNameChange} />
+        <input
+          type="string"
+          value={firstName}
+          onChange={handleFirstNameChange}
+        />
       </label>
       <br />
       <label>

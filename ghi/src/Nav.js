@@ -13,7 +13,6 @@ function Nav({ users, getUserData }) {
   async function handleLogout(event) {
     logout();
     setLoggedIn(false);
-    // navigate("/login")
   }
 
   async function handleSearchChange(event) {
@@ -47,9 +46,9 @@ function Nav({ users, getUserData }) {
       >
         <span className="navbar-toggler-icon"></span>
       </button>
-      <a className="navbar-brand ps-4" href="index.html">
+      <NavLink className="navbar-brand ps-4" to="/">
         Art Oasis
-      </a>
+      </NavLink>
 
       <div className="search">
         <form onSubmit={handleSearch} className="d-flex" role="search">

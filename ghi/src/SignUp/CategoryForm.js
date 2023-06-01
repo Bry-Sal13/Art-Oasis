@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CategoryForm = ({ setUserData, userData }) => {
+const CategoryForm = ({ setUserData, userData }) => {
   const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
@@ -24,13 +25,13 @@ const CategoryForm = ({ setUserData, userData }) => {
       },
     };
     const response = await fetch(userUrl, fetchConfig);
-      if (response.ok) {
-        const result = await response.json();
-        let newData = userData
-        newData.user = result
-        setUserData(newData)
-        navigate("/profile");
-      }
+    if (response.ok) {
+      const result = await response.json();
+      let newData = userData;
+      newData.user = result;
+      setUserData(newData);
+      navigate("/profile");
+    }
   };
 
   return (

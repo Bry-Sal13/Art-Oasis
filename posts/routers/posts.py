@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Response
 from typing import List, Union
 from queries.posts import Error, PostIn, PostOut, PostRepository
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
 
 @router.post("/posts", response_model=Union[PostOut, Error])

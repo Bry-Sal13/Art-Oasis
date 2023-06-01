@@ -21,7 +21,6 @@ const SignUpForm = () => {
   const navigate = useNavigate();
 
   
-
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -68,12 +67,12 @@ const handleSubmit = async (event) => {
       if (response.ok) {
         const newUser = await response.json();
         console.log(newUser);
-        login(username, password);
         setUsername("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-        navigate("/name");
+        
+        // navigate("/name");
       } else {
         console.log("Form submission failed!");
       }

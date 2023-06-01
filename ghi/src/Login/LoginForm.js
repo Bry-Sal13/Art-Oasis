@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
-const LoginForm = () => {
+const LoginForm = ({ getUserData }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useToken();
@@ -23,6 +23,7 @@ const LoginForm = () => {
     setUsername("");
     setUsername("");
     event.target.reset();
+    await getUserData();
     navigate("/profile");
         
   };

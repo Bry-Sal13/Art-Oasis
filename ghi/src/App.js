@@ -15,6 +15,9 @@ import "./App.css";
 function App() {
   const [users, setUsers] = useState([]);
   const [userData, setUserData] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [socials, setSocials] = useState([]);
+  const [carousels, setCarousels] = useState([]);
   const { token, fetchWithCookie } = useToken();
 
   const getUserData = async () => {
@@ -25,6 +28,15 @@ function App() {
     }
   };
 
+  const getPosts = async () => {
+    const postsUrl = "http://localhost:8010/api/posts";
+    const response = await fetch(postsUrl, {credentials: "include"});
+    if (response.ok) {
+      const data = await response.json();
+      setPosts(data);
+    }
+  }
+
   const getUsers = async () => {
     const usersUrl = "http://localhost:8000/api/users";
     const response = await fetch(usersUrl, {credentials: "include"});
@@ -34,7 +46,25 @@ function App() {
     }
   };
 
-  // Grab the token when the component first renders
+  const getSocials = async () => {
+    const socialsUrl = "http://localhost:8000/api/socials";
+    const response = await fetch(socialsUrl, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setSocials(data);
+    }
+  };
+
+
+  const getCarousels = async () => {
+    const carouselsUrl = "http://localhost:8000/api/carousels";
+    const response = await fetch(carouselsUrl, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setCarousels(data);
+    }
+  };
+
   useEffect(() => {
     getUserData();
   }, [token]);
@@ -44,23 +74,40 @@ function App() {
     // If token is falsy, then don't call getUsers
     if (userData) {
       getUsers();
+      getPosts();
+      getCarousels();
+      getSocials();
     }
   }, [userData]);
 
+
   return (
     <div>
-      <BrowserRouter>
-        <Nav users={users} getUserData={getUserData} />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<SignUpForm  getUserData={getUserData} />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/name" element={<NameForm userData={userData} setUserData={setUserData} getUserData={getUserData} />} />
-          <Route path="/picture" element={<PictureForm />} />
-          <Route path="/category" element={<CategoryForm userData={userData} getUserData={getUserData} setUserData={setUserData} />} />
-          <Route path="/profile" element={<UserProfile />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Nav users={users} getUserData={getUserData} />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignUpForm  />} />
+        <Route
+          path="/login"
+          element={<LoginForm  />}
+        />
+        <Route path="/name" element={<NameForm userData={userData} setUserData={setUserData} getUserData={getUserData} />} />
+        <Route path="/picture" element={<PictureForm />} />
+        <Route path="/category" element={<CategoryForm userData={userData}  setUserData={setUserData} />} />
+        <Route
+          path="/profile"
+          element={
+            <UserProfile
+              posts={posts}
+              userData={userData}
+              socials={socials}
+              carousels={carousels}
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }
