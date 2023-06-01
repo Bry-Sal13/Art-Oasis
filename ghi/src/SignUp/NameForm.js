@@ -18,9 +18,6 @@ const NameForm = ({userData}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("First Name:", firstName);
-    console.log("Last Name:", lastName);
-
     const data = userData.user;
     data.first_name = firstName;
     data.last_name = lastName;
@@ -38,8 +35,6 @@ const NameForm = ({userData}) => {
     try {
       const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
-        const newData = await response.json();
-        console.log(newData);
         navigate("/category");
       }
     } catch (error) {

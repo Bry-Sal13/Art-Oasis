@@ -15,6 +15,9 @@ import "./App.css";
 function App() {
   const [users, setUsers] = useState([]);
   const [userData, setUserData] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [socials, setSocials] = useState([]);
+  const [carousels, setCarousels] = useState([]);
   const { fetchWithCookie } = useToken();
 
   const getUserData = async () => {
@@ -25,6 +28,14 @@ function App() {
     }
   };
 
+  const getPosts = async () => {
+    const postsUrl = "http://localhost:8010/api/posts";
+    const response = await fetch(postsUrl, {credentials: "include"});
+    if (response.ok) {
+      const data = await response.json();
+      setPosts(data);
+    }
+  }
 
   const getUsers = async () => {
     const usersUrl = "http://localhost:8000/api/users";
@@ -35,24 +46,63 @@ function App() {
     }
   };
 
+  const getSocials = async () => {
+    const socialsUrl = "http://localhost:8000/api/socials";
+    const response = await fetch(socialsUrl, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setSocials(data);
+    }
+  };
+
+
+  const getCarousels = async () => {
+    const carouselsUrl = "http://localhost:8000/api/carousels";
+    const response = await fetch(carouselsUrl, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setCarousels(data);
+    }
+  };
+
+
   useEffect(() => {
     getUsers();
     getUserData();
+    getPosts();
+    getCarousels();
+    getSocials();
   }, []);
+
+
   // TODO: Focus on users and how tokenUrl is used.
 
+
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<SignUpForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/name" element={<NameForm userData={userData} />} />
-          <Route path="/picture" element={<PictureForm />} />
-          <Route path="/category" element={<CategoryForm />} />
-          <Route path="/profile" element={<UserProfile />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignUpForm />} />
+        <Route
+          path="/login"
+          element={<LoginForm getUserData={getUserData} />}
+        />
+        <Route path="/name" element={<NameForm userData={userData} />} />
+        <Route path="/picture" element={<PictureForm />} />
+        <Route path="/category" element={<CategoryForm />} />
+        <Route
+          path="/profile"
+          element={
+            <UserProfile
+              posts={posts}
+              userData={userData}
+              socials={socials}
+              carousels={carousels}
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 export default App;
