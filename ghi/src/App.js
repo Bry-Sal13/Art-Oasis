@@ -9,15 +9,13 @@ import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
 import LoginForm from "./Login/LoginForm";
-import MainPage from "./MainPage/MainPage";
-
+import Nav from "./Nav";
 import "./App.css";
 
 function App() {
   const [users, setUsers] = useState([]);
   const [userData, setUserData] = useState("");
-  const { fetchWithCookie } = useToken();
-
+  const { token, fetchWithCookie } = useToken();
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
     const response = await fetchWithCookie(tokenUrl);
@@ -25,16 +23,6 @@ function App() {
       setUserData(response);
     }
   };
-
-  const [posts, setPosts] = useState([]);
-  async function getPosts() {
-    const url = "http://localhost:8010/api/posts/";
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      setPosts(data.posts);
-    }
-  }
 
   const getUsers = async () => {
     const usersUrl = "http://localhost:8000/api/users";
@@ -45,26 +33,55 @@ function App() {
     }
   };
 
+  // Grab the token when the component first renders
   useEffect(() => {
-    getPosts();
-    getUsers();
     getUserData();
-  }, []);
-  // TODO: Focus on users and how tokenUrl is used.
+  }, [token]);
+
+  // Get list of users only after you're logged in
+  useEffect(() => {
+    // If token is falsy, then don't call getUsers
+    if (userData) {
+      getUsers();
+    }
+  }, [userData]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignUpForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/name" element={<NameForm userData={userData} />} />
-        <Route path="/picture" element={<PictureForm />} />
-        <Route path="/category" element={<CategoryForm />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/mainpage" element={<MainPage posts={posts} />} />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <BrowserRouter>
+        <Nav users={users} token={token} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/signup"
+            element={<SignUpForm getUserData={getUserData} />}
+          />
+          <Route path="/login" element={<LoginForm />} />
+          <Route
+            path="/name"
+            element={
+              <NameForm
+                userData={userData}
+                setUserData={setUserData}
+                getUserData={getUserData}
+              />
+            }
+          />
+          <Route path="/picture" element={<PictureForm />} />
+          <Route
+            path="/category"
+            element={
+              <CategoryForm
+                userData={userData}
+                getUserData={getUserData}
+                setUserData={setUserData}
+              />
+            }
+          />
+          <Route path="/profile" element={<UserProfile />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 export default App;
