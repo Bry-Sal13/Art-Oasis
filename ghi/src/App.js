@@ -33,7 +33,6 @@ function App() {
     if (response.ok) {
       const data = await response.json();
       setUsers(data);
-      setUsers(data);
     }
   };
 
