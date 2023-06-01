@@ -9,6 +9,7 @@ import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
 import LoginForm from "./Login/LoginForm";
+import MainPage from "./MainPage/MainPage";
 
 import "./App.css";
 
@@ -25,10 +26,19 @@ function App() {
     }
   };
 
+  const [posts, setPosts] = useState([]);
+  async function getPosts() {
+    const url = "http://localhost:8010/api/posts/";
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      setPosts(data.posts);
+    }
+  }
 
   const getUsers = async () => {
     const usersUrl = "http://localhost:8000/api/users";
-    const response = await fetch(usersUrl, {credentials: "include"});
+    const response = await fetch(usersUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
       setUsers(data);
@@ -36,23 +46,25 @@ function App() {
   };
 
   useEffect(() => {
+    getPosts();
     getUsers();
     getUserData();
   }, []);
   // TODO: Focus on users and how tokenUrl is used.
 
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<SignUpForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/name" element={<NameForm userData={userData} />} />
-          <Route path="/picture" element={<PictureForm />} />
-          <Route path="/category" element={<CategoryForm />} />
-          <Route path="/profile" element={<UserProfile />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignUpForm />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/name" element={<NameForm userData={userData} />} />
+        <Route path="/picture" element={<PictureForm />} />
+        <Route path="/category" element={<CategoryForm />} />
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/mainpage" element={<MainPage posts={posts} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 export default App;
