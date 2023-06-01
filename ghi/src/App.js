@@ -9,9 +9,8 @@ import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
 import LoginForm from "./Login/LoginForm";
-
+import Nav from "./Nav";
 import "./App.css";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -44,6 +43,7 @@ function App() {
 
   return (
       <BrowserRouter>
+        <Nav users={users} getUserData={getUserData} userData={userData}/>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUpForm />} />

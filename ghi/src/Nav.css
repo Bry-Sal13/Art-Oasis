@@ -1,11 +1,25 @@
 .dataResult {
-  margin-top: 5px;
-  width: 300px;
-  height: 200;
-  background-color: grey;
-  box-shadow: black 0px 5px 15px;
+  position: absolute;
+  align-items: left;
+  margin-top: 3px;
+  width: 207px;
+  height: 150px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   overflow: hidden;
   overflow-y: auto;
+  border-radius: 10px;
+}
+
+.right-align {
+  float: right;
+  align-items: center;
+  display: flex;
+}
+.left-align {
+  float: left;
+  align-items: center;
+  display: flex;
 }
 
 .dataResult::-webkit-scrollbar {
@@ -14,23 +28,37 @@
 
 .dataResult .dataItem {
   width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
+  height: 35px;
+  vertical-align: middle;
   color: black;
 }
 
-.dataItem p {
-  margin-left: 10px;
+input:focus {
+  outline: none;
+}
+
+.text-align-right {
+  text-align: center;
+}
+
+.search-result-margins {
+  margin: 5px 5px 10px 5px;
 }
 
 .bg-pastel-blue {
-  background-color: #8294C4 ;
+  background-color: #7F669D ;
 }
+
+.btn {
+  border-radius: 10px;
+}
+
 a {
   text-decoration: none;
+  border-radius: 10px;
 }
 
 a:hover {
   background-color: lightblue;
+  border-radius: 10px;
 }

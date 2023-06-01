@@ -1,31 +1,37 @@
-// import {NavLink} from 'react-router-dom';
 import { useEffect, useState} from 'react';
 import { useNavigate, NavLink, Link} from 'react-router-dom';
+import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
 
-function Nav({props}) {
+function Nav({users, getUserData}) {
   const navigate = useNavigate();
   const [filteredUsers, setFilteredUsers] = useState([])
+  const [searchTerm, setSearchTerm] = useState("")
+  const { logout } = useToken();
+  const [loggedIn, setLoggedIn] = useState()
 
+  console.log(loggedIn)
   async function handleLogout(event) {
-    event.preventDefault();
-    const url = "http://localhost:8000/token"
-    const fetchConfig = {
-        method: "delete",
-    };
-    const response = await fetch(url,fetchConfig);
-    if (response.ok){
-      navigate("/login")
-    }
+    logout()
+    setLoggedIn(false)
+    console.log("You are logged out")
+    // navigate("/login")
   }
 
-  async function handleChangeSearch(event) {
-    const search = event.target.value
-    const newFilter = props.users.filter((value) => {
-      return value.username.toLowerCase.includes(search.toLowerCase);
+
+  async function handleSearchChange(event) {
+    var term = event.target.value
+    setSearchTerm(term)
+  }
+
+  async function handleSearch(event) {
+    event.preventDefault();
+    setFilteredUsers([])
+    const newFilter = users.filter((user) => {
+      return user.display_name.toLowerCase().includes(searchTerm.toLowerCase());
     });
-    if (search === "") {
+    if (searchTerm === "") {
       setFilteredUsers([]);
     } else {
       setFilteredUsers(newFilter)
@@ -39,36 +45,35 @@ function Nav({props}) {
       </button>
       <a className="navbar-brand ps-4" href="index.html">Art Oasis</a>
 
-      <div className="container-fluid">
-        <form className="d-flex" role="search">
-          <input onChange={handleChangeSearch} className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+      <div className="search">
+        <form  onSubmit={handleSearch} className="d-flex" role="search">
+          <input onChange={handleSearchChange} className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
           <button className="btn btn-outline-light" type="submit">Search</button>
         </form>
         {filteredUsers.length !== 0 &&(
         <div className="dataResult">
-          {filteredUsers.slice(0, 15).users.map((user,key) => {
+          {filteredUsers.slice(0, 15).map((user) => {
             return (
-              <a href={"/api/users/" + user.username} className="dataItem" target="_blank" rel='noreferrer'>
-                <p>{user.username}</p>
-              </a>
+              <div className='search-result-margins' key={user.user_id}>
+                <NavLink to={`/api/users/${user.username}`} className="dataItem" target="_blank" rel='noreferrer'>
+                  <img className="left-align" src={user.profile_picture} alt="Profile" />
+                  <p className='text-align-right'>{user.display_name}</p>
+                </NavLink>
+              </div>
             );
             })}
         </div>
         )}
       </div>
 
-      <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul className="navbar-nav me-auto mt-3 mt-lg-0">
+      <div className="collapse navbar-collapse right-align" id="navbarTogglerDemo03">
+        <ul className="navbar-nav ms-auto mt-3 mt-lg-0 pe-4">
           <li className="nav-item px-2">
-            <NavLink className="nav-link" aria-current="page" to="/home">Home</NavLink>
+            <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
           </li>
 
           <li className="nav-item px-2">
             <NavLink className="nav-link" aria-current="page" to="/connections">Connections</NavLink>
-          </li>
-
-          <li className="nav-item px-2">
-            <NavLink className="nav-link" aria-current="page" to="/messages">Messages</NavLink>
           </li>
 
           <li className="nav-item px-2">
@@ -77,22 +82,25 @@ function Nav({props}) {
 
           <div className="d-flex justify-content-between">
 
-            <li className="nav-item px-2">
-              <button className="btn btn-outline-light">
-                Signup<NavLink to="/login"></NavLink>
-              </button>
-            </li>
+            {/* if token is not valid show */}
+            { loggedIn === false && (
+              <>
+                <li className="nav-item px-2">
+                    <NavLink className="nav-link" aria-current="page" to="/signup">Signup</NavLink>
+                </li>
 
-            <li className="nav-item px-2">
-              <button className="btn btn-outline-light">
-                Login<NavLink aria-current="page" to="/login"></NavLink>
-              </button>
-            </li>
+                <li className="nav-item px-2">
+                  <NavLink className="nav-link" aria-current="page" to="/login">Login</NavLink>
+                </li>
+              </>
+            )}
 
+            {/* if token is valid show */}
+            { loggedIn !== false && (
             <li className="nav-item px-2">
               <button onClick={handleLogout} className="btn btn-outline-light">Logout</button>
             </li>
-
+            )}
           </div>
           </ul>
       </div>
