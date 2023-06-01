@@ -16,7 +16,7 @@ function Nav({users, getUserData}) {
     logout()
     setLoggedIn(false)
     console.log("You are logged out")
-    // navigate("/login")
+    navigate("/login")
   }
 
 

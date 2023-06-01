@@ -23,7 +23,7 @@ const LoginForm = ({ getUserData }) => {
     setUsername("");
     setUsername("");
     event.target.reset();
-    getUserData();
+    await getUserData();
     navigate("/profile");
         
   };

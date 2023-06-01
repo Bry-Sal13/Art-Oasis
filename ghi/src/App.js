@@ -18,7 +18,7 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [socials, setSocials] = useState([]);
   const [carousels, setCarousels] = useState([]);
-  const { fetchWithCookie } = useToken();
+  const { token, fetchWithCookie } = useToken();
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -65,17 +65,20 @@ function App() {
     }
   };
 
-
   useEffect(() => {
-    getUsers();
     getUserData();
-    getPosts();
-    getCarousels();
-    getSocials();
-  }, []);
+  }, [token]);
 
-
-  // TODO: Focus on users and how tokenUrl is used.
+  // Get list of users only after you're logged in
+  useEffect(() => {
+    // If token is falsy, then don't call getUsers
+    if (userData) {
+      getUsers();
+      getPosts();
+      getCarousels();
+      getSocials();
+    }
+  }, [userData]);
 
 
   return (
