@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const NameForm = ({userData}) => {
+const NameForm = ({userData, setUserData }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
-  
-  
+
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -16,11 +15,9 @@ const NameForm = ({userData}) => {
     setLastName(event.target.value);
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("First Name:", firstName);
-    console.log("Last Name:", lastName);
-
     const data = userData.user;
     data.first_name = firstName;
     data.last_name = lastName;
@@ -38,8 +35,10 @@ const NameForm = ({userData}) => {
     try {
       const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
-        const newData = await response.json();
-        console.log(newData);
+        const result = await response.json();
+        let newData = userData
+        newData.user = result
+        setUserData(newData)
         navigate("/category");
       }
     } catch (error) {
