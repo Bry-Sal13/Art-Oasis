@@ -9,7 +9,7 @@ import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
 import LoginForm from "./Login/LoginForm";
-
+import Nav from "./Nav";
 import "./App.css";
 
 function App() {
@@ -26,11 +26,13 @@ function App() {
   };
 
 
+
   const getUsers = async () => {
     const usersUrl = "http://localhost:8000/api/users";
     const response = await fetch(usersUrl, {credentials: "include"});
     if (response.ok) {
       const data = await response.json();
+      setUsers(data);
       setUsers(data);
     }
   };
@@ -39,9 +41,10 @@ function App() {
     getUsers();
     getUserData();
   }, []);
-  // TODO: Focus on users and how tokenUrl is used.
 
   return (
+    <div>
+      <Nav/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -53,6 +56,7 @@ function App() {
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </BrowserRouter>
+    </div>
   );
 }
 export default App;
