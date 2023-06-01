@@ -7,9 +7,13 @@ const SignUpForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [profilePicture, _] = useState("default_picture");
+  const [profilePicture, _] = useState(
+    "https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+  );
   const [displayName, __] = useState("Default Display Name");
-  const [headerImage, ___] = useState("default_header");
+  const [headerImage, ___] = useState(
+    "https://image-assets.eu-2.volcanic.cloud/api/v1/assets/images/de6fa830fed8d7fab6becd4b40c18472?t=1685096677"
+  );
   const [firstName, ____] = useState("First Name");
   const [lastName, ______] = useState("Last Name");
   const [category, _______] = useState("Default Category");
