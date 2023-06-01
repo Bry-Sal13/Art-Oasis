@@ -75,8 +75,9 @@ class UserRepository:
             print(e)
             return {"message": "Could not get all users"}
 
-
-    def get_user(self, username: str) -> Union[Optional[UserOutWithPassword], Error]:
+    def get_user(
+        self, username: str
+    ) -> Union[Optional[UserOutWithPassword], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -91,7 +92,10 @@ class UserRepository:
                         [username],
                     )
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Social not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Social not found",
+                        )
                     record = cur.fetchone()
                     if record is None:
                         return None
@@ -108,7 +112,7 @@ class UserRepository:
                         category=record[9],
                     )
         except HTTPException:
-            raise 
+            raise
         except Exception as e:
             print(e)
             return {"message": "User with that ID does not exist"}
@@ -128,7 +132,10 @@ class UserRepository:
                         [username],
                     )
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="User not found",
+                        )
                     record = cur.fetchone()
                     if record is None:
                         return None
@@ -144,12 +151,14 @@ class UserRepository:
                         category=record[8],
                     )
         except HTTPException:
-            raise 
+            raise
         except Exception as e:
             print(e)
             return {"message": "User with that ID does not exist"}
 
-    def create_user(self, data: UserIn, hashed_password: str) -> Union[UserOutWithPassword, Error]:
+    def create_user(
+        self, data: UserIn, hashed_password: str
+    ) -> Union[UserOutWithPassword, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -180,10 +189,13 @@ class UserRepository:
                     return UserOutWithPassword(**old_data)
         except Exception as e:
             print(e)
-            return {"message": "Could not create user, check the data you inputted"}
+            return {
+                "message": "Could not create user, check the data you inputted"
+            }
 
-
-    def update_user(self, username: str, data: UserIn) -> Union[UserOut, Error]:
+    def update_user(
+        self, username: str, data: UserIn
+    ) -> Union[UserOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -196,7 +208,7 @@ class UserRepository:
                         data.display_name,
                         data.header_image,
                         data.category,
-                        username
+                        username,
                     ]
                     cur.execute(
                         """
@@ -214,16 +226,19 @@ class UserRepository:
                         """,
                         params,
                     )
-                    
+
                     id = cur.fetchone()[0]
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found for username: {username}")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="User not found for username: {username}",
+                        )
                     old_data = data.dict()
                     old_data["user_id"] = id
                     print("user_out:", UserOut(**old_data))
                     return UserOut(**old_data)
         except HTTPException:
-            raise 
+            raise
         except Exception as e:
             print(e)
             return {"message": "Could not update a user with that ID"}
@@ -243,10 +258,9 @@ class UserRepository:
         except Exception as e:
             print(e)
             return {
-                    "deleted": False,
-                    "message": "User with that ID does not exist"
-                }
-
+                "deleted": False,
+                "message": "User with that ID does not exist",
+            }
 
     def to_user_out(self, id: int, user: UserIn):
         data = user.dict()
