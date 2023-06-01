@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CategoryForm = () => {
+const CategoryForm = ({ setUserData, userData }) => {
   const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
@@ -11,9 +11,26 @@ const CategoryForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Category:", category);
     // TODO: Update category in the back-end
-    navigate("/confirmation");
+    const data = userData.user;
+    data.category = category;
+    const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
+    const fetchConfig = {
+      method: "put",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await fetch(userUrl, fetchConfig);
+      if (response.ok) {
+        const result = await response.json();
+        let newData = userData
+        newData.user = result
+        setUserData(newData)
+        navigate("/profile");
+      }
   };
 
   return (

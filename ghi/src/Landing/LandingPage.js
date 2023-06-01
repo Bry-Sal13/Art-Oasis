@@ -65,10 +65,6 @@ const LandingPage = () => {
         <button type="button" onClick={handleSignupClick}>
           Signup
         </button>
-
-        <button type="button" onClick={handleLogoutClick}>
-          Logout
-        </button>
       </div>
     </div>
   );
