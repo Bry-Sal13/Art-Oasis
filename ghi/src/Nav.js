@@ -1,53 +1,200 @@
-// import {NavLink} from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import useToken from "@galvanize-inc/jwtdown-for-react";
+import "./Nav.css";
 
-function Nav() {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-      <div className="container-fluid">
-        {/* <NavLink className="navbar-brand" to="/"></NavLink> */}
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+function Nav({ users, token }) {
+    const navigate = useNavigate();
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const { logout } = useToken();
+    const [loggedIn, setLoggedIn] = useState();
 
-          <li className="nav-item">
-            <a href="index.html"> Home </a>
-          </li>
+    const checkLoggedIn = async () => {
+        if (token) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    };
 
-          <li className="nav-item">
-            <a href="index.html"> My Canvas </a>
-          </li>
+    async function handleLogout(event) {
+        logout();
+        setLoggedIn(false);
+        console.log("You are logged out");
+        navigate("/login");
+    }
 
-          <li className="nav-item">
-            <a href="index.html"> Messages </a>
-          </li>
+    async function handleSearchChange(event) {
+        var term = event.target.value;
+        setSearchTerm(term);
+    }
 
-          <li className="nav-item">
-            <a href="index.html"> Me </a>
-          </li>
+    async function handleSearch(event) {
+        event.preventDefault();
+        setFilteredUsers([]);
+        const newFilter = users.filter((user) => {
+            return user.display_name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+        });
+        if (searchTerm === "") {
+            setFilteredUsers([]);
+        } else {
+            setFilteredUsers(newFilter);
+        }
+    }
 
-          <li className="nav-item">
-            <a href="index.html"> Signup </a>
-          </li>
+    useEffect(() => {
+        checkLoggedIn();
+    }, [token]);
 
-          <li className="nav-item">
-            <a href="index.html"> Login </a>
-          </li>
+    console.log(token);
+    return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
+            <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarTogglerDemo03"
+                aria-controls="navbarTogglerDemo03"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+            {loggedIn === false && (
+                <NavLink
+                    className="navbar-brand ms-3"
+                    aria-current="page"
+                    to="/">
+                    Art Oasis
+                </NavLink>
+            )}
 
-          <li className="nav-item">
-            <a href="index.html"> Logout </a>
-          </li>
+            {loggedIn !== false && (
+                <NavLink
+                    className="navbar-brand ms-3"
+                    aria-current="page"
+                    to="/home">
+                    Art Oasis
+                </NavLink>
+            )}
 
-          {/* <li className="nav-item">
-            <NavLink className="nav-link" aria-current="page" to="/models">Models</NavLink>
-          </li> */}
+            <div className="search">
+                <form onSubmit={handleSearch} className="d-flex" role="search">
+                    <input
+                        onChange={handleSearchChange}
+                        className="form-control me-2"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                    />
+                    <button className="btn btn-outline-light" type="submit">
+                        Search
+                    </button>
+                </form>
+                {filteredUsers.length !== 0 && (
+                    <div className="dataResult">
+                        {filteredUsers.slice(0, 10).map((user) => {
+                            return (
+                                <div
+                                    className="search-result-margins"
+                                    key={user.user_id}>
+                                    <NavLink
+                                        to={`/profile/${user.username}`}
+                                        className="dataItem"
+                                        target="_blank"
+                                        rel="noreferrer">
+                                        <img
+                                            className="left-align"
+                                            src={user.profile_picture}
+                                            alt="Profile"
+                                        />
+                                        <p className="text-align-right">
+                                            {user.display_name}
+                                        </p>
+                                    </NavLink>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
 
-          </ul>
-        </div>
-      </div>
-    </nav>
-  );
+            <div
+                className="collapse navbar-collapse right-align"
+                id="navbarTogglerDemo03">
+                <ul className="navbar-nav ms-auto mt-3 mt-lg-0 pe-4">
+                    {loggedIn !== false && (
+                        <>
+                            <li className="nav-item px-2">
+                                <NavLink
+                                    className="nav-link"
+                                    aria-current="page"
+                                    to="/">
+                                    Home
+                                </NavLink>
+                            </li>
+
+                            <li className="nav-item px-2">
+                                <NavLink
+                                    className="nav-link"
+                                    aria-current="page"
+                                    to="/connections">
+                                    Connections
+                                </NavLink>
+                            </li>
+
+                            <li className="nav-item px-2">
+                                <NavLink
+                                    className="nav-link"
+                                    aria-current="page"
+                                    to="/profile">
+                                    Profile
+                                </NavLink>
+                            </li>
+                        </>
+                    )}
+
+                    <div className="d-flex justify-content-between">
+                        {/* if token is not valid show */}
+                        {loggedIn === false && (
+                            <>
+                                <li className="nav-item px-2">
+                                    <NavLink
+                                        className="nav-link"
+                                        aria-current="page"
+                                        to="/signup">
+                                        Signup
+                                    </NavLink>
+                                </li>
+
+                                <li className="nav-item px-2">
+                                    <NavLink
+                                        className="nav-link"
+                                        aria-current="page"
+                                        to="/login">
+                                        Login
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
+
+                        {/* if token is valid show */}
+                        {loggedIn !== false && (
+                            <li className="nav-item px-2">
+                                <button
+                                    onClick={handleLogout}
+                                    className="btn btn-outline-light">
+                                    Logout
+                                </button>
+                            </li>
+                        )}
+                    </div>
+                </ul>
+            </div>
+        </nav>
+    );
 }
 
 export default Nav;

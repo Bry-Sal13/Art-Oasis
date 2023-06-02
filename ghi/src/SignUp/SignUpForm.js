@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
@@ -12,6 +13,7 @@ const SignUpForm = () => {
   const [firstName, ____] = useState("First Name");
   const [lastName, ______] = useState("Last Name");
   const [category, _______] = useState("Default Category");
+  const { login } = useToken();
   const navigate = useNavigate();
 
   
@@ -62,12 +64,12 @@ const handleSubmit = async (event) => {
       if (response.ok) {
         const newUser = await response.json();
         console.log(newUser);
+        login(username, password);
         setUsername("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
-        
-        // navigate("/name");
+        navigate("/name");
       } else {
         console.log("Form submission failed!");
       }
@@ -81,8 +83,7 @@ const handleSubmit = async (event) => {
     console.log("Error submitting form:", error);
   }
 
-  console.log("Email:", email);
-  console.log("Password:", password);
+
 };
 
 
