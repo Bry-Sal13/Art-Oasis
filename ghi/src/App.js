@@ -10,17 +10,30 @@ import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
 import LoginForm from "./Login/LoginForm";
 import Nav from "./Nav";
+import MainPage from "./MainPage/MainPage";
 import "./App.css";
 
 function App() {
   const [users, setUsers] = useState([]);
   const [userData, setUserData] = useState("");
   const { token, fetchWithCookie } = useToken();
+  const [posts, setPosts] = useState([]);
+  const [connections, setConnections] = useState([]);
+
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
     const response = await fetchWithCookie(tokenUrl);
     if (response != null) {
       setUserData(response);
+    }
+  };
+
+  const getAllConnections = async () => {
+    const connectionsURL = "http://localhost:8000/api/connections";
+    const response = await fetch(connectionsURL, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setConnections(data);
     }
   };
 
@@ -32,6 +45,19 @@ function App() {
       setUsers(data);
     }
   };
+
+  async function getPosts() {
+    const url = "http://localhost:8010/api/posts/";
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      setPosts(data.posts);
+    }
+  }
+
+  useEffect(() => {
+    getPosts();
+  });
 
   // Grab the token when the component first renders
   useEffect(() => {
@@ -52,6 +78,16 @@ function App() {
         <Nav users={users} token={token} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/home"
+            element={
+              <MainPage
+                element={
+                  <MainPage posts={posts} userData={userData} users={users} />
+                }
+              />
+            }
+          />
           <Route
             path="/signup"
             element={<SignUpForm getUserData={getUserData} />}
