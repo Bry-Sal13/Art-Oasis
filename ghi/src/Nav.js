@@ -49,19 +49,8 @@ function Nav({ users, token }) {
         checkLoggedIn();
     }, [token]);
 
-    console.log(token);
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
-            <button
-                className="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarTogglerDemo03"
-                aria-controls="navbarTogglerDemo03"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
             {loggedIn === false && (
                 <NavLink
                     className="navbar-brand ms-3"
@@ -70,7 +59,6 @@ function Nav({ users, token }) {
                     Art Oasis
                 </NavLink>
             )}
-
             {loggedIn !== false && (
                 <NavLink
                     className="navbar-brand ms-3"
@@ -120,10 +108,19 @@ function Nav({ users, token }) {
                     </div>
                 )}
             </div>
-
+            <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
             <div
                 className="collapse navbar-collapse right-align"
-                id="navbarTogglerDemo03">
+                id="navbarSupportedContent">
                 <ul className="navbar-nav ms-auto mt-3 mt-lg-0 pe-4">
                     {loggedIn !== false && (
                         <>
