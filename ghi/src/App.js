@@ -82,9 +82,10 @@ function App() {
             path="/home"
             element={
               <MainPage
-                element={
-                  <MainPage posts={posts} userData={userData} users={users} />
-                }
+                posts={posts}
+                getUserData={getUserData}
+                userData={userData}
+                users={users}
               />
             }
           />

@@ -16,8 +16,6 @@ const SignUpForm = () => {
   const { login } = useToken();
   const navigate = useNavigate();
 
-  
-
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -34,58 +32,53 @@ const SignUpForm = () => {
     setConfirmPassword(event.target.value);
   };
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  const data = {
-    username: username,
-    email: email,
-    password: password,
-    profile_picture: profilePicture,
-    display_name: displayName,
-    header_image: headerImage,
-    first_name: firstName,
-    last_name: lastName,
-    category: category,
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = {
+      username: username,
+      email: email,
+      password: password,
+      profile_picture: profilePicture,
+      display_name: displayName,
+      header_image: headerImage,
+      first_name: firstName,
+      last_name: lastName,
+      category: category,
+    };
 
-  const userUrl = "http://localhost:8000/api/users";
-  const fetchConfig = {
-    method: "post",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    },
-  };
+    const userUrl = "http://localhost:8000/api/users";
+    const fetchConfig = {
+      method: "post",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-  try {
-    if (password === confirmPassword){
-      const response = await fetch(userUrl, fetchConfig);
+    try {
+      if (password === confirmPassword) {
+        const response = await fetch(userUrl, fetchConfig);
 
-      if (response.ok) {
-        const newUser = await response.json();
-        console.log(newUser);
-        login(username, password);
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        navigate("/name");
+        if (response.ok) {
+          const newUser = await response.json();
+          console.log(newUser);
+          await login(username, password);
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          navigate("/name");
+        } else {
+          console.log("Form submission failed!");
+        }
       } else {
-        console.log("Form submission failed!");
+        throw new Error("Passwords do not match!");
+        //TODO: Maybe put an alert here?
       }
+    } catch (error) {
+      console.log("Error submitting form:", error);
     }
-    else{
-      throw new Error("Passwords do not match!")
-      //TODO: Maybe put an alert here?
-    }
-   
-  } catch (error) {
-    console.log("Error submitting form:", error);
-  }
-
-
-};
-
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -117,7 +110,9 @@ const handleSubmit = async (event) => {
         />
       </label>
       <br />
-      <button style={{display:"None"}} type="submit">Done</button>
+      <button style={{ display: "None" }} type="submit">
+        Done
+      </button>
       <button>Next</button>
     </form>
   );

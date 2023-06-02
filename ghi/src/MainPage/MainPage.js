@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function MainPage({ posts, userData, users }) {
+function MainPage({ posts, userData, users, getUserData }) {
   // async handlePostLike = (event) {
   //   onSubmit(event.target.value);
   // };
@@ -9,7 +9,9 @@ function MainPage({ posts, userData, users }) {
   // const handlePostComment = (event) => {
   //   onSubmit(event.target.value);
   // };
-
+  if (userData === undefined) {
+    getUserData();
+  }
   console.log(userData);
   return (
     <>
