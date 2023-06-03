@@ -49,6 +49,7 @@ function Nav({ users, token }) {
         checkLoggedIn();
     }, [token]);
 
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
             {loggedIn === false && (

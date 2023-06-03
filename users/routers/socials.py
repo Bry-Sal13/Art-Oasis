@@ -24,11 +24,6 @@ def get_socials(
     repo: SocialsRepository = Depends(),
 ):
     socials = repo.get_socials()
-    if not socials:
-        return {
-                "socials": socials,
-                "message": "create some socials you currently have none"
-            }
     return socials
 
 
