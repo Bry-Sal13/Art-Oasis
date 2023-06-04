@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+}
+
+.fixed-input {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  padding: 6px 6px;
+  border-width: 1px;
+}
+/* This lowers/raises the username and password fields */
+.form-container {
+  margin-top: 15%;
+  font-size: 13px;
+}
+
+/* button size control */
+.btn-field {
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 6px 6px;
+  border-width: 1px;
+  background-color:#0a66c2;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+}
+
+.btn-outline {
+  background-color: white;
+  border-color: #000000;
+  color: rgb(0, 0, 0);
+}
+
+@media screen and (max-width: 600px) {
+  .fixed-input,
+  .btn-field {
+    width: 90%;
+    max-width: none;
+  }
+}
+
+body {
+  background-image: url('PNG_Master.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.form-group.password {
+  position: relative;
+}
+
+.password-icon {
+  position: absolute;
+  color: #9d9898;
+  top: 65%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}

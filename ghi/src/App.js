@@ -9,6 +9,7 @@ import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
 import LoginForm from "./Login/LoginForm";
+import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav";
 import "./App.css";
 
@@ -30,16 +31,16 @@ function App() {
 
   const getPosts = async () => {
     const postsUrl = "http://localhost:8010/api/posts";
-    const response = await fetch(postsUrl, {credentials: "include"});
+    const response = await fetch(postsUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
       setPosts(data);
     }
-  }
+  };
 
   const getUsers = async () => {
     const usersUrl = "http://localhost:8000/api/users";
-    const response = await fetch(usersUrl, {credentials: "include"});
+    const response = await fetch(usersUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
       setUsers(data);
@@ -54,7 +55,6 @@ function App() {
       setSocials(data);
     }
   };
-
 
   const getCarousels = async () => {
     const carouselsUrl = "http://localhost:8000/api/carousels";
@@ -80,35 +80,59 @@ function App() {
     }
   }, [userData]);
 
-
   return (
     <div>
-    <BrowserRouter>
-      <Nav users={users} getUserData={getUserData} />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignUpForm  />} />
-        <Route
-          path="/login"
-          element={<LoginForm  />}
-        />
-        <Route path="/name" element={<NameForm userData={userData} setUserData={setUserData} getUserData={getUserData} />} />
-        <Route path="/picture" element={<PictureForm />} />
-        <Route path="/category" element={<CategoryForm userData={userData}  setUserData={setUserData} />} />
-        <Route
-          path="/profile"
-          element={
-            <UserProfile
-              posts={posts}
-              userData={userData}
-              socials={socials}
-              carousels={carousels}
-            />
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Nav users={users} token={token} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/signup"
+            element={<SignUpForm getUserData={getUserData} />}
+          />
+          <Route path="/login" element={<LoginForm />} />
+          <Route
+            path="/name"
+            element={
+              <NameForm
+                userData={userData}
+                setUserData={setUserData}
+                getUserData={getUserData}
+              />
+            }
+          />
+          <Route
+            path="/picture"
+            element={
+              <PictureForm userData={userData} setUserData={setUserData} />
+            }
+          />
+          <Route
+            path="/category"
+            element={
+              <CategoryForm
+                userData={userData}
+                getUserData={getUserData}
+                setUserData={setUserData}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <UserProfile
+                posts={posts}
+                userData={userData}
+                socials={socials}
+                carousels={carousels}
+              />
+            }
+          />
+          <Route path="/cookie" element={<CookiePolicy />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
+
 export default App;

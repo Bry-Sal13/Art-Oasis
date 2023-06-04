@@ -1,77 +1,83 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const PictureForm = ({getToken}) => {
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [headerImage, setHeaderImage] = useState(null);
+const PictureForm = ({ userData, setUserData }) => {
+  const [profilePicture, setProfilePicture] = useState("");
+  const [headerImage, setHeaderImage] = useState("");
+  const navigate = useNavigate();
 
   const handleProfileImageChange = (event) => {
-    const file = event.target.files[0];
-    setProfilePicture(file);
+    setProfilePicture(event.target.value);
   };
 
   const handleHeaderImageChange = (event) => {
-    const file = event.target.files[0];
-    setHeaderImage(file);
+    setHeaderImage(event.target.value);
   };
 
-  //TODO!!!!!:
-  // Upload the images to the backend
-  // Then - Implement your backend logic here to handle the file uploads
-  // (Look up these) = Axios or Fetch to send the images to your backend API
-  // Reset the form
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const data = userData.user;
+    data.profile_picture = profilePicture;
+    data.header_image = headerImage;
 
-    const userUrl = "http://localhost:8000/api/users";
-
-    let formData = new FormData();
-
-    formData.append("profile_picture", profilePicture);
-    formData.append("header_image", headerImage);
+    const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
+    const fetchConfig = {
+      method: "put",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
     try {
-      const response = await fetch(userUrl, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${getToken}`,
-        },
-      });
-
+      const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
-        setProfilePicture(null);
-        setHeaderImage(null);
+        const result = await response.json();
+        let newData = userData;
+        newData.user = result;
+        setUserData(newData);
+        navigate("/profile");
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      console.log("Error updating user:", error);
     }
   };
 
-
   return (
-    <div>
-      <h1>Profile Page</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="profileImage">Profile Picture:</label>
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
-            onChange={handleProfileImageChange}
-          />
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">Say cheese</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Profile picture</label>
+              <input
+                type="text"
+                value={profilePicture}
+                onChange={handleProfileImageChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Banner Image</label>
+              <input
+                type="text"
+                value={headerImage}
+                onChange={handleHeaderImageChange}
+                className="form-control input-field"
+              />
+            </div>
+            <br></br>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Continue
+            </button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="headerImage">Header Image:</label>
-          <input
-            type="file"
-            id="headerImage"
-            accept="image/*"
-            onChange={handleHeaderImageChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      </div>
     </div>
   );
 };

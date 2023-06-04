@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const NameForm = ({userData, setUserData }) => {
+const NameForm = ({ userData, setUserData }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const NameForm = ({userData, setUserData }) => {
   const handleLastNameChange = (event) => {
     setLastName(event.target.value);
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,9 +34,9 @@ const NameForm = ({userData, setUserData }) => {
       const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
         const result = await response.json();
-        let newData = userData
-        newData.user = result
-        setUserData(newData)
+        let newData = userData;
+        newData.user = result;
+        setUserData(newData);
         navigate("/category");
       }
     } catch (error) {
@@ -46,23 +45,41 @@ const NameForm = ({userData, setUserData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        First Name
-        <input
-          type="string"
-          value={firstName}
-          onChange={handleFirstNameChange}
-        />
-      </label>
-      <br />
-      <label>
-        Last Name
-        <input type="string" value={lastName} onChange={handleLastNameChange} />
-      </label>
-      <br />
-      <button type="submit">Continue</button>
-    </form>
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">
+            I'm sorry, I didn't catch your name
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>First Name</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={handleFirstNameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Last Name</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={handleLastNameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

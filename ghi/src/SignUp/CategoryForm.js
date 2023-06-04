@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CategoryForm = ({ setUserData, userData }) => {
-const CategoryForm = ({ setUserData, userData }) => {
   const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
@@ -30,19 +29,36 @@ const CategoryForm = ({ setUserData, userData }) => {
       let newData = userData;
       newData.user = result;
       setUserData(newData);
-      navigate("/profile");
+      navigate("/picture");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Which type of art do you do?
-        <input type="text" value={category} onChange={handleCategoryChange} />
-      </label>
-      <br />
-      <button type="submit">Continue</button>
-    </form>
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">What kind of work do you do?</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Art category</label>
+              <input
+                type="text"
+                value={category}
+                onChange={handleCategoryChange}
+                className="form-control input-field"
+              />
+            </div>
+            <br></br>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

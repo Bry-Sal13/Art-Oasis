@@ -26,11 +26,6 @@ def get_carousels(
     user_data: dict = Depends(authenticator.get_current_account_data),
 ):
     carousels = repo.get_carousels()
-    if not carousels:
-        return {
-                "carousels": carousels,
-                "message": "create some carousels you currently have none"
-            }
     return carousels
 
 

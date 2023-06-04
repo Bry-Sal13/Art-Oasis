@@ -5,7 +5,7 @@ function UserProfile({posts, userData, carousels, socials}) {
   let postsNum = 10;
 
 
-
+  console.log(carousels);
 
 
   const filteredSocials = socials.filter(
@@ -15,11 +15,10 @@ function UserProfile({posts, userData, carousels, socials}) {
   );
 
 
-  const filteredCarousels = carousels.filter(
-    (carousel) => {
-      return carousel.user_id === userData.user.user_id
-    }
-  );
+  const filteredCarousels = carousels.filter((carousel) => {
+    return carousel.user_id === userData.user.user_id;
+  });
+
 
   const handlePosts = () => {
     console.log(postsNum);
@@ -30,13 +29,13 @@ function UserProfile({posts, userData, carousels, socials}) {
     return (post.user_id = userData.user.user_id);
   });
 
-  console.log(filteredCarousels[0]);
+  const user = userData.user
 
   if (userData !== "" && userData !== null && userData !== undefined){
     return (
       <div className="container">
         <div className="row mt-5 mx-3">
-          <div className="card">
+          <div className="card mb-5">
             <div
               className="card-header mt-3"
               style={{
@@ -52,6 +51,13 @@ function UserProfile({posts, userData, carousels, socials}) {
                 className="rounded img-thumbnail"
                 style={{ width: "128px" }}
               />
+              <h6>{`${user.first_name} ${user.last_name}`}</h6>
+              <button
+                className="btn btn-outline-dark d-inline"
+                style={{ float: "right" }}
+              >
+                edit profile
+              </button>
             </div>
             <div className="d-flex justify-content-evenly">
               <div className="p-2">ABOUT ME GOES HERE</div>
@@ -60,20 +66,22 @@ function UserProfile({posts, userData, carousels, socials}) {
             </div>
             <div
               id="carousel"
-              className="carousel slide"
+              className="carousel carousel-dark slide m-3"
               data-bs-interval="false"
             >
               <div className="carousel-inner">
                 {filteredCarousels.map((image, index) => {
                   return (
                     <div
-                      className={`carousel-item ${index === 0 ? "active" : ""}`}
+                      className={`carousel-item item ${
+                        index === 0 ? "active" : ""
+                      }`}
                       key={image.id}
                     >
                       <img
                         src={image.link}
-                        className="d-block w-100 mb-3"
                         alt="..."
+                        className="d-block w-100"
                       />
                     </div>
                   );
@@ -103,19 +111,19 @@ function UserProfile({posts, userData, carousels, socials}) {
                 ></span>
                 <span className="visually-hidden">Next</span>
               </button>
-              <div className="text-center">
-                <h4>Your Experience</h4>
-                <p>PLACE HOLDER EXPERIENCE</p>
-              </div>
-              <div className="text-center">
-                <h4>Activity</h4>
-                <hr />
-                <p>POSTS GOES HERE</p>
-                <p>POSTS GOES HERE</p>
-                <p>POSTS GOES HERE</p>
-                <p>POSTS GOES HERE</p>
-                <p>POSTS GOES HERE</p>
-              </div>
+            </div>
+            <div className="text-center">
+              <h4 className="m-3">Your Experience</h4>
+              <p className="m-3">PLACE HOLDER EXPERIENCE</p>
+            </div>
+            <div className="text-center">
+              <h4 className="m-3">Activity</h4>
+              <hr className="m-3" />
+              <p>POSTS GOES HERE</p>
+              <p>POSTS GOES HERE</p>
+              <p>POSTS GOES HERE</p>
+              <p>POSTS GOES HERE</p>
+              <p>POSTS GOES HERE</p>
             </div>
           </div>
         </div>
