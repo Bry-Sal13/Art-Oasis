@@ -12,7 +12,8 @@ steps = [
             last_name  VARCHAR(100) DEFAULT NULL,
             password VARCHAR(128) NOT NULL,
             username VARCHAR(20) UNIQUE NOT NULL,
-            category  VARCHAR(100) DEFAULT NULL
+            category  VARCHAR(100) DEFAULT NULL,
+            about VARCHAR(1250) DEFAULT NULL
         );
         """,
         # "Down" SQL statement
@@ -26,8 +27,7 @@ steps = [
         CREATE TABLE connections(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             user_id INT,
-            following_id INT,
-            following BOOLEAN DEFAULT false
+            following_id INT
         );
         """,
         # "Down" SQL statement

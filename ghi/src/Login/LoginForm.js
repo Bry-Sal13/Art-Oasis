@@ -24,7 +24,6 @@ const LoginForm = () => {
     setUsername("");
     event.target.reset();
     navigate("/profile");
-        
   };
   return (
     <form onSubmit={(event) => handleSubmit(event)}>
