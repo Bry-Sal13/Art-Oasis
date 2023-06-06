@@ -1,7 +1,8 @@
-from pydantic import BaseModel
 from datetime import datetime
-from queries.pool import pool
 from typing import List, Union
+from pydantic import BaseModel
+from queries.pool import pool
+
 
 
 # Create Post, Post In Model

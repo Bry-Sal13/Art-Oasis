@@ -46,18 +46,14 @@ function App() {
     }
   };
 
-  async function getPosts() {
-    const url = "http://localhost:8010/api/posts/";
-    const response = await fetch(url);
+  const getPosts = async () => {
+    const postsUrl = "http://localhost:8010/api/posts/";
+    const response = await fetch(postsUrl);
     if (response.ok) {
       const data = await response.json();
-      setPosts(data.posts);
+      setPosts(data);
     }
-  }
-
-  useEffect(() => {
-    getPosts();
-  });
+  };
 
   // Grab the token when the component first renders
   useEffect(() => {
@@ -69,6 +65,7 @@ function App() {
     // If token is falsy, then don't call getUsers
     if (userData) {
       getUsers();
+      getPosts();
     }
   }, [userData]);
 
@@ -86,6 +83,7 @@ function App() {
                 getUserData={getUserData}
                 userData={userData}
                 users={users}
+                connections={connections}
               />
             }
           />
