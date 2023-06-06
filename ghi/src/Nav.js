@@ -3,7 +3,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
-function Nav({ users, token }) {
+function Nav({ users, token, setUserInfo }) {
   const navigate = useNavigate();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +21,7 @@ function Nav({ users, token }) {
   async function handleLogout(event) {
     logout();
     setLoggedIn(false);
+    setUserInfo("");
     console.log("You are logged out");
     navigate("/login");
   }
@@ -47,25 +48,18 @@ function Nav({ users, token }) {
     checkLoggedIn();
   }, [token]);
 
-
-    return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
-            {loggedIn === false && (
-                <NavLink
-                    className="navbar-brand ms-3"
-                    aria-current="page"
-                    to="/">
-                    Art Oasis
-                </NavLink>
-            )}
-            {loggedIn !== false && (
-                <NavLink
-                    className="navbar-brand ms-3"
-                    aria-current="page"
-                    to="/home">
-                    Art Oasis
-                </NavLink>
-            )}
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
+      {loggedIn === false && (
+        <NavLink className="navbar-brand ms-3" aria-current="page" to="/">
+          Art Oasis
+        </NavLink>
+      )}
+      {loggedIn !== false && (
+        <NavLink className="navbar-brand ms-3" aria-current="page" to="/home">
+          Art Oasis
+        </NavLink>
+      )}
 
       <div className="search">
         <form onSubmit={handleSearch} className="d-flex" role="search">

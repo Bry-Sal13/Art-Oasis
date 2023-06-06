@@ -8,3 +8,16 @@
   height: 720px;
 }
 
+.profile-link{
+  color: blue !important;
+}
+
+.profile-link:hover{
+  text-decoration: none;
+  color: blue !important;
+  background-color: white !important;
+}
+
+.display-name{
+  font-size: large;
+}

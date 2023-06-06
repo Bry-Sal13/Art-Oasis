@@ -8,10 +8,15 @@ import CategoryForm from "./SignUp/CategoryForm";
 import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
+import AboutForm from "./Profile/AboutForm";
+import CarouselForm from "./Profile/CarouselForm";
+import SocialsForm from "./Profile/SocialsForm";
+import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
 import Nav from "./Nav";
 import MainPage from "./MainPage/MainPage";
 import "./App.css";
+
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -19,6 +24,7 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [socials, setSocials] = useState([]);
   const [carousels, setCarousels] = useState([]);
+  const [userInfo, setUserInfo] = useState(userData.user)
   const { token, fetchWithCookie } = useToken();
   const [connections, setConnections] = useState([]);
 
@@ -76,9 +82,22 @@ function App() {
     }
   };
 
+  const getUserInfo = async () => {
+    const username = userData.user.username;
+    const url = `http://localhost:8000/api/users/${username}`;
+    const response = await fetch(url, { credentials: "include" });
+
+    if (response.ok) {
+      const data = await response.json();
+      setUserInfo(data);
+    }
+  };
+
+
   useEffect(() => {
     getUserData();
   }, [token]);
+
 
   // Get list of users only after you're logged in
   useEffect(() => {
@@ -89,13 +108,14 @@ function App() {
       getCarousels();
       getSocials();
       getAllConnections();
+      getUserInfo();
     }
   }, [userData]);
 
   return (
     <div>
       <BrowserRouter>
-        <Nav users={users} token={token} />
+        <Nav users={users} token={token} setUserInfo={setUserInfo} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route
@@ -104,7 +124,7 @@ function App() {
               <MainPage
                 posts={posts}
                 getUserData={getUserData}
-                userData={userData}
+                userInfo={userInfo}
                 users={users}
                 connections={connections}
               />
@@ -125,25 +145,25 @@ function App() {
             path="/name"
             element={
               <NameForm
-                userData={userData}
-                setUserData={setUserData}
-                getUserData={getUserData}
+                userInfo={userInfo}
+                setUserInfo={setUserInfo}
+                getUserInfo={getUserInfo}
               />
             }
           />
           <Route
             path="/picture"
             element={
-              <PictureForm userData={userData} setUserData={setUserData} />
+              <PictureForm userInfo={userInfo} setUserInfo={setUserInfo} />
             }
           />
           <Route
             path="/category"
             element={
               <CategoryForm
-                userData={userData}
-                getUserData={getUserData}
-                setUserData={setUserData}
+                userInfo={userInfo}
+                getUserInfo={getUserInfo}
+                setUserInfo={setUserInfo}
               />
             }
           />
@@ -152,9 +172,24 @@ function App() {
             element={
               <UserProfile
                 posts={posts}
-                userData={userData}
+                userInfo={userInfo}
                 socials={socials}
                 carousels={carousels}
+                getUserInfo={getUserInfo}
+              />
+            }
+          />
+          <Route
+            path="/profile/edit"
+            element={
+              <EditForm
+                posts={posts}
+                userInfo={userInfo}
+                socials={socials}
+                carousels={carousels}
+                setCarousels={setCarousels}
+                setSocials={setSocials}
+                setUserInfo={setUserInfo}
               />
             }
           />

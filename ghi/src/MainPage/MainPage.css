@@ -1,13 +1,7 @@
-.MainPage body {
-  background-color: #323131;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-}
-
 .container {
-  height: 100vh;
+  margin-top: 45px;
+  max-width: 50%;
 }
-
 .card-profile {
   width: 335px;
   border: none;
@@ -18,6 +12,12 @@
   top: 100px;
   left: 50px;
   height: 325px;
+}
+
+.post {
+  text-align: left;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .upper {
@@ -54,11 +54,6 @@
 .stats span {
   font-size: 20px;
 }
-body {
-  background-color: #eee;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-}
 
 .button {
   background-color: #ba94d1;
@@ -67,10 +62,6 @@ body {
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.card {
-  border: none;
 }
 
 .ellipsis {
