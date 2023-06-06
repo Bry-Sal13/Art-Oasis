@@ -1,72 +1,66 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const PictureForm = ({getToken}) => {
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [headerImage, setHeaderImage] = useState(null);
+const PictureForm = ({ userData, setUserData }) => {
+  const [profilePicture, setProfilePicture] = useState("");
+  const [headerImage, setHeaderImage] = useState("");
+  const navigate = useNavigate();
 
   const handleProfileImageChange = (event) => {
-    const file = event.target.files[0];
-    setProfilePicture(file);
+    setProfilePicture(event.target.value);
   };
 
   const handleHeaderImageChange = (event) => {
-    const file = event.target.files[0];
-    setHeaderImage(file);
+    setHeaderImage(event.target.value);
   };
 
-  //TODO!!!!!:
-  // Upload the images to the backend
-  // Then - Implement your backend logic here to handle the file uploads
-  // (Look up these) = Axios or Fetch to send the images to your backend API
-  // Reset the form
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const data = userData.user;
+    data.profile_picture = profilePicture;
+    data.header_image = headerImage;
 
-    const userUrl = "http://localhost:8000/api/users";
-
-    let formData = new FormData();
-
-    formData.append("profile_picture", profilePicture);
-    formData.append("header_image", headerImage);
+    const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
+    const fetchConfig = {
+      method: "put",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
     try {
-      const response = await fetch(userUrl, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${getToken}`,
-        },
-      });
-
+      const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
-        setProfilePicture(null);
-        setHeaderImage(null);
+        const result = await response.json();
+        let newData = userData;
+        newData.user = result;
+        setUserData(newData);
+        navigate("/profile");
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      console.log("Error updating user:", error);
     }
   };
-
 
   return (
     <div>
       <h1>Profile Page</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="profileImage">Profile Picture:</label>
+          <label htmlFor="profilePicture">Profile Picture URL:</label>
           <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
+            type="text"
+            value={profilePicture}
             onChange={handleProfileImageChange}
           />
         </div>
         <div>
-          <label htmlFor="headerImage">Header Image:</label>
+          <label htmlFor="headerImage">Header Image URL:</label>
           <input
-            type="file"
-            id="headerImage"
-            accept="image/*"
+            type="text"
+            value={headerImage}
             onChange={handleHeaderImageChange}
           />
         </div>

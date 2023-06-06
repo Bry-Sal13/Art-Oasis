@@ -16,14 +16,15 @@ class Error(BaseModel):
 
 class UserIn(BaseModel):
     email: str
-    password: str
-    first_name: Optional[str]
-    last_name: Optional[str]
     profile_picture: Optional[str]
     display_name: Optional[str]
     header_image: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
+    password: str
     username: str
     category: Optional[str]
+    about: Optional[str]
 
 
 # OUT MODEL
@@ -32,13 +33,14 @@ class UserIn(BaseModel):
 class UserOut(BaseModel):
     user_id: int
     email: str
-    first_name: Optional[str]
-    last_name: Optional[str]
     profile_picture: Optional[str]
     display_name: Optional[str]
     header_image: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
     username: str
     category: Optional[str]
+    about: Optional[str]
 
 
 class UserOutWithPassword(UserOut):
@@ -61,13 +63,14 @@ class UserRepository:
                         user = UserOut(
                             user_id=record[0],
                             email=record[1],
-                            first_name=record[5],
-                            last_name=record[6],
                             profile_picture=record[2],
                             display_name=record[3],
-                            header_image=record[6],
+                            header_image=record[4],
+                            first_name=record[5],
+                            last_name=record[6],
                             username=record[8],
                             category=record[9],
+                            about=record[10]
                         )
                         results.append(user)
                     return  results
@@ -83,9 +86,7 @@ class UserRepository:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT id, first_name, last_name, email,
-                            username, password, profile_picture,
-                            display_name, header_image, category
+                        SELECT *
                         FROM users
                         WHERE username = %s
                         """,
@@ -101,15 +102,16 @@ class UserRepository:
                         return None
                     return UserOutWithPassword(
                         user_id=record[0],
-                        first_name=record[1],
-                        last_name=record[2],
-                        email=record[3],
-                        username=record[4],
-                        hashed_password=record[5],
-                        profile_picture=record[6],
-                        display_name=record[7],
-                        header_image=record[8],
+                        first_name=record[5],
+                        last_name=record[6],
+                        email=record[1],
+                        username=record[8],
+                        hashed_password=record[7],
+                        profile_picture=record[2],
+                        display_name=record[3],
+                        header_image=record[4],
                         category=record[9],
+                        about=record[10]
                     )
         except HTTPException:
             raise
@@ -123,9 +125,7 @@ class UserRepository:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT id, first_name, last_name, email,
-                            username, profile_picture,
-                            display_name, header_image, category
+                        SELECT *
                         FROM users
                         WHERE username = %s
                         """,
@@ -141,14 +141,15 @@ class UserRepository:
                         return None
                     return UserOut(
                         user_id=record[0],
-                        first_name=record[1],
-                        last_name=record[2],
-                        email=record[3],
-                        username=record[4],
-                        profile_picture=record[5],
-                        display_name=record[6],
-                        header_image=record[7],
-                        category=record[8],
+                        first_name=record[5],
+                        last_name=record[6],
+                        email=record[1],
+                        username=record[8],
+                        profile_picture=record[2],
+                        display_name=record[3],
+                        header_image=record[4],
+                        category=record[9],
+                        about=record[10]
                     )
         except HTTPException:
             raise
@@ -163,30 +164,39 @@ class UserRepository:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     params = [
+                        data.email,
+                        data.profile_picture,
+                        data.display_name,
+                        data.header_image,
                         data.first_name,
                         data.last_name,
-                        data.profile_picture,
-                        data.email,
-                        data.username,
                         hashed_password,
-                        data.header_image,
-                        data.display_name,
+                        data.username,
                         data.category,
+                        data.about
                     ]
                     result = cur.execute(
                         """
-                        INSERT INTO users (first_name, last_name, profile_picture, email, username, password, header_image, display_name, category)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        INSERT INTO users (email, profile_picture, display_name, header_image, first_name, last_name, password, username, category, about)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING *;
                         """,
                         params,
                     )
-
-                    id = result.fetchone()[0]
-                    old_data = data.dict()
-                    old_data["hashed_password"] = hashed_password
-                    old_data["user_id"] = id
-                    return UserOutWithPassword(**old_data)
+                    record = cur.fetchone()
+                    return UserOutWithPassword(
+                        user_id=record[0],
+                        first_name=record[5],
+                        last_name=record[6],
+                        email=record[1],
+                        username=record[8],
+                        hashed_password=record[7],
+                        profile_picture=record[2],
+                        display_name=record[3],
+                        header_image=record[4],
+                        category=record[9],
+                        about=record[10]
+                    )
         except Exception as e:
             print(e)
             return {
@@ -200,27 +210,27 @@ class UserRepository:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     params = [
-                        data.first_name,
-                        data.last_name,
                         data.email,
-                        data.username,
-                        data.profile_picture,
+                        data.last_name,
                         data.display_name,
                         data.header_image,
+                        data.first_name,
+                        data.profile_picture,
                         data.category,
-                        username,
+                        data.about,
+                        username
                     ]
                     cur.execute(
                         """
                         UPDATE users
-                        SET first_name = %s
-                        , last_name = %s
-                        , email = %s
-                        , username = %s
+                        SET email = %s
                         , profile_picture = %s
                         , display_name = %s
                         , header_image = %s
+                        , first_name = %s
+                        , last_name = %s
                         , category = %s
+                        , about = %s
                         WHERE username = %s
                         RETURNING *;
                         """,
@@ -235,7 +245,6 @@ class UserRepository:
                         )
                     old_data = data.dict()
                     old_data["user_id"] = id
-                    print("user_out:", UserOut(**old_data))
                     return UserOut(**old_data)
         except HTTPException:
             raise

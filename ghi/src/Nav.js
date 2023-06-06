@@ -47,18 +47,25 @@ function Nav({ users, token }) {
     checkLoggedIn();
   }, [token]);
 
-  return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
-      {loggedIn === false && (
-        <NavLink className="navbar-brand ms-3" aria-current="page" to="/">
-          Art Oasis
-        </NavLink>
-      )}
-      {loggedIn !== false && (
-        <NavLink className="navbar-brand ms-3" aria-current="page" to="/home">
-          Art Oasis
-        </NavLink>
-      )}
+
+    return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
+            {loggedIn === false && (
+                <NavLink
+                    className="navbar-brand ms-3"
+                    aria-current="page"
+                    to="/">
+                    Art Oasis
+                </NavLink>
+            )}
+            {loggedIn !== false && (
+                <NavLink
+                    className="navbar-brand ms-3"
+                    aria-current="page"
+                    to="/home">
+                    Art Oasis
+                </NavLink>
+            )}
 
       <div className="search">
         <form onSubmit={handleSearch} className="d-flex" role="search">
