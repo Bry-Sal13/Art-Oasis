@@ -18,6 +18,7 @@ const SignUpForm = () => {
   const [firstName, ____] = useState("First Name");
   const [lastName, ______] = useState("Last Name");
   const [category, _______] = useState("Default Category");
+  const [about, ________] = useState("Default About");
   const [passwordShown, setPasswordShown] = useState(false);
   const { login } = useToken();
   const navigate = useNavigate();
@@ -45,15 +46,16 @@ const SignUpForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      username: username,
       email: email,
-      password: password,
       profile_picture: profilePicture,
       display_name: displayName,
       header_image: headerImage,
       first_name: firstName,
       last_name: lastName,
+      password: password,
+      username: username,
       category: category,
+      about: about,
     };
 
     const userUrl = "http://localhost:8000/api/users";
@@ -68,9 +70,8 @@ const SignUpForm = () => {
     try {
       if (password === confirmPassword) {
         const response = await fetch(userUrl, fetchConfig);
-
         if (response.ok) {
-          login(username, password);
+          await login(username, password);
           setUsername("");
           setEmail("");
           setPassword("");

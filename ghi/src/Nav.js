@@ -3,7 +3,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
-function Nav({ users, token }) {
+function Nav({ users, token, setUserInfo }) {
   const navigate = useNavigate();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +21,7 @@ function Nav({ users, token }) {
   async function handleLogout(event) {
     logout();
     setLoggedIn(false);
+    setUserInfo("");
     console.log("You are logged out");
     navigate("/login");
   }
@@ -49,26 +50,14 @@ function Nav({ users, token }) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarTogglerDemo03"
-        aria-controls="navbarTogglerDemo03"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
       {loggedIn === false && (
         <NavLink className="navbar-brand ms-3" aria-current="page" to="/">
-          ArtOasis
+          Art Oasis
         </NavLink>
       )}
-
       {loggedIn !== false && (
         <NavLink className="navbar-brand ms-3" aria-current="page" to="/home">
-          ArtOasis
+          Art Oasis
         </NavLink>
       )}
 
@@ -109,10 +98,20 @@ function Nav({ users, token }) {
           </div>
         )}
       </div>
-
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
       <div
         className="collapse navbar-collapse right-align"
-        id="navbarTogglerDemo03"
+        id="navbarSupportedContent"
       >
         <ul className="navbar-nav ms-auto mt-3 mt-lg-0 pe-4">
           {loggedIn !== false && (
@@ -151,13 +150,13 @@ function Nav({ users, token }) {
                     aria-current="page"
                     to="/signup"
                   >
-                    Join Now
+                    Signup
                   </NavLink>
                 </li>
 
                 <li className="nav-item px-2">
                   <NavLink className="nav-link" aria-current="page" to="/login">
-                    Sign in
+                    Login
                   </NavLink>
                 </li>
               </>

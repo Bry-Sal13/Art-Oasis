@@ -10,80 +10,54 @@ const LoginForm = () => {
   const { login, token } = useToken();
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  if (token) {
+    navigate("/profile");
+  } else {
+    const handleUsernameChange = (event) => {
+      setUsername(event.target.value);
+    };
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+    const handlePasswordChange = (event) => {
+      setPassword(event.target.value);
+    };
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (token) {
-    } else {
-      setErrorMessage("Some bullshit!");
-      navigate("/login");
-    }
-
-    setPassword("");
-    setUsername("");
-    event.target.reset();
-  };
-
-  const togglePasswordVisiblity = () => {
-    setPasswordShown(passwordShown ? false : true);
-  };
-
-  return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-6 card">
-        <div className="card-body">
-          <h1 className="text-center mb-3">Sign in</h1>
-          <h4>Stay updated on your artistic world</h4>
-          {errorMessage && <p className="text-danger">{errorMessage}</p>}
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>User Name</label>
-              <input
-                type="string"
-                value={username}
-                onChange={handleUsernameChange}
-                className="form-control input-field"
-              />
-            </div>
-            <div className="form-group password">
-              <label>Password</label>
-              <input
-                type={passwordShown ? "text" : "password"}
-                value={password}
-                onChange={handlePasswordChange}
-                className="form-control input-field"
-              />
-              <i onClick={togglePasswordVisiblity} className="password-icon">
-                {passwordShown ? <FiEyeOff /> : <FiEye />}
-              </i>
-            </div>
-            <br></br>
-            <button
-              type="submit"
-              className="btn btn-primary btn-block btn-field"
-            >
-              Sign in
-            </button>
-          </form>
-        </div>
-        <p className="text-center mt-3">
-          New to ArtOasis?{" "}
-          <Link to="/signup" className="join-now-link">
-            Join now
-          </Link>
-        </p>
-      </div>
-      <div className="footer"></div>
-    </div>
-  );
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      await login(username, password);
+      console.log(token);
+      setUsername("");
+      setPassword("");
+      if (token) {
+        navigate("/profile");
+      } else {
+        setErrorMessage("Invalid user or password, please try again.");
+      }
+      event.target.reset();
+    };
+    return (
+      <form onSubmit={(event) => handleSubmit(event)}>
+        <label>
+          Username
+          <input
+            type="string"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+        </label>
+        <br />
+        <label>
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+        </label>
+        <br />
+        <button type="submit">Login</button>
+      </form>
+    );
+  }
 };
 
 export default LoginForm;

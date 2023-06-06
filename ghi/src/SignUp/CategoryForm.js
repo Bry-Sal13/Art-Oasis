@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CategoryForm = ({ setUserData, userData }) => {
+const CategoryForm = ({ setUserInfo, userInfo }) => {
   const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
@@ -11,9 +11,9 @@ const CategoryForm = ({ setUserData, userData }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = userData.user;
+    const data = userInfo;
     data.category = category;
-    const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
+    const userUrl = `http://localhost:8000/api/users/${userInfo.username}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),
@@ -25,9 +25,9 @@ const CategoryForm = ({ setUserData, userData }) => {
     const response = await fetch(userUrl, fetchConfig);
     if (response.ok) {
       const result = await response.json();
-      let newData = userData;
+      let newData = userInfo;
       newData.user = result;
-      setUserData(newData);
+      setUserInfo(newData);
       navigate("/picture");
     }
   };
