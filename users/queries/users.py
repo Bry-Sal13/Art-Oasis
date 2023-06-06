@@ -178,7 +178,18 @@ class UserRepository:
                     ]
                     cur.execute(
                         """
-                        INSERT INTO users (email, profile_picture, display_name, header_image, first_name, last_name, password, username, category, about)
+                        INSERT INTO users(
+                            email,
+                            profile_picture,
+                            display_name,
+                            header_image,
+                            first_name,
+                            last_name,
+                            password,
+                            username,
+                            category,
+                            about
+                        )
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING *;
                         """,

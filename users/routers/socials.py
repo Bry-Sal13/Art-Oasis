@@ -1,6 +1,5 @@
 from typing import List, Union
 from fastapi import APIRouter, Depends, Response
-from authenticator import authenticator
 from queries.socials import SocialsIn, SocialsOut, SocialsRepository, Error
 
 router = APIRouter(prefix="/api")
