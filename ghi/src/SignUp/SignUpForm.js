@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import {Link,  useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-// import styles from './SignUp.module.css';
 
 const SignUpForm = () => {
   const [username, setUsername] = useState("");
@@ -157,6 +156,7 @@ const SignUpForm = () => {
           </form>
         </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };

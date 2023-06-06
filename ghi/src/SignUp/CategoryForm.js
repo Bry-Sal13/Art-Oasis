@@ -11,7 +11,6 @@ const CategoryForm = ({ setUserData, userData }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // TODO: Update category in the back-end
     const data = userData.user;
     data.category = category;
     const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
@@ -58,6 +57,7 @@ const CategoryForm = ({ setUserData, userData }) => {
           </form>
         </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };

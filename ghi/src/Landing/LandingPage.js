@@ -4,6 +4,7 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./LandingPage.css";
+import MyImage from "./PNG_Master.png";
 
 const LandingPage = () => {
   const [username, setUsername] = useState("");
@@ -40,7 +41,7 @@ const LandingPage = () => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-md-6 form-container">
+        <div className="form-container">
           <div className="form-group fixed-input">
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -78,6 +79,7 @@ const LandingPage = () => {
                 Sign in
               </button>
             </form>
+            <br></br>
             <button
               type="button"
               onClick={handleSignupClick}
@@ -87,7 +89,11 @@ const LandingPage = () => {
             </button>
           </div>
         </div>
+        <div className="img-container">
+          <img src={MyImage} alt="Art" className="img-fluid" />
+        </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };

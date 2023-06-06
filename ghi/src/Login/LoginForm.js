@@ -7,7 +7,8 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
-  const { login } = useToken();
+  const { login, token } = useToken();
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
@@ -20,63 +21,69 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    login(username, password);
+    if (token) {
+    } else {
+      setErrorMessage("Some bullshit!");
+      navigate("/login");
+    }
+
     setPassword("");
     setUsername("");
-    setUsername("");
     event.target.reset();
-    navigate("/profile");
   };
+
   const togglePasswordVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
   };
 
- return (
-   <div className="row justify-content-center mt-5">
-     <div className="col-6 card">
-       <div className="card-body">
-         <h1 className="text-center mb-3">Sign in</h1>
-         <h13>Stay updated on your artistic world</h13>
-         <form onSubmit={handleSubmit}>
-           <div className="form-group">
-             <label>User Name</label>
-             <input
-               type="string"
-               value={username}
-               onChange={handleUsernameChange}
-               className="form-control input-field"
-             />
-           </div>
-           <div className="form-group password">
-             <label>Password</label>
-             <input
-               type={passwordShown ? "text" : "password"}
-               value={password}
-               onChange={handlePasswordChange}
-               className="form-control input-field"
-             />
-             <i onClick={togglePasswordVisiblity} className="password-icon">
-               {passwordShown ? <FiEyeOff /> : <FiEye />}
-             </i>
-           </div>
-           <br></br>
-           <button
-             type="submit"
-             className="btn btn-primary btn-block btn-field"
-           >
-             Sign in
-           </button>
-         </form>
-       </div>
-       <p className="text-center mt-3">
-         New to ArtOasis?{" "}
-         <Link to="/signup" className="join-now-link">
-           Join now
-         </Link>
-       </p>
-     </div>
-   </div>
- );
+  return (
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">Sign in</h1>
+          <h4>Stay updated on your artistic world</h4>
+          {errorMessage && <p className="text-danger">{errorMessage}</p>}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>User Name</label>
+              <input
+                type="string"
+                value={username}
+                onChange={handleUsernameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group password">
+              <label>Password</label>
+              <input
+                type={passwordShown ? "text" : "password"}
+                value={password}
+                onChange={handlePasswordChange}
+                className="form-control input-field"
+              />
+              <i onClick={togglePasswordVisiblity} className="password-icon">
+                {passwordShown ? <FiEyeOff /> : <FiEye />}
+              </i>
+            </div>
+            <br></br>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Sign in
+            </button>
+          </form>
+        </div>
+        <p className="text-center mt-3">
+          New to ArtOasis?{" "}
+          <Link to="/signup" className="join-now-link">
+            Join now
+          </Link>
+        </p>
+      </div>
+      <div className="footer"></div>
+    </div>
+  );
 };
 
 export default LoginForm;

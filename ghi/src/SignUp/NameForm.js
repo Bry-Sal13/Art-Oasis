@@ -70,6 +70,7 @@ const NameForm = ({ userData, setUserData }) => {
                 className="form-control input-field"
               />
             </div>
+            <br></br>
             <button
               type="submit"
               className="btn btn-primary btn-block btn-field"
@@ -79,6 +80,7 @@ const NameForm = ({ userData, setUserData }) => {
           </form>
         </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };

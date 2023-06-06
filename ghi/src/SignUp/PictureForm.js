@@ -78,6 +78,7 @@ const PictureForm = ({ userData, setUserData }) => {
           </form>
         </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };
