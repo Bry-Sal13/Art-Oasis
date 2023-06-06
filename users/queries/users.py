@@ -102,14 +102,14 @@ class UserRepository:
                         return None
                     return UserOutWithPassword(
                         user_id=record[0],
-                        first_name=record[5],
-                        last_name=record[6],
                         email=record[1],
-                        username=record[8],
-                        hashed_password=record[7],
                         profile_picture=record[2],
                         display_name=record[3],
                         header_image=record[4],
+                        first_name=record[5],
+                        last_name=record[6],
+                        hashed_password=record[7],
+                        username=record[8],
                         category=record[9],
                         about=record[10]
                     )
@@ -137,17 +137,18 @@ class UserRepository:
                             detail="User not found",
                         )
                     record = cur.fetchone()
+                    print("user when grabbed: ", record)
                     if record is None:
                         return None
                     return UserOut(
                         user_id=record[0],
-                        first_name=record[5],
-                        last_name=record[6],
                         email=record[1],
-                        username=record[8],
                         profile_picture=record[2],
                         display_name=record[3],
                         header_image=record[4],
+                        first_name=record[5],
+                        last_name=record[6],
+                        username=record[8],
                         category=record[9],
                         about=record[10]
                     )
@@ -175,7 +176,7 @@ class UserRepository:
                         data.category,
                         data.about
                     ]
-                    result = cur.execute(
+                    cur.execute(
                         """
                         INSERT INTO users (email, profile_picture, display_name, header_image, first_name, last_name, password, username, category, about)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -184,16 +185,17 @@ class UserRepository:
                         params,
                     )
                     record = cur.fetchone()
+                    print("user when created: ", record)
                     return UserOutWithPassword(
                         user_id=record[0],
-                        first_name=record[5],
-                        last_name=record[6],
                         email=record[1],
-                        username=record[8],
-                        hashed_password=record[7],
                         profile_picture=record[2],
                         display_name=record[3],
                         header_image=record[4],
+                        first_name=record[5],
+                        last_name=record[6],
+                        username=record[8],
+                        hashed_password=record[7],
                         category=record[9],
                         about=record[10]
                     )
@@ -211,11 +213,11 @@ class UserRepository:
                 with conn.cursor() as cur:
                     params = [
                         data.email,
-                        data.last_name,
+                        data.profile_picture,
                         data.display_name,
                         data.header_image,
                         data.first_name,
-                        data.profile_picture,
+                        data.last_name,
                         data.category,
                         data.about,
                         username
@@ -237,15 +239,23 @@ class UserRepository:
                         params,
                     )
 
-                    id = cur.fetchone()[0]
+                    record = cur.fetchone()
+                    print("user when updated: ", record)
                     if cur.rowcount <= 0:
                         raise HTTPException(
                             status_code=status.HTTP_404_NOT_FOUND,
                             detail="User not found for username: {username}",
                         )
-                    old_data = data.dict()
-                    old_data["user_id"] = id
-                    return UserOut(**old_data)
+                    return UserOut(user_id=record[0],
+                        first_name=record[5],
+                        last_name=record[6],
+                        email=record[1],
+                        username=record[8],
+                        profile_picture=record[2],
+                        display_name=record[3],
+                        header_image=record[4],
+                        category=record[9],
+                        about=record[10])
         except HTTPException:
             raise
         except Exception as e:
