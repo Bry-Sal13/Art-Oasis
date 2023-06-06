@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
+from fastapi import APIRouter, Depends, Response
 from queries.comments import (
     Error,
     CommentsIn,
