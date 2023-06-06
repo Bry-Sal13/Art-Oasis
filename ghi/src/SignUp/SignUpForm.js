@@ -9,23 +9,23 @@ const SignUpForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [profilePicture, _] = useState(
+  const [profilePicture] = useState(
     "https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
   );
-  const [displayName, __] = useState("Default Display Name");
-  const [headerImage, ___] = useState(
+  const [displayName] = useState("Default Display Name");
+  const [headerImage] = useState(
     "https://image-assets.eu-2.volcanic.cloud/api/v1/assets/images/de6fa830fed8d7fab6becd4b40c18472?t=1685096677"
   );
-  const [firstName, ____] = useState("First Name");
-  const [lastName, ______] = useState("Last Name");
-  const [category, _______] = useState("Default Category");
+  const [firstName] = useState("First Name");
+  const [lastName] = useState("Last Name");
+  const [category] = useState("Default Category");
   const [about, ________] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat."
   );
   const [passwordShown, setPasswordShown] = useState(false);
-  
   const { login } = useToken();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -43,12 +43,18 @@ const SignUpForm = () => {
     setConfirmPassword(event.target.value);
   };
 
-  const togglePasswordVisiblity = () => {
-    setPasswordShown(passwordShown ? false : true);
+  const togglePasswordVisibility = () => {
+    setPasswordShown(!passwordShown);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!username || !email || !password || !confirmPassword) {
+      setErrorMessage("Please enter all the required information.");
+      return;
+    }
+
     const data = {
       email: email,
       profile_picture: profilePicture,
@@ -86,7 +92,6 @@ const SignUpForm = () => {
         }
       } else {
         throw new Error("Passwords do not match!");
-        //TODO: Maybe put an alert here?
       }
     } catch (error) {
       console.log("Error submitting form:", error);
@@ -100,6 +105,7 @@ const SignUpForm = () => {
           <h1 className="text-center mb-3">
             Make the most of your artistic life
           </h1>
+          {errorMessage && <p className="text-danger">{errorMessage}</p>}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Username</label>
@@ -127,7 +133,7 @@ const SignUpForm = () => {
                 onChange={handlePasswordChange}
                 className="form-control input-field"
               />
-              <i onClick={togglePasswordVisiblity} className="password-icon">
+              <i onClick={togglePasswordVisibility} className="password-icon">
                 {passwordShown ? <FiEyeOff /> : <FiEye />}
               </i>
             </div>
@@ -139,12 +145,12 @@ const SignUpForm = () => {
                 onChange={handleConfirmPasswordChange}
                 className="form-control input-field"
               />
-              <i onClick={togglePasswordVisiblity} className="password-icon">
+              <i onClick={togglePasswordVisibility} className="password-icon">
                 {passwordShown ? <FiEyeOff /> : <FiEye />}
               </i>
             </div>
             <br></br>
-            <label className="me-3">
+            <label>
               By clicking Agree & Join, you agree to the ArtOasis User Agreement
               and{" "}
               <Link to="/cookie" className="cookie-link">

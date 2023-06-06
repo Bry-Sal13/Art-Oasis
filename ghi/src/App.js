@@ -100,6 +100,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Nav users={users} token={token} setUserInfo={setUserInfo} />
+<<<<<<< HEAD
         <div className="routes">
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -159,6 +160,68 @@ function App() {
             />
           </Routes>
         </div>
+=======
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/signup"
+            element={<SignUpForm getUserData={getUserData} />}
+          />
+          <Route path="/login" element={<LoginForm />} />
+          <Route
+            path="/name"
+            element={
+              <NameForm
+                userInfo={userInfo}
+                setUserInfo={setUserInfo}
+                getUserInfo={getUserInfo}
+              />
+            }
+          />
+          <Route
+            path="/picture"
+            element={
+              <PictureForm userInfo={userInfo} setUserInfo={setUserInfo} />
+            }
+          />
+          <Route
+            path="/category"
+            element={
+              <CategoryForm
+                userInfo={userInfo}
+                getUserInfo={getUserInfo}
+                setUserInfo={setUserInfo}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <UserProfile
+                posts={posts}
+                userInfo={userInfo}
+                socials={socials}
+                carousels={carousels}
+                getUserInfo={getUserInfo}
+              />
+            }
+          />
+          <Route
+            path="/profile/edit"
+            element={
+              <EditForm
+                posts={posts}
+                userInfo={userInfo}
+                socials={socials}
+                carousels={carousels}
+                setCarousels={setCarousels}
+                setSocials={setSocials}
+                setUserInfo={setUserInfo}
+              />
+            }
+          />
+        </Routes>
+>>>>>>> 1-create-an-account-sign-in
       </BrowserRouter>
     </div>
   );
