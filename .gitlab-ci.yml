@@ -9,7 +9,7 @@ lint-test-job:
   stage: test
   script:
     - pip install flake8
-    - flake8 authenticator.py  main.py  migrations  queries  requirements.txt  routers
+    - flake8 posts users ghi
 
 services:
   - docker:dind
