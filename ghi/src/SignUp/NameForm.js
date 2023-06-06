@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const NameForm = ({ userData, setUserData, getUserData }) => {
+const NameForm = ({ userInfo, setUserInfo }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
@@ -17,12 +17,11 @@ const NameForm = ({ userData, setUserData, getUserData }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = userData.user;
+    const data = userInfo;
     data.first_name = firstName;
     data.last_name = lastName;
-    
 
-    const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
+    const userUrl = `http://localhost:8000/api/users/${userInfo.username}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),
@@ -36,10 +35,9 @@ const NameForm = ({ userData, setUserData, getUserData }) => {
       const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
         const result = await response.json();
-        let newData = userData;
+        let newData = userInfo;
         newData.user = result;
-        setUserData(newData);
-        console.log(userData)
+        setUserInfo(newData);
         navigate("/category");
       }
     } catch (error) {
