@@ -1,3 +1,4 @@
+from typing import List, Union
 from fastapi import (
     Depends,
     APIRouter,
@@ -6,14 +7,12 @@ from fastapi import (
     Response,
     Request,
 )
-from typing import List, Union
 from pydantic import BaseModel
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from queries.users import (
     UserIn,
     UserOut,
-    UserOutWithPassword,
     UserRepository,
     Error,
 )
@@ -34,13 +33,13 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
-    # user_data: dict = Depends(authenticator.get_current_account_data),
+# user_data: dict = Depends(authenticator.get_current_account_data),
 
 
 @router.get("/token", response_model=UserToken | None)
 async def get_token(
     request: Request,
-    user: UserOut = Depends(authenticator.try_get_current_account_data)
+    user: UserOut = Depends(authenticator.try_get_current_account_data),
 ) -> UserToken | None:
     if authenticator.cookie_name in request.cookies:
         return {
@@ -74,20 +73,8 @@ async def create_user(
 async def get_users(
     repo: UserRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
-    
 ):
     return repo.get_users()
-
-
-# @router.get("/api/users/{username}/d", response_model=UserOutWithPassword | HttpError)
-# async def get_one_user(
-#     username: str,
-#     response: Response,
-#     repo: UserRepository = Depends()
-# ) -> UserOutWithPassword:
-#     if not repo.get_user(username):
-#         response.status_code = 404
-#     return repo.get_user(username)
 
 
 @router.get("/api/users/{username}", response_model=UserOut | HttpError)
