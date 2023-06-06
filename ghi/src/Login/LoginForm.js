@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-// import { FiEye, FiEyeOff } from "react-icons/fi";
+import "../gradient.css";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -60,9 +61,9 @@ const LoginForm = () => {
                 onChange={handlePasswordChange}
                 className="form-control input-field"
               />
-              {/* <i onClick={togglePasswordVisiblity} className="password-icon">
+              <i onClick={togglePasswordVisiblity} className="password-icon">
                 {passwordShown ? <FiEyeOff /> : <FiEye />}
-              </i> */}
+              </i>
             </div>
             <br></br>
             <button

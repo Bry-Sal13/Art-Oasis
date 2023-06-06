@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../gradient.css";
 import { useNavigate } from "react-router-dom";
 
 const NameForm = ({ userInfo, setUserInfo }) => {
