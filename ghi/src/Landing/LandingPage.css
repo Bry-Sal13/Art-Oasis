@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap; /* Do not wrap items */
+}
+
+.form-container {
+  width: 30%; /* adjust as needed */
+  margin-top: 20%; /* increase as needed to lower the form */
+}
+
+.img-container {
+  flex-basis: 70%; /* Increase from 50% to 60% */
+  max-width: none; /* Remove maximum width constraint */
+  margin-top: 10%; /* Add top margin to lower the image */
+}
+
+.img-fluid {
+  width: 200%; /* Adjusts the width automatically to fill the parent element */
+  height: auto; /* Maintains the aspect ratio */
+  min-height: 500px; /* Minimum height to make the image taller */
+}
+

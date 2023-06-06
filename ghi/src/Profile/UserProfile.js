@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './profile.css'
+import "./profile.css";
 
 function UserProfile({ posts, userInfo, carousels, socials }) {
   const [postsNum, setPostsNum] = useState(10);
@@ -32,13 +32,11 @@ function UserProfile({ posts, userInfo, carousels, socials }) {
       });
     }
 
-
     const slicedPosts = filteredPosts.slice(0, postsNum);
 
     const handlePosts = () => {
       setPostsNum(postsNum + 10);
     };
-
 
     if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
       return (

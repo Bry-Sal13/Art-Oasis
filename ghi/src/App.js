@@ -13,9 +13,9 @@ import CarouselForm from "./Profile/CarouselForm";
 import SocialsForm from "./Profile/SocialsForm";
 import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
+import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav";
 import "./App.css";
-
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -23,7 +23,7 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [socials, setSocials] = useState([]);
   const [carousels, setCarousels] = useState([]);
-  const [userInfo, setUserInfo] = useState(userData.user)
+  const [userInfo, setUserInfo] = useState(userData.user);
   const { token, fetchWithCookie } = useToken();
 
   const getUserData = async () => {
@@ -80,7 +80,6 @@ function App() {
     }
   };
 
-
   useEffect(() => {
     getUserData();
   }, [token]);
@@ -103,7 +102,10 @@ function App() {
         <Nav users={users} token={token} setUserInfo={setUserInfo} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<SignUpForm />} />
+          <Route
+            path="/signup"
+            element={<SignUpForm getUserData={getUserData} />}
+          />
           <Route path="/login" element={<LoginForm />} />
           <Route
             path="/name"
@@ -162,4 +164,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
