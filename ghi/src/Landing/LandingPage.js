@@ -40,7 +40,7 @@ const LandingPage = () => {
 
   return (
     <div className="container">
-      <div className="row">
+      <div id="row-1" className="row">
         <div className="form-container">
           <div className="form-group fixed-input">
             <form onSubmit={handleSubmit}>
@@ -89,10 +89,11 @@ const LandingPage = () => {
             </button>
           </div>
         </div>
-        <div className="img-container">
-          <img src={MyImage} alt="Art" className="img-fluid" />
-        </div>
       </div>
+      <div className="img-container row">
+        <img src={MyImage} alt="Art" className="img-fluid" />
+      </div>
+
       <div className="footer"></div>
     </div>
   );

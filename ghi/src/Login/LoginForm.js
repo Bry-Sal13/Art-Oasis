@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "../gradient.css";
@@ -26,16 +26,21 @@ const LoginForm = () => {
     console.log(token);
     setUsername("");
     setPassword("");
-    if (token) {
-      navigate("/profile");
-    } else {
-      setErrorMessage("Invalid username or password.");
-    }
     event.target.reset();
+    if (!token) {
+      setErrorMessage("Invalid username or password");
+    }
   };
   const togglePasswordVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/profile");
+    }
+  }, [token]);
+
   return (
     <div className="row justify-content-center mt-5">
       <div className="col-6 card">
