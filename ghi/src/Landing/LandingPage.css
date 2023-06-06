@@ -7,7 +7,7 @@
 .row {
   display: flex;
   justify-content: space-between;
-  flex-wrap: nowrap; /* Do not wrap items */
+  flex-wrap: nowrap;
 }
 
 .form-container {
@@ -16,8 +16,8 @@
 }
 
 .img-container {
-  flex-basis: 70%; /* Increase from 50% to 60% */
-  max-width: none; /* Remove maximum width constraint */
+  flex-basis: 70%;
+  max-width: none;
   margin-top: 10%; /* Add top margin to lower the image */
 }
 

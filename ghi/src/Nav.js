@@ -52,12 +52,12 @@ function Nav({ users, token, setUserInfo }) {
     <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
       {loggedIn === false && (
         <NavLink className="navbar-brand ms-3" aria-current="page" to="/">
-          Art Oasis
+          ArtOasis
         </NavLink>
       )}
       {loggedIn !== false && (
         <NavLink className="navbar-brand ms-3" aria-current="page" to="/home">
-          Art Oasis
+          ArtOasis
         </NavLink>
       )}
 
@@ -150,13 +150,13 @@ function Nav({ users, token, setUserInfo }) {
                     aria-current="page"
                     to="/signup"
                   >
-                    Signup
+                    Join us
                   </NavLink>
                 </li>
 
                 <li className="nav-item px-2">
                   <NavLink className="nav-link" aria-current="page" to="/login">
-                    Login
+                    Sign in
                   </NavLink>
                 </li>
               </>
