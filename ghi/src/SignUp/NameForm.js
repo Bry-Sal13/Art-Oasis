@@ -36,7 +36,7 @@ const NameForm = ({ userInfo, setUserInfo }) => {
       if (response.ok) {
         const result = await response.json();
         let newData = userInfo;
-        newData.user = result;
+        newData = result;
         setUserInfo(newData);
         navigate("/category");
       }

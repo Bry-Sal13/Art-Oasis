@@ -39,11 +39,61 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="px-4 py-5 my-5 text-center">
-      <h1 className="display-5 fw-bold">ArtOasis</h1>
-      <div className="col-lg-6 mx-auto">
-        <p className="lead mb-4">Welcome to your artistic community</p>
+    <div className="container">
+      <div className="row">
+        <div className="form-container">
+          <div className="form-group fixed-input">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="form2Example1">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  id="form2Example1"
+                  value={username}
+                  onChange={handleUsernameChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="form2Example2">
+                  Password
+                </label>
+                <input
+                  type={passwordShown ? "text" : "password"}
+                  id="form2Example2"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className="form-control input-field"
+                />
+                <i onClick={togglePasswordVisiblity} className="password-icon">
+                  {passwordShown ? <FiEyeOff /> : <FiEye />}
+                </i>
+              </div>
+              <br></br>
+              <button
+                type="submit"
+                className="btn btn-primary btn-block btn-field"
+              >
+                Sign in
+              </button>
+            </form>
+            <br></br>
+            <button
+              type="button"
+              onClick={handleSignupClick}
+              className="btn btn-primary btn-block btn-field btn-outline"
+            >
+              New to ArtOasis? Join Now
+            </button>
+          </div>
+        </div>
+        <div className="img-container">
+          <img src={MyImage} alt="Art" className="img-fluid" />
+        </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };

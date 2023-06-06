@@ -26,11 +26,11 @@
   height: auto; /* Maintains the aspect ratio */
   min-height: 500px; /* Minimum height to make the image taller */
 }
-/* 
+
 .footer {
   position: absolute;
   bottom: 0px;
   width: 100%;
   height: 31.5vh;
   background: linear-gradient(to bottom, #947bb0 0%, transparent 150%);
-} */
+}
