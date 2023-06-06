@@ -62,15 +62,16 @@ function Nav({ users, token, setUserInfo }) {
       )}
 
       <div className="search">
-        <form onSubmit={handleSearch} className="d-flex" role="search">
+        <form onSubmit={handleSearch} role="search">
           <input
             onChange={handleSearchChange}
-            className="form-control me-2"
+            className="form-control me-2 d-inline"
             type="search"
+            id="search"
             placeholder="Search"
             aria-label="Search"
           />
-          <button className="btn btn-outline-light" type="submit">
+          <button className="btn btn-outline-light " type="submit">
             Search
           </button>
         </form>
@@ -78,20 +79,23 @@ function Nav({ users, token, setUserInfo }) {
           <div className="dataResult">
             {filteredUsers.slice(0, 10).map((user) => {
               return (
-                <div className="search-result-margins" key={user.user_id}>
-                  <NavLink
-                    to={`/profile/${user.username}`}
-                    className="dataItem"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img
-                      className="left-align"
-                      src={user.profile_picture}
-                      alt="Profile"
-                    />
-                    <p className="text-align-right">{user.display_name}</p>
-                  </NavLink>
+                <div className="search-result-margins " key={user.user_id}>
+                  <div className="dataItem d-flex flex-row align-items-center justify-content-around flex-wrap">
+                    <NavLink
+                      to={`/profile/${user.username}`}
+                      className=""
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <img
+                        className="left-align "
+                        src={user.profile_picture}
+                        alt="Profile"
+                        style={{ width: "48px", height:"48px" }}
+                      />
+                    </NavLink>
+                    <p className="text-align-right mb-0">{user.display_name}</p>
+                  </div>
                 </div>
               );
             })}

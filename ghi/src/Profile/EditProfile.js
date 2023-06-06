@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 const EditForm = ({
   userInfo,
   setUserInfo,
@@ -13,7 +14,7 @@ const EditForm = ({
   const navigate = useNavigate();
   if (userInfo === undefined) {
     navigate("/");
-  }
+  } 
   const [displayName, setDisplayName] = useState(userInfo.display_name);
   const [profilePicture, setProfilePicture] = useState(
     userInfo.profile_picture
