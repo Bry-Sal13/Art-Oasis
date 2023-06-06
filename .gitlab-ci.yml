@@ -14,7 +14,7 @@ lint-test-job:
 services:
   - docker:dind
 
-build-fastapi-service-image:
+build-fastapi-service-users-image:
   stage: build
   image: docker:git
   variables:
@@ -28,7 +28,7 @@ build-fastapi-service-image:
   only:
     - main
 
-  build-fastapi-service-image:
+  build-fastapi-service-posts-image:
     stage: build
     image: docker:git
     variables:
