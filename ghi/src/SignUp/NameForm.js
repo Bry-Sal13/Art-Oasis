@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../gradient.css";
 import { useNavigate } from "react-router-dom";
 
 const NameForm = ({ userInfo, setUserInfo }) => {
@@ -36,7 +37,7 @@ const NameForm = ({ userInfo, setUserInfo }) => {
       if (response.ok) {
         const result = await response.json();
         let newData = userInfo;
-        newData.user = result;
+        newData = result;
         setUserInfo(newData);
         navigate("/category");
       }
@@ -46,23 +47,43 @@ const NameForm = ({ userInfo, setUserInfo }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        First Name
-        <input
-          type="string"
-          value={firstName}
-          onChange={handleFirstNameChange}
-        />
-      </label>
-      <br />
-      <label>
-        Last Name
-        <input type="string" value={lastName} onChange={handleLastNameChange} />
-      </label>
-      <br />
-      <button type="submit">Continue</button>
-    </form>
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">
+            I'm sorry, I didn't catch your name
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>First Name</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={handleFirstNameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Last Name</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={handleLastNameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <br></br>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+      <div className="footer"></div>
+    </div>
   );
 };
 
