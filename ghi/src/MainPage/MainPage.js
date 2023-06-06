@@ -12,8 +12,6 @@ function MainPage({ posts, userData, users, getUserData, connections, like }) {
       setLikeCount(likeCount + 1);
     }
   };
-  const likeButton = () => {
-    const [liked, setLiked] = useState(null);
   }
 
    const [following, setFollowing] = useState(0)
@@ -21,7 +19,6 @@ function MainPage({ posts, userData, users, getUserData, connections, like }) {
    const [postNum, setPostNum] = useState(0)
    const [likeCount, setLikeCount] = useState(0)
    const [liked, setLiked] = useState(0)
-
   if (userData === undefined) {
     getUserData();
   }
@@ -39,6 +36,8 @@ function MainPage({ posts, userData, users, getUserData, connections, like }) {
     setFollowers(followerNum.length)
     setPostNum(postNum.length)
   }
+  const likeButton = () => {
+    const [liked, setLiked] = useState(null);
   console.log(userData);
   console.log(users);
   useEffect(() => {
