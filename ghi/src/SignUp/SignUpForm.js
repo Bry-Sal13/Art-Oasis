@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import "../gradient.css";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
-const SignUpForm = ({ setUserData, userData }) => {
+const SignUpForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +19,11 @@ const SignUpForm = ({ setUserData, userData }) => {
   const [firstName, ____] = useState("First Name");
   const [lastName, ______] = useState("Last Name");
   const [category, _______] = useState("Default Category");
-  const [about, ________] = useState("Default About");
+  const [about, ________] = useState(
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat."
+  );
+  const [passwordShown, setPasswordShown] = useState(false);
+  
   const { login } = useToken();
   const navigate = useNavigate();
 
@@ -35,6 +41,10 @@ const SignUpForm = ({ setUserData, userData }) => {
 
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
+  };
+
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
   };
 
   const handleSubmit = async (event) => {
@@ -84,40 +94,75 @@ const SignUpForm = ({ setUserData, userData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username
-        <input type="text" value={username} onChange={handleUsernameChange} />
-      </label>
-      <br />
-      <label>
-        Email
-        <input type="email" value={email} onChange={handleEmailChange} />
-      </label>
-      <br />
-      <label>
-        Password
-        <input
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </label>
-      <br />
-      <label>
-        Confirm password
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-        />
-      </label>
-      <br />
-      <button style={{ display: "None" }} type="submit">
-        Done
-      </button>
-      <button>Next</button>
-    </form>
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">
+            Make the most of your artistic life
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={handleUsernameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type={passwordShown ? "text" : "password"}
+                value={password}
+                onChange={handlePasswordChange}
+                className="form-control input-field"
+              />
+              <i onClick={togglePasswordVisiblity} className="password-icon">
+                {passwordShown ? <FiEyeOff /> : <FiEye />}
+              </i>
+            </div>
+            <div className="form-group">
+              <label>Confirm password</label>
+              <input
+                type={passwordShown ? "text" : "password"}
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                className="form-control input-field"
+              />
+              <i onClick={togglePasswordVisiblity} className="password-icon">
+                {passwordShown ? <FiEyeOff /> : <FiEye />}
+              </i>
+            </div>
+            <br></br>
+            <label className="me-3">
+              By clicking Agree & Join, you agree to the ArtOasis User Agreement
+              and{" "}
+              <Link to="/cookie" className="cookie-link">
+                Cookie Policy
+              </Link>
+              .
+            </label>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Agree & Join
+            </button>
+          </form>
+        </div>
+      </div>
+      <div className="footer"></div>
+    </div>
   );
 };
 

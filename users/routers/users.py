@@ -74,6 +74,7 @@ async def create_user(
 async def get_users(
     repo: UserRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
+    
 ):
     return repo.get_users()
 

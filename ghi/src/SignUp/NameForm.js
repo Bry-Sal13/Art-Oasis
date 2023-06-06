@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import "../gradient.css";
 import { useNavigate } from "react-router-dom";
 
-const NameForm = ({ userData, setUserData, getUserData }) => {
+const NameForm = ({ userInfo, setUserInfo }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
@@ -17,12 +18,11 @@ const NameForm = ({ userData, setUserData, getUserData }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = userData.user;
+    const data = userInfo;
     data.first_name = firstName;
     data.last_name = lastName;
-    
 
-    const userUrl = `http://localhost:8000/api/users/${userData.user.username}`;
+    const userUrl = `http://localhost:8000/api/users/${userInfo.username}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),
@@ -36,10 +36,9 @@ const NameForm = ({ userData, setUserData, getUserData }) => {
       const response = await fetch(userUrl, fetchConfig);
       if (response.ok) {
         const result = await response.json();
-        let newData = userData;
-        newData.user = result;
-        setUserData(newData);
-        console.log(userData)
+        let newData = userInfo;
+        newData = result;
+        setUserInfo(newData);
         navigate("/category");
       }
     } catch (error) {
@@ -48,23 +47,43 @@ const NameForm = ({ userData, setUserData, getUserData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        First Name
-        <input
-          type="string"
-          value={firstName}
-          onChange={handleFirstNameChange}
-        />
-      </label>
-      <br />
-      <label>
-        Last Name
-        <input type="string" value={lastName} onChange={handleLastNameChange} />
-      </label>
-      <br />
-      <button type="submit">Continue</button>
-    </form>
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">
+            I'm sorry, I didn't catch your name
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>First Name</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={handleFirstNameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Last Name</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={handleLastNameChange}
+                className="form-control input-field"
+              />
+            </div>
+            <br></br>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+      <div className="footer"></div>
+    </div>
   );
 };
 
