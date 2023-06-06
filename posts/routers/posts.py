@@ -5,21 +5,21 @@ from queries.posts import Error, PostIn, PostOut, PostRepository
 router = APIRouter(prefix="/api")
 
 
-@router.post("/api/posts", response_model=Union[PostOut, Error])
+@router.post("/posts", response_model=Union[PostOut, Error])
 def create_post(
     posts: PostIn, response: Response, repo: PostRepository = Depends()
 ):
     return repo.create(posts)
 
 
-@router.get("/api/posts", response_model=Union[List[PostOut], Error])
+@router.get("/posts", response_model=Union[List[PostOut], Error])
 def get_all(
     repo: PostRepository = Depends(),
 ):
     return repo.get_all()
 
 
-@router.put("/api/posts{post_id}", response_model=Union[PostOut, Error])
+@router.put("/posts{post_id}", response_model=Union[PostOut, Error])
 def update_post(
     post_id: int,
     post: PostIn,
@@ -28,7 +28,7 @@ def update_post(
     return repo.update(post_id, post)
 
 
-@router.delete("/api/posts/{post_id}", response_model=bool)
+@router.delete("/posts/{post_id}", response_model=bool)
 def delete_post(
     post_id: int,
     repo: PostRepository = Depends(),
@@ -36,7 +36,7 @@ def delete_post(
     return repo.delete(post_id)
 
 
-@router.get("/api/posts/{post_id}", response_model=PostOut)
+@router.get("/posts/{post_id}", response_model=PostOut)
 def get_one_post(
     post_id: int,
     response: Response,
