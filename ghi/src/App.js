@@ -24,10 +24,10 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [socials, setSocials] = useState([]);
   const [carousels, setCarousels] = useState([]);
-  const [userInfo, setUserInfo] = useState(userData.user)
+  const [userInfo, setUserInfo] = useState()
   const { token, fetchWithCookie } = useToken();
   const [connections, setConnections] = useState([]);
-
+  const [username, setUsername] = useState()
 
   const getAllConnections = async () => {
     const connectionsURL = "http://localhost:8000/api/connections";
@@ -41,8 +41,9 @@ function App() {
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
     const response = await fetchWithCookie(tokenUrl);
-    if (response != null) {
+    if (response) {
       setUserData(response);
+      setUsername(response.user.username)
     }
   };
 
@@ -83,14 +84,14 @@ function App() {
   };
 
   const getUserInfo = async () => {
-    const username = userData.user.username;
-    const url = `http://localhost:8000/api/users/${username}`;
-    const response = await fetch(url, { credentials: "include" });
-
-    if (response.ok) {
-      const data = await response.json();
-      setUserInfo(data);
-    }
+      if (username !== undefined) {
+          const url = `http://localhost:8000/api/users/${username}`;
+          const response = await fetch(url, { credentials: "include" });
+          if (response.ok) {
+              const data = await response.json();
+              setUserInfo(data);
+          }
+      }
   };
 
 
@@ -123,10 +124,11 @@ function App() {
             element={
               <MainPage
                 posts={posts}
-                getUserData={getUserData}
                 userInfo={userInfo}
+                getUserInfo={getUserInfo}
                 users={users}
                 connections={connections}
+                userData={userData}
               />
             }
           />

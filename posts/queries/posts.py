@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from queries.pool import pool
 
 
-
 # Create Post, Post In Model
 
 
@@ -13,15 +12,14 @@ class Error(BaseModel):
 
 
 class PostIn(BaseModel):
-    user_id: int
+    username: int
     text: str
     image: str
-    created: datetime
 
 
 class PostOut(BaseModel):
     id: int
-    user_id: int
+    username: int
     text: str
     image: str
     created: datetime
@@ -35,7 +33,7 @@ class PostRepository:
                     result = db.execute(
                         """
                         SELECT id
-                            , user_id
+                            , username
                             , text
                             , image
                             , created
@@ -49,7 +47,7 @@ class PostRepository:
                         return None
                     return PostOut(
                         id=record[0],
-                        user_id=record[1],
+                        username=record[1],
                         text=record[2],
                         image=record[3],
                         created=record[4],
@@ -81,17 +79,15 @@ class PostRepository:
                     db.execute(
                         """
                     UPDATE posts
-                    SET user_id = %s
+                    SET username = %s
                     , text = %s
                     , image = %s
-                    , created = %s
                     WHERE id = %s
                     """,
                         [
-                            post.user_id,
+                            post.username,
                             post.text,
                             post.image,
-                            post.created,
                             post_id,
                         ],
                     )
@@ -106,7 +102,7 @@ class PostRepository:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id, user_id, text, image, created
+                        SELECT id, username, text, image, created
                         FROM Posts
                         ORDER BY created;
                         """
@@ -115,7 +111,7 @@ class PostRepository:
                     for record in db:
                         post = PostOut(
                             id=record[0],
-                            user_id=record[1],
+                            username=record[1],
                             text=record[2],
                             image=record[3],
                             created=record[4],
@@ -136,25 +132,29 @@ class PostRepository:
                     result = db.execute(
                         """
                         INSERT INTO posts
-                            (user_id, text, image, created)
+                            (username, text, image)
                         VALUES
-                            (%s, %s, %s, %s)
-                        RETURNING id;
+                            (%s, %s, %s)
+                        RETURNING *;
                         """,
                         [
-                            posts.user_id,
+                            posts.username,
                             posts.text,
                             posts.image,
-                            posts.created,
                         ],
                     )
-                    id = result.fetchone()[0]
-                    # Return new data
-                    return self.post_in_to_out(id, posts)
+                    record = db.fetchone()
+
+                    if record is not None:
+                        id = record[0]
+                        created = record[4]
+                        return self.post_in_to_out(id, created, posts)
+                    else:
+                        return {"message": "Creating post did not work"}
         except Exception as e:
             print(e)
             return {"message": "Creating post did not work"}
 
-    def post_in_to_out(self, id: int, post: PostIn):
+    def post_in_to_out(self, id: int, created: datetime, post: PostIn):
         old_data = post.dict()
-        return PostOut(id=id, **old_data)
+        return PostOut(id=id, created=created, **old_data)

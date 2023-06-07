@@ -12,14 +12,14 @@ class Error(BaseModel):
 # Like in
 class LikesIn(BaseModel):
     post_id: int
-    user_id: int
+    username: int
 
 
 # Like Out
 class LikesOut(BaseModel):
     id: int
     post_id: int
-    user_id: int
+    username: int
 
 
 # Repo Class
@@ -33,7 +33,7 @@ class LikesRepository:
                         """
             SELECT id
             , post_id
-            , user_id
+            , username
             FROM likes
             WHERE id = %s
             """,
@@ -56,9 +56,9 @@ class LikesRepository:
                         """
             select id
             , post_id
-            , user_id
+            , username
             FROM likes
-            ORDER BY user_id;
+            ORDER BY username;
             """
                     )
 
@@ -77,12 +77,12 @@ class LikesRepository:
                     result = db.execute(
                         """
             INSERT INTO likes
-              (post_id,user_id)
+              (post_id,username)
             VALUES
               (%s,%s)
             RETURNING id;
             """,
-                        [like.post_id, like.user_id],
+                        [like.post_id, like.username],
                     )
                     id = result.fetchone()[0]
                     if db.rowcount <= 0:
@@ -126,5 +126,5 @@ class LikesRepository:
         return LikesOut(
             id=record[0],
             post_id=record[1],
-            user_id=record[2],
+            username=record[2],
         )
