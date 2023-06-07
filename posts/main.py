@@ -22,16 +22,8 @@ app.add_middleware(
 
 
 @app.get("/")
-def launch_details():
-    return {
-        "launch_details2": {
-            "module": 3,
-            "week": 17,
-            "day": 5,
-            "hour": 19,
-            "min": "00",
-        }
-    }
+def root():
+    return {"message": "Hello World"}
 
 
 @app.get("/api/launch-details")
