@@ -14,19 +14,19 @@ function UserProfile({ posts, userInfo, carousels, socials }) {
     let filteredCarousels = [];
     let filteredSocials = [];
 
-    if (posts.length !== 0) {
+    if (posts.length !== 0 && Array.isArray(posts)) {
       filteredPosts = posts.filter((post) => {
         return post.user_id === userInfo.user_id;
       });
     }
 
-    if (carousels.length !== 0) {
+    if (carousels.length !== 0 && Array.isArray(carousels)) {
       filteredCarousels = carousels.filter((carousel) => {
         return carousel.user_id === userInfo.user_id;
       });
     }
 
-    if (socials.length !== 0) {
+    if (socials.length !== 0 && Array.isArray(socials)) {
       filteredSocials = socials.filter((social) => {
         return social.user_id === userInfo.user_id;
       });

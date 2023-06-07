@@ -38,7 +38,7 @@ const PictureForm = ({ userInfo, setUserInfo }) => {
         let newData = userInfo;
         newData.user = result;
         setUserInfo(newData);
-        navigate("/profile");
+        navigate("/profiles/me");
       }
     } catch (error) {
       console.log("Error updating user:", error);
