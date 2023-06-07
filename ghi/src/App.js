@@ -22,21 +22,23 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [socials, setSocials] = useState([]);
   const [carousels, setCarousels] = useState([]);
-  const [userInfo, setUserInfo] = useState(userData.user);
+  const [userInfo, setUserInfo] = useState(userData.user)
   const { token, fetchWithCookie } = useToken();
   const [connections, setConnections] = useState([]);
+  const [comments, setComments] = useState([]);
   const [user, setUser] = useState("");
 
 
   const getAllConnections = async () => {
     const connectionsURL = "http://localhost:8000/api/connections";
-    const response = await fetch(connectionsURL, { credentials: "include" });
+    const response = await fetch(connectionsURL, {
+      credentials: "include",
+    });
     if (response.ok) {
       const data = await response.json();
       setConnections(data);
     }
   };
-  
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -46,179 +48,182 @@ function App() {
     }
   };
 
-  const getPosts = async () => {
-    const postsUrl = "http://localhost:8010/api/posts";
-    const response = await fetch(postsUrl, { credentials: "include" });
-    if (response.ok) {
-      const data = await response.json();
-      setPosts(data);
-    }
-  };
+    const getPosts = async () => {
+        const postsUrl = "http://localhost:8010/api/posts";
+        const response = await fetch(postsUrl, { credentials: "include" });
+        if (response.ok) {
+            const data = await response.json();
+            setPosts(data);
+        }
+    };
 
-  const getUsers = async () => {
-    const usersUrl = "http://localhost:8000/api/users";
-    const response = await fetch(usersUrl, { credentials: "include" });
-    if (response.ok) {
-      const data = await response.json();
-      setUsers(data);
-    }
-  };
+    const getUsers = async () => {
+        const usersUrl = "http://localhost:8000/api/users";
+        const response = await fetch(usersUrl, { credentials: "include" });
+        if (response.ok) {
+            const data = await response.json();
+            setUsers(data);
+        }
+    };
 
-  const getSocials = async () => {
-    const socialsUrl = "http://localhost:8000/api/socials";
-    const response = await fetch(socialsUrl, { credentials: "include" });
-    if (response.ok) {
-      const data = await response.json();
-      setSocials(data);
-    }
-  };
+    const getSocials = async () => {
+        const socialsUrl = "http://localhost:8000/api/socials";
+        const response = await fetch(socialsUrl, { credentials: "include" });
+        if (response.ok) {
+            const data = await response.json();
+            setSocials(data);
+        }
+    };
 
-  const getCarousels = async () => {
-    const carouselsUrl = "http://localhost:8000/api/carousels";
-    const response = await fetch(carouselsUrl, { credentials: "include" });
-    if (response.ok) {
-      const data = await response.json();
-      setCarousels(data);
-    }
-  };
+    const getCarousels = async () => {
+        const carouselsUrl = "http://localhost:8000/api/carousels";
+        const response = await fetch(carouselsUrl, { credentials: "include" });
+        if (response.ok) {
+            const data = await response.json();
+            setCarousels(data);
+        }
+    };
 
-  const getUserInfo = async () => {
-    const username = userData.user.username;
-    const url = `http://localhost:8000/api/users/${username}`;
-    const response = await fetch(url, { credentials: "include" });
+    const getUser = async (username) => {
+      if (username) {
+        const url = `http://localhost:8000/api/users/${username}`;
+        const response = await fetch(url, { credentials: "include" });
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+        }
+      }
+    };
 
-    if (response.ok) {
-      const data = await response.json();
-      setUserInfo(data);
-    }
-  };
-
-  const getUser = async (username) => {
-    if (username) {
+    const getUserInfo = async () => {
+      const username = userData.user.username;
       const url = `http://localhost:8000/api/users/${username}`;
       const response = await fetch(url, { credentials: "include" });
+
       if (response.ok) {
         const data = await response.json();
-        setUser(data);
+        setUserInfo(data);
       }
-    }
-  };
+    };
 
-  useEffect(() => {
-    getUserData();
-  }, [token]);
+    const getComments = async () => {
+      const CommentsUrl = `http://localhost:8010/api/comments`;
+      const response = await fetch(CommentsUrl, { credentials: "include" });
+      if (response.ok) {
+        const data = await response.json();
+        setComments(data);
+      }
+    };
 
+
+    useEffect(() => {
+        getUserData();
+    }, [token]);
+
+    useEffect(() => {
+      // If token is falsy, then don't call getUsers
+      if (userData) {
+        getPosts();
+      }
+    }, [userData, comments]);
 
   // Get list of users only after you're logged in
   useEffect(() => {
     // If token is falsy, then don't call getUsers
     if (userData) {
+      getComments();
       getUsers();
-      getPosts();
       getCarousels();
       getSocials();
       getAllConnections();
       getUserInfo();
-      getUser();
     }
   }, [userData]);
 
   return (
     <div>
       <BrowserRouter>
-        <Nav
-          users={users}
-          searchUser={user}
-          setUserInfo={setUserInfo}
-          getUser={getUser}
-          token={token}
-          setUser={setUser}
-        />
-        <div className="routes">
-          <Routes>
-            <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/" element={<LandingPage />} />
-            <Route
-              path="/home"
-              element={
-                <MainPage
-                  posts={posts}
-                  getUserData={getUserData}
-                  userInfo={userInfo}
-                  users={users}
-                  connections={connections}
-                />
-              }
-            />
-            <Route path="/signup" element={<SignUpForm />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route
-              path="/name"
-              element={
-                <NameForm userInfo={userInfo} setUserInfo={setUserInfo} />
-              }
-            />
-            <Route
-              path="/picture"
-              element={
-                <PictureForm userInfo={userInfo} setUserInfo={setUserInfo} />
-              }
-            />
-            <Route
-              path="/category"
-              element={
-                <CategoryForm userInfo={userInfo} setUserInfo={setUserInfo} />
-              }
-            />
-            <Route path="profiles">
-              <Route
-                path="me"
-                element={
-                  <UserProfile
-                    posts={posts}
-                    userInfo={userInfo}
-                    socials={socials}
-                    carousels={carousels}
-                    getCarousels={getCarousels}
-                    getPosts={getPosts}
-                    getSocials={getSocials}
-                  />
-                }
+        <Nav users={users} token={token} setUserInfo={setUserInfo} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/home"
+            element={
+              <MainPage
+                posts={posts}
+                userInfo={userInfo}
+                getUserInfo={getUserInfo}
+                users={users}
+                connections={connections}
+                userData={userData}
+                comments={comments}
               />
-              <Route
-                path=":username"
-                element={
-                  <OthersProfile
-                    posts={posts}
-                    user={user}
-                    socials={socials}
-                    userInfo={userInfo}
-                    carousels={carousels}
-                    getSocials={getSocials}
-                    getUser={getUser}
-                  />
-                }
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <SignUpForm
+                getUserData={getUserData}
+                setUserData={setUserData}
+                userData={userData}
               />
-            </Route>
-            <Route
-              path="/profile/edit"
-              element={
-                <EditForm
-                  token={userData.access_token}
-                  posts={posts}
-                  userInfo={userInfo}
-                  socials={socials}
-                  carousels={carousels}
-                  setCarousels={setCarousels}
-                  setSocials={setSocials}
-                  setUserInfo={setUserInfo}
-                  getSocials={getSocials}
-                  getCarousels={getCarousels}
-                />
-              }
-            />
-          </Routes>
-        </div>
+            }
+          />
+          <Route path="/login" element={<LoginForm />} />
+          <Route
+            path="/name"
+            element={
+              <NameForm
+                userInfo={userInfo}
+                setUserInfo={setUserInfo}
+                getUserInfo={getUserInfo}
+              />
+            }
+          />
+          <Route
+            path="/picture"
+            element={
+              <PictureForm userInfo={userInfo} setUserInfo={setUserInfo} />
+            }
+          />
+          <Route
+            path="/category"
+            element={
+              <CategoryForm
+                userInfo={userInfo}
+                getUserInfo={getUserInfo}
+                setUserInfo={setUserInfo}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <UserProfile
+                posts={posts}
+                userInfo={userInfo}
+                socials={socials}
+                carousels={carousels}
+                getUserInfo={getUserInfo}
+              />
+            }
+          />
+          <Route
+            path="/profile/edit"
+            element={
+              <EditForm
+                posts={posts}
+                userInfo={userInfo}
+                socials={socials}
+                carousels={carousels}
+                setCarousels={setCarousels}
+                setSocials={setSocials}
+                setUserInfo={setUserInfo}
+              />
+            }
+          />
+        </Routes>
       </BrowserRouter>
     </div>
   );
