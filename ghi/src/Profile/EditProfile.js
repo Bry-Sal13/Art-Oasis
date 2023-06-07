@@ -63,7 +63,7 @@ const EditForm = ({
   useEffect(() => {
     getSocials();
     getCarousels();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (event) => {
     event.preventDefault();
