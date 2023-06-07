@@ -11,7 +11,7 @@
 }
 
 .form-container {
-  width: 30%; /* adjust as needed */
+  width: 100%; /* adjust as needed */
   margin-top: 20%; /* increase as needed to lower the form */
 }
 
@@ -26,4 +26,9 @@
   height: auto; /* Maintains the aspect ratio */
   min-height: 500px; /* Minimum height to make the image taller */
 }
+
+.form-control {
+  width: 100%;
+}
+
 

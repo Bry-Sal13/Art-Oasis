@@ -137,7 +137,6 @@ class UserRepository:
                             detail="User not found",
                         )
                     record = cur.fetchone()
-                    print("user when grabbed: ", record)
                     if record is None:
                         return None
                     return UserOut(
@@ -196,7 +195,6 @@ class UserRepository:
                         params,
                     )
                     record = cur.fetchone()
-                    print("user when created: ", record)
                     return UserOutWithPassword(
                         user_id=record[0],
                         email=record[1],
@@ -293,7 +291,3 @@ class UserRepository:
                 "deleted": False,
                 "message": "User with that ID does not exist",
             }
-
-    def to_user_out(self, id: int, user: UserIn):
-        data = user.dict()
-        return UserOutWithPassword(id=id, **data)
