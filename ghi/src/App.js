@@ -13,6 +13,7 @@ import LoginForm from "./Login/LoginForm";
 import OthersProfile from "./Profile/OthersProfile";
 import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav";
+import MainPage from "./MainPage/MainPage";
 import "./App.css";
 
 function App() {
@@ -23,7 +24,19 @@ function App() {
   const [carousels, setCarousels] = useState([]);
   const [userInfo, setUserInfo] = useState(userData.user);
   const { token, fetchWithCookie } = useToken();
+  const [connections, setConnections] = useState([]);
   const [user, setUser] = useState("");
+
+
+  const getAllConnections = async () => {
+    const connectionsURL = "http://localhost:8000/api/connections";
+    const response = await fetch(connectionsURL, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setConnections(data);
+    }
+  };
+  
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -73,6 +86,7 @@ function App() {
     const username = userData.user.username;
     const url = `http://localhost:8000/api/users/${username}`;
     const response = await fetch(url, { credentials: "include" });
+
     if (response.ok) {
       const data = await response.json();
       setUserInfo(data);
@@ -94,6 +108,7 @@ function App() {
     getUserData();
   }, [token]);
 
+
   // Get list of users only after you're logged in
   useEffect(() => {
     // If token is falsy, then don't call getUsers
@@ -102,6 +117,7 @@ function App() {
       getPosts();
       getCarousels();
       getSocials();
+      getAllConnections();
       getUserInfo();
       getUser();
     }
@@ -122,6 +138,18 @@ function App() {
           <Routes>
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/" element={<LandingPage />} />
+            <Route
+              path="/home"
+              element={
+                <MainPage
+                  posts={posts}
+                  getUserData={getUserData}
+                  userInfo={userInfo}
+                  users={users}
+                  connections={connections}
+                />
+              }
+            />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/login" element={<LoginForm />} />
             <Route
