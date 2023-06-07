@@ -127,10 +127,7 @@ function App() {
             <Route
               path="/name"
               element={
-                <NameForm
-                  userInfo={userInfo}
-                  setUserInfo={setUserInfo}
-                />
+                <NameForm userInfo={userInfo} setUserInfo={setUserInfo} />
               }
             />
             <Route
@@ -142,40 +139,39 @@ function App() {
             <Route
               path="/category"
               element={
-                <CategoryForm
-                  userInfo={userInfo}
-                  setUserInfo={setUserInfo}
-                />
+                <CategoryForm userInfo={userInfo} setUserInfo={setUserInfo} />
               }
             />
-            <Route
-              path="/profile"
-              element={
-                <UserProfile
-                  posts={posts}
-                  userInfo={userInfo}
-                  socials={socials}
-                  carousels={carousels}
-                  getCarousels={getCarousels}
-                  getPosts={getPosts}
-                  getSocials={getSocials}
-                />
-              }
-            />
-            <Route
-              path="/others-profile"
-              element={
-                <OthersProfile
-                  posts={posts}
-                  user={user}
-                  socials={socials}
-                  userInfo={userInfo}
-                  carousels={carousels}
-                  getSocials={getSocials}
-                  getUser={getUser}
-                />
-              }
-            />
+            <Route path="profiles">
+              <Route
+                path="me"
+                element={
+                  <UserProfile
+                    posts={posts}
+                    userInfo={userInfo}
+                    socials={socials}
+                    carousels={carousels}
+                    getCarousels={getCarousels}
+                    getPosts={getPosts}
+                    getSocials={getSocials}
+                  />
+                }
+              />
+              <Route
+                path=":username"
+                element={
+                  <OthersProfile
+                    posts={posts}
+                    user={user}
+                    socials={socials}
+                    userInfo={userInfo}
+                    carousels={carousels}
+                    getSocials={getSocials}
+                    getUser={getUser}
+                  />
+                }
+              />
+            </Route>
             <Route
               path="/profile/edit"
               element={

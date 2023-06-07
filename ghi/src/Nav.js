@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, useParams } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
-function Nav({ users, token, setUserInfo, getUser, searchUser, setUser }) {
+function Nav({ users, token, setUserInfo, getUser, setUser }) {
+  const { username } = useParams();
   const navigate = useNavigate();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +23,6 @@ function Nav({ users, token, setUserInfo, getUser, searchUser, setUser }) {
     logout();
     setLoggedIn(false);
     setUserInfo("");
-    console.log("You are logged out");
     navigate("/login");
   }
 
@@ -35,7 +35,7 @@ function Nav({ users, token, setUserInfo, getUser, searchUser, setUser }) {
     await getUser(user.username);
     setUser(user);
     if (user) {
-      navigate("/others-profile");
+      navigate(`/profiles/${user.username}`);
     }
   };
 
@@ -99,8 +99,11 @@ function Nav({ users, token, setUserInfo, getUser, searchUser, setUser }) {
                         alt="Profile"
                         style={{ width: "48px", height: "48px" }}
                       />
+
+                      <p className="text-align-right mb-0">
+                        {user.display_name}
+                      </p>
                     </NavLink>
-                    <p className="text-align-right mb-0">{user.display_name}</p>
                   </div>
                 </div>
               );
@@ -143,7 +146,11 @@ function Nav({ users, token, setUserInfo, getUser, searchUser, setUser }) {
               </li>
 
               <li className="nav-item px-2">
-                <NavLink className="nav-link" aria-current="page" to="/profile">
+                <NavLink
+                  className="nav-link"
+                  aria-current="page"
+                  to="/profiles/me"
+                >
                   Profile
                 </NavLink>
               </li>

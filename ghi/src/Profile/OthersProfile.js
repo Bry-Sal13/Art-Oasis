@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import { useParams } from "react-router-dom";
 import "./profile.css";
 
 function OthersProfile({
@@ -13,6 +14,7 @@ function OthersProfile({
   getSocials,
   getUser,
 }) {
+  const username = useParams()
   const { token } = useAuthContext();
   const [postsNum, setPostsNum] = useState(10);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -30,6 +32,7 @@ function OthersProfile({
       prevIndex === 0 ? carousels.length - 1 : prevIndex - 1
     );
   };
+
 
   const handleFollow = async () => {
     const connectionUrl = "http://localhost:8000/api/connections";
@@ -51,7 +54,7 @@ function OthersProfile({
   };
 
   useEffect(() => {
-    if ((user !== undefined) | (user !== "")) {
+    if ((userInfo !== undefined) | (userInfo !== "")) {
       setIsLoading(false);
     }
     let i =
@@ -71,7 +74,7 @@ function OthersProfile({
       }, 200);
       return () => clearTimeout(timer);
     }
-  }, [token, navigate, user]);
+  }, [token, navigate, userInfo]);
 
   useEffect(() => {
     const fetchSocials = async () => {
@@ -84,7 +87,10 @@ function OthersProfile({
       }
     };
     fetchSocials();
-    getUser();
+    if (!(user)){
+      getUser(username.username);
+    }
+    
   }, []);
 
   if (user !== "" && user !== null && user !== undefined) {
