@@ -85,7 +85,7 @@ function OthersProfile({
     };
     fetchSocials();
     getUser();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (user !== "" && user !== null && user !== undefined) {
     if (isLoading) {

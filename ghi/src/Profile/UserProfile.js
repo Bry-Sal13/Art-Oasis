@@ -104,7 +104,7 @@ function UserProfile({
     };
 
     fetchSocials();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
     if (isLoading) {
