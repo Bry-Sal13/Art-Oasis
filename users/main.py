@@ -20,6 +20,11 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+def root():
+    return {"message": "Hello World"}
+
+
 @app.get("/api/launch-details")
 def launch_details():
     return {
