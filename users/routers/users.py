@@ -33,8 +33,6 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
-# user_data: dict = Depends(authenticator.get_current_account_data),
-
 
 @router.get("/token", response_model=UserToken | None)
 async def get_token(

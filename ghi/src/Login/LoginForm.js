@@ -27,9 +27,12 @@ const LoginForm = () => {
     setUsername("");
     setPassword("");
     event.target.reset();
-    if (!token) {
-      setErrorMessage("Invalid username or password");
-    }
+    const timer = setTimeout(() => {
+      if (!token) {
+        setErrorMessage("Invalid username or password")
+      }
+    }, 350);
+    return () => clearTimeout(timer);
   };
   const togglePasswordVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -81,7 +84,7 @@ const LoginForm = () => {
         </div>
         <p className="text-center mt-3">
           New to ArtOasis?{" "}
-          <Link to="/signup" className="join-now-link">
+          <Link to="/signup" className="join-now-link btn mx-3 btn-primary">
             Join now
           </Link>
         </p>
