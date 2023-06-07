@@ -111,7 +111,6 @@ function App() {
                 <NameForm
                   userInfo={userInfo}
                   setUserInfo={setUserInfo}
-                  getUserInfo={getUserInfo}
                 />
               }
             />
@@ -126,7 +125,6 @@ function App() {
               element={
                 <CategoryForm
                   userInfo={userInfo}
-                  getUserInfo={getUserInfo}
                   setUserInfo={setUserInfo}
                 />
               }
@@ -139,7 +137,6 @@ function App() {
                   userInfo={userInfo}
                   socials={socials}
                   carousels={carousels}
-                  getUserInfo={getUserInfo}
                 />
               }
             />
