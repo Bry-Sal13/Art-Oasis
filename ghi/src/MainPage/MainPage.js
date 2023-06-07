@@ -6,24 +6,26 @@ function MyProfileSidebar({ connections, userInfo, posts }) {
     const [followers, setFollowers] = useState(0);
     const [postNum, setPostNum] = useState(0);
     const getUserStats = () => {
-        const followingNum = connections.filter((connection) => {
-            return connection.user_id === userInfo.user_id;
-        });
-        const followerNum = connections.filter((connection) => {
-            return connection.following_id === userInfo.user_id;
-        });
+        if (connections.length !== 0) {
+            const copyOfConnections = connections;
+            console.log(copyOfConnections);
+            const followingNum = copyOfConnections.filter((connection) => {
+                return connection.user_id === userInfo.user_id;
+            });
+            const followerNum = connections.filter((connection) => {
+                return connection.following_id === userInfo.user_id;
+            });
+            setFollowers(followerNum.length);
+            setFollowing(followingNum.length);
+        }
         const postNum = posts.filter((post) => {
-            return post.post_id === userInfo.user_id;
+            return post.username === userInfo.username;
         });
-        setFollowing(followingNum.length);
-        setFollowers(followerNum.length);
         setPostNum(postNum.length);
     };
     useEffect(() => {
-        if (connections.length > 0) {
-            getUserStats();
-        }
-    }, [connections, posts]);
+        getUserStats();
+    }, [connections, posts]); // eslint-disable-line react-hooks/exhaustive-deps
     return (
         <div className="container d-flex justify-content-center align-items-center bg-light-purp">
             <div className="card card-profile">
@@ -90,11 +92,11 @@ function CreatePost({ userInfo }) {
 
     const handlePostSubmit = async (event) => {
         event.preventDefault();
-        const user_id = userInfo.user_id;
+        const username = userInfo.username;
         const url = "http://localhost:8010/api/posts/";
         const fetchConfig = {
             method: "post",
-            body: JSON.stringify({ user_id, text, image }),
+            body: JSON.stringify({ username, text, image }),
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
@@ -162,25 +164,146 @@ function CreatePost({ userInfo }) {
     );
 }
 
-function MainPage({ posts, userInfo, users, connections }) {
+function Feed({ users, userInfo, posts, comments }) {
     const [likeCount, setLikeCount] = useState(0);
-    const [liked, setLiked] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    const [commentText, setCommentText] = useState("");
 
-    const handlePostLike = (post_id) => {
-        setLiked(!liked);
-        if (liked) {
-            setLikeCount(likeCount - 1);
-        } else {
-            setLikeCount(likeCount + 1);
-        }
+    const handleTextChange = (event) => {
+        setCommentText(event.target.value);
     };
 
+    const handlePostSubmit = async (event) => {
+        event.preventDefault();
+        const text = commentText;
+        const username = userInfo.username;
+        const url = "http://localhost:8010/api/posts/";
+        const fetchConfig = {
+            method: "post",
+            body: JSON.stringify({ username, text }),
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        try {
+            const response = await fetch(url, fetchConfig);
+            if (response.ok) {
+                setCommentText("");
+            }
+        } catch (error) {
+            console.log("error updating user: ", error);
+        }
+    };
+    return (
+        <div>
+            {posts.map((post) => {
+                const user = users.find((user) => {
+                    return user.username === post.username;
+                });
+                const postComments = comments.filter((comment) => {
+                    return comment.post_id === post.id;
+                });
+                return (
+                    <div key={post.id} className="card feed-margins">
+                        <div className="card-body">
+                            <h5 className="card-title">{user.display_name}</h5>
+                            <p className="card-text">{post.text}</p>
+                        </div>
+                        <img
+                            src={post.image}
+                            className="card-img-top max-height"
+                            alt="post"
+                        />
+                        <div className="card-body">
+                            <div className="card comment-form">
+                                <div className="card-body">
+                                    <div className="row align-items-center">
+                                        <div className="col-3 text-center">
+                                            <img
+                                                className="rounded-circle commenter-img"
+                                                alt="profile"
+                                                src={userInfo.profile_picture}
+                                            />
+                                        </div>
+                                        <div className="col align-items-center">
+                                            <form onSubmit={handlePostSubmit}>
+                                                <label htmlFor="commentText">
+                                                    Comment:
+                                                </label>
+                                                <br />
+                                                <textarea
+                                                    onChange={handleTextChange}
+                                                    className="margins text-border"
+                                                    id="commentText"
+                                                    name="commentText"
+                                                    value={commentText}
+                                                    rows="2"
+                                                    required
+                                                />
+                                                <button
+                                                    className="btn btn-primary bg-pastel-purp mb-5"
+                                                    type="submit">
+                                                    Post
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6>Comments</h6>
+                            {postComments.map((comment) => {
+                                const commentUser = users.find((user) => {
+                                    return user.username === comment.username;
+                                });
+                                return (
+                                    <div key={comment.id} className="card">
+                                        <div className="card-body less-padding">
+                                            <div className="row">
+                                                <div className="col-1 text-center">
+                                                    <img
+                                                        className="rounded-circle commenter-img ms-2"
+                                                        src={
+                                                            commentUser.profile_picture
+                                                        }
+                                                        alt="comment user"
+                                                    />
+                                                </div>
+                                                <div className="col">
+                                                    <h6 className="comment-margin">
+                                                        {
+                                                            commentUser.display_name
+                                                        }
+                                                    </h6>
+                                                    <p className="card-text ms-3 bottom-mar">
+                                                        {comment.text}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+function MainPage({ posts, userInfo, users, connections, comments }) {
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        if (userInfo) {
+        if (
+            userInfo &&
+            posts.length !== 0 &&
+            users.length !== 0 &&
+            connections.length !== 0 &&
+            comments.length !== 0
+        ) {
             setIsLoading(false);
         }
-    }, [userInfo]);
+    }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (isLoading) {
         return;
@@ -193,11 +316,15 @@ function MainPage({ posts, userInfo, users, connections }) {
                 posts={posts}
                 userInfo={userInfo}
             />
-            <div className="row">
-                {/* CREATE POST */}
-                <CreatePost userInfo={userInfo} />
-                {/* FEED */}
-            </div>
+            {/* CREATE POST */}
+            <CreatePost userInfo={userInfo} />
+            {/* FEED */}
+            <Feed
+                users={users}
+                userInfo={userInfo}
+                posts={posts}
+                comments={comments}
+            />
         </div>
     );
 }

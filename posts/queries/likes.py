@@ -12,14 +12,14 @@ class Error(BaseModel):
 # Like in
 class LikesIn(BaseModel):
     post_id: int
-    username: int
+    username: str
 
 
 # Like Out
 class LikesOut(BaseModel):
     id: int
     post_id: int
-    username: int
+    username: str
 
 
 # Repo Class

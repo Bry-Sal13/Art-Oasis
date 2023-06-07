@@ -12,14 +12,14 @@ class Error(BaseModel):
 
 
 class PostIn(BaseModel):
-    username: int
+    username: str
     text: str
     image: str
 
 
 class PostOut(BaseModel):
     id: int
-    username: int
+    username: str
     text: str
     image: str
     created: datetime
@@ -83,6 +83,7 @@ class PostRepository:
                     , text = %s
                     , image = %s
                     WHERE id = %s
+                    RETURNING *
                     """,
                         [
                             post.username,
@@ -91,10 +92,15 @@ class PostRepository:
                             post_id,
                         ],
                     )
-                    return self.post_in_to_out(post_id, post)
+                    record = db.fetchone()
+
+                    if record is not None:
+                        id = record[0]
+                        created = record[4]
+                        return self.post_in_to_out(post_id, created, post)
         except Exception as e:
             print(e)
-            return {"message": "Updating post did not work"}
+            return {"message": e}
 
     def get_all(self) -> Union[Error, List[PostOut]]:
         try:
@@ -104,7 +110,7 @@ class PostRepository:
                         """
                         SELECT id, username, text, image, created
                         FROM Posts
-                        ORDER BY created;
+                        ORDER BY created DESC;
                         """
                     )
                     result = []
@@ -129,7 +135,7 @@ class PostRepository:
                 # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run or INSERT statement
-                    result = db.execute(
+                    db.execute(
                         """
                         INSERT INTO posts
                             (username, text, image)

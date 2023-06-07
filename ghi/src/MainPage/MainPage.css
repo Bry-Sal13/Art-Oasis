@@ -8,6 +8,28 @@
     border: 2px solid #7f669d;
 }
 
+.card {
+    border-radius: 10px !important;
+}
+
+.comment-form {
+}
+
+.comment-margin {
+    margin-left: 7px;
+    margin-top: 5px;
+}
+
+.commenter-img {
+    height: 50px;
+    width: 50px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.less-padding {
+    padding: 0.05rem 0.05rem;
+}
 .text-border {
     border: 2px solid #7f669d;
     border-radius: 10px;
@@ -15,6 +37,10 @@
 
 .button-width {
     width: 100px;
+}
+
+.bottom-mar {
+    margin-bottom: 8px !important;
 }
 
 .bg-pastel-purp {
@@ -53,11 +79,22 @@
     height: 325px;
 }
 
+.max-height {
+    max-height: 450px;
+    aspect-ratio: 1/1;
+    object-fit: contain;
+}
+
+.feed-margins {
+    margin-bottom: 45px;
+}
+
 .post {
     background-color: #c2aad1;
     padding-left: 0px;
     padding-right: 0px;
     border: 2px solid #7f669d;
+    margin-bottom: 45px;
 }
 
 .upper {
