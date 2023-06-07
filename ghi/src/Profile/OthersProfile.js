@@ -14,7 +14,7 @@ function OthersProfile({
   getSocials,
   getUser,
 }) {
-  const username = useParams()
+  const username = useParams();
   const { token } = useAuthContext();
   const [postsNum, setPostsNum] = useState(10);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -32,7 +32,6 @@ function OthersProfile({
       prevIndex === 0 ? carousels.length - 1 : prevIndex - 1
     );
   };
-
 
   const handleFollow = async () => {
     const connectionUrl = "http://localhost:8000/api/connections";
@@ -87,11 +86,10 @@ function OthersProfile({
       }
     };
     fetchSocials();
-    if (!(user)){
+    if (!user) {
       getUser(username.username);
     }
-    
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (user !== "" && user !== null && user !== undefined) {
     if (isLoading) {
