@@ -8,11 +8,9 @@ import CategoryForm from "./SignUp/CategoryForm";
 import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
-import AboutForm from "./Profile/AboutForm";
-import CarouselForm from "./Profile/CarouselForm";
-import SocialsForm from "./Profile/SocialsForm";
 import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
+import OthersProfile from "./Profile/OthersProfile";
 import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav";
 import "./App.css";
@@ -25,6 +23,7 @@ function App() {
   const [carousels, setCarousels] = useState([]);
   const [userInfo, setUserInfo] = useState(userData.user);
   const { token, fetchWithCookie } = useToken();
+  const [user, setUser] = useState("");
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -80,6 +79,17 @@ function App() {
     }
   };
 
+  const getUser = async (username) => {
+    if (username) {
+      const url = `http://localhost:8000/api/users/${username}`;
+      const response = await fetch(url, { credentials: "include" });
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data);
+      }
+    }
+  };
+
   useEffect(() => {
     getUserData();
   }, [token]);
@@ -93,15 +103,24 @@ function App() {
       getCarousels();
       getSocials();
       getUserInfo();
+      getUser();
     }
   }, [userData]);
 
   return (
     <div>
       <BrowserRouter>
-        <Nav users={users} token={token} setUserInfo={setUserInfo} />
+        <Nav
+          users={users}
+          searchUser={user}
+          setUserInfo={setUserInfo}
+          getUser={getUser}
+          token={token}
+          setUser={setUser}
+        />
         <div className="routes">
           <Routes>
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/login" element={<LoginForm />} />
@@ -137,6 +156,23 @@ function App() {
                   userInfo={userInfo}
                   socials={socials}
                   carousels={carousels}
+                  getCarousels={getCarousels}
+                  getPosts={getPosts}
+                  getSocials={getSocials}
+                />
+              }
+            />
+            <Route
+              path="/others-profile"
+              element={
+                <OthersProfile
+                  posts={posts}
+                  user={user}
+                  socials={socials}
+                  userInfo={userInfo}
+                  carousels={carousels}
+                  getSocials={getSocials}
+                  getUser={getUser}
                 />
               }
             />
@@ -144,6 +180,7 @@ function App() {
               path="/profile/edit"
               element={
                 <EditForm
+                  token={userData.access_token}
                   posts={posts}
                   userInfo={userInfo}
                   socials={socials}
@@ -151,6 +188,8 @@ function App() {
                   setCarousels={setCarousels}
                   setSocials={setSocials}
                   setUserInfo={setUserInfo}
+                  getSocials={getSocials}
+                  getCarousels={getCarousels}
                 />
               }
             />
