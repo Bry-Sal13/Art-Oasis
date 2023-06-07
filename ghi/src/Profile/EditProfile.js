@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const EditForm = ({
@@ -9,27 +9,61 @@ const EditForm = ({
   carousels,
   socials,
   setCarousels,
+  token,
+  getCarousels,
+  getSocials,
 }) => {
   const navigate = useNavigate();
-  if (userInfo === undefined) {
-    navigate("/");
-  }
-  const [displayName, setDisplayName] = useState(userInfo.display_name);
-  const [profilePicture, setProfilePicture] = useState(
-    userInfo.profile_picture
-  );
-  const [headerImage, setHeaderImage] = useState(userInfo.header_image);
-  const [firstName, setFirstName] = useState(userInfo.first_name);
-  const [lastName, setLastName] = useState(userInfo.last_name);
-  const [about, setAbout] = useState(userInfo.about);
-  const [category, setCategory] = useState(userInfo.category);
+  const [displayName, setDisplayName] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const [headerImage, setHeaderImage] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [about, setAbout] = useState("");
+  const [category, setCategory] = useState("");
   const [social, setSocial] = useState("");
   const [carousel, setCarousel] = useState("");
+  const [isLaoding, setIsLoading] = useState(true);
 
   const handleChange = (event, cb) => {
     const value = event.target.value;
     cb(value);
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      setDisplayName(userInfo.display_name);
+      setProfilePicture(userInfo.profile_picture);
+      setHeaderImage(userInfo.header_image);
+      setFirstName(userInfo.first_name);
+      setLastName(userInfo.last_name);
+      setAbout(userInfo.about);
+      setCategory(userInfo.category);
+      setIsLoading(false);
+    }
+    let i =
+      performance.getEntriesByType("navigation")[0].type === "reload" ? 0 : 1;
+    if (i === 1) {
+      const timer = setTimeout(() => {
+        if (!token) {
+          navigate("/login");
+        }
+      }, 4000);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        if (!token) {
+          navigate("/login");
+        }
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [userInfo, navigate, token]);
+
+  useEffect(() => {
+    getSocials();
+    getCarousels();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -114,7 +148,6 @@ const EditForm = ({
         let newData = { ...userInfo };
         newData.user = result;
         setUserInfo(newData);
-        console.log("userdata on submit: ", newData);
         navigate("/profile");
       }
     } catch (error) {
@@ -122,6 +155,9 @@ const EditForm = ({
     }
   };
 
+  if (isLaoding) {
+    return;
+  }
   return (
     <div className="row justify-content-center mt-5">
       <div className="col-6 card">
@@ -132,49 +168,49 @@ const EditForm = ({
               value={displayName}
               onChange={(event) => handleChange(event, setDisplayName)}
               className="form-control  mt-0"
-              placeholder={`${userInfo.display_name}`}
+              placeholder={`${displayName}`}
             />
             <input
               value={firstName}
               onChange={(event) => handleChange(event, setFirstName)}
               type="text"
               className="form-control"
-              placeholder={`${userInfo.first_name}`}
+              placeholder={`${firstName}`}
             />
             <input
               value={lastName}
               onChange={(event) => handleChange(event, setLastName)}
               type="text"
               className="form-control"
-              placeholder={`${userInfo.last_name}`}
+              placeholder={`${lastName}`}
             />
             <input
               value={profilePicture}
               onChange={(event) => handleChange(event, setProfilePicture)}
               type="text"
               className="form-control"
-              placeholder={`${userInfo.profile_picture}`}
+              placeholder={`${profilePicture}`}
             />
             <input
               value={headerImage}
               onChange={(event) => handleChange(event, setHeaderImage)}
               type="text"
               className="form-control"
-              placeholder={`${userInfo.header_image}`}
+              placeholder={`${headerImage}`}
             />
             <input
               value={category}
               onChange={(event) => handleChange(event, setCategory)}
               type="text"
               className="form-control"
-              placeholder={`${userInfo.category}`}
+              placeholder={`${category}`}
             />
             <input
               value={about}
               onChange={(event) => handleChange(event, setAbout)}
               type="text"
               className="form-control"
-              placeholder={`${userInfo.about}`}
+              placeholder={`${about}`}
             />
             <input
               value={social}

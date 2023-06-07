@@ -1,5 +1,5 @@
+from typing import List, Union
 from pydantic import BaseModel
-from typing import List,  Union, Optional
 from psycopg_pool import ConnectionPool
 from fastapi import HTTPException, status
 import os
@@ -7,8 +7,10 @@ import os
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
+
 class Error(BaseModel):
     message: str
+
 
 class SocialsIn(BaseModel):
     user_id: int
@@ -19,6 +21,7 @@ class SocialsOut(BaseModel):
     id: int
     user_id: int
     link: str
+
 
 class SocialsRepository:
     def get_social(self, social_id: int) -> Union[SocialsOut, Error]:
@@ -34,17 +37,18 @@ class SocialsRepository:
                         [social_id],
                     )
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Social not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Social not found",
+                        )
                     record = cur.fetchone()
                     if record is None:
                         return None
                     return SocialsOut(
-                        id=record[0],
-                        user_id=record[1],
-                        link=record[2]
+                        id=record[0], user_id=record[1], link=record[2]
                     )
         except HTTPException:
-            raise  
+            raise
         except Exception as e:
             print(e)
             return {"Message": "Something went wrong"}
@@ -74,10 +78,7 @@ class SocialsRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    params = [
-                        data.user_id,
-                        data.link
-                    ]
+                    params = [data.user_id, data.link]
                     res = cur.execute(
                         """
                         INSERT INTO socials (user_id, link)
@@ -94,17 +95,13 @@ class SocialsRepository:
             print(e)
             return {"message": "Could not create a social/link with that data"}
 
-
-    def update_social(self, social_id: int, data: SocialsIn) -> Union[SocialsOut, Error]:
+    def update_social(
+        self, social_id: int, data: SocialsIn
+    ) -> Union[SocialsOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    params = [
-                        data.user_id,
-                        data.link,
-                        social_id
-                        
-                    ]
+                    params = [data.user_id, data.link, social_id]
                     cur.execute(
                         """
                         UPDATE socials
@@ -115,7 +112,10 @@ class SocialsRepository:
                         params,
                     )
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Social not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Social not found",
+                        )
                     else:
                         data = data.dict()
                         data["id"] = social_id
@@ -126,7 +126,6 @@ class SocialsRepository:
             print(e)
             return {"message": "Could not update a social/link with that ID"}
 
-
     def delete_social(self, social_id: int) -> Union[bool, Error]:
         try:
             with pool.connection() as conn:
@@ -136,18 +135,16 @@ class SocialsRepository:
                         DELETE FROM socials
                         where id = %s
                         """,
-                        [social_id]
+                        [social_id],
                     )
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Social not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Social not found",
+                        )
                     return True
         except HTTPException:
             raise
         except Exception as e:
             print(e)
             return False
-
-
-    def to_social_out(self, id: int, user: SocialsIn):
-        data = user.dict()
-        return SocialsOut(id=id, **data)

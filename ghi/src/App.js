@@ -8,14 +8,12 @@ import CategoryForm from "./SignUp/CategoryForm";
 import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
-import AboutForm from "./Profile/AboutForm";
-import CarouselForm from "./Profile/CarouselForm";
-import SocialsForm from "./Profile/SocialsForm";
 import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
+import OthersProfile from "./Profile/OthersProfile";
+import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav";
 import "./App.css";
-
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -23,8 +21,9 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [socials, setSocials] = useState([]);
   const [carousels, setCarousels] = useState([]);
-  const [userInfo, setUserInfo] = useState(userData.user)
+  const [userInfo, setUserInfo] = useState(userData.user);
   const { token, fetchWithCookie } = useToken();
+  const [user, setUser] = useState("");
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -80,10 +79,20 @@ function App() {
     }
   };
 
+  const getUser = async (username) => {
+    if (username) {
+      const url = `http://localhost:8000/api/users/${username}`;
+      const response = await fetch(url, { credentials: "include" });
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data);
+      }
+    }
+  };
 
   useEffect(() => {
     getUserData();
-  }, [token]);
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Get list of users only after you're logged in
   useEffect(() => {
@@ -94,72 +103,103 @@ function App() {
       getCarousels();
       getSocials();
       getUserInfo();
+      getUser();
     }
-  }, [userData]);
+  }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
       <BrowserRouter>
-        <Nav users={users} token={token} setUserInfo={setUserInfo} />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<SignUpForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route
-            path="/name"
-            element={
-              <NameForm
-                userInfo={userInfo}
-                setUserInfo={setUserInfo}
-                getUserInfo={getUserInfo}
-              />
-            }
-          />
-          <Route
-            path="/picture"
-            element={
-              <PictureForm userInfo={userInfo} setUserInfo={setUserInfo} />
-            }
-          />
-          <Route
-            path="/category"
-            element={
-              <CategoryForm
-                userInfo={userInfo}
-                getUserInfo={getUserInfo}
-                setUserInfo={setUserInfo}
-              />
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <UserProfile
-                posts={posts}
-                userInfo={userInfo}
-                socials={socials}
-                carousels={carousels}
-                getUserInfo={getUserInfo}
-              />
-            }
-          />
-          <Route
-            path="/profile/edit"
-            element={
-              <EditForm
-                posts={posts}
-                userInfo={userInfo}
-                socials={socials}
-                carousels={carousels}
-                setCarousels={setCarousels}
-                setSocials={setSocials}
-                setUserInfo={setUserInfo}
-              />
-            }
-          />
-        </Routes>
+        <Nav
+          users={users}
+          searchUser={user}
+          setUserInfo={setUserInfo}
+          getUser={getUser}
+          token={token}
+          setUser={setUser}
+        />
+        <div className="routes">
+          <Routes>
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/signup" element={<SignUpForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route
+              path="/name"
+              element={
+                <NameForm
+                  userInfo={userInfo}
+                  setUserInfo={setUserInfo}
+                  getUserInfo={getUserInfo}
+                />
+              }
+            />
+            <Route
+              path="/picture"
+              element={
+                <PictureForm userInfo={userInfo} setUserInfo={setUserInfo} />
+              }
+            />
+            <Route
+              path="/category"
+              element={
+                <CategoryForm
+                  userInfo={userInfo}
+                  getUserInfo={getUserInfo}
+                  setUserInfo={setUserInfo}
+                />
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <UserProfile
+                  posts={posts}
+                  userInfo={userInfo}
+                  socials={socials}
+                  carousels={carousels}
+                  getCarousels={getCarousels}
+                  getPosts={getPosts}
+                  getSocials={getSocials}
+                />
+              }
+            />
+            <Route
+              path="/others-profile"
+              element={
+                <OthersProfile
+                  posts={posts}
+                  user={user}
+                  socials={socials}
+                  userInfo={userInfo}
+                  carousels={carousels}
+                  getSocials={getSocials}
+                  getUser={getUser}
+                />
+              }
+            />
+            <Route
+              path="/profile/edit"
+              element={
+                <EditForm
+                  token={userData.access_token}
+                  posts={posts}
+                  userInfo={userInfo}
+                  socials={socials}
+                  carousels={carousels}
+                  setCarousels={setCarousels}
+                  setSocials={setSocials}
+                  setUserInfo={setUserInfo}
+                  getSocials={getSocials}
+                  getCarousels={getCarousels}
+                />
+              }
+            />
+          </Routes>
+        </div>
       </BrowserRouter>
     </div>
   );
 }
+
 export default App;

@@ -1,30 +1,31 @@
+from typing import List, Union
 from pydantic import BaseModel
-from typing import List, Optional, Union
 from psycopg_pool import ConnectionPool
 from fastapi import HTTPException, status
 import os
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
+
 class Error(BaseModel):
     message: str
 
+
 class ConnectionIn(BaseModel):
     user_id: int
-    following_id: int # the person who the user_id is following
-    following: bool # if that follower is following you
-
+    following_id: int  # the person who the user_id is following
+    following: bool  # if that follower is following you
 
 
 class ConnectionOut(BaseModel):
     id: int
     user_id: int
-    following_id: int # the person who the user_id is following
-    following: bool # if that follower is following you
+    following_id: int  # the person who the user_id is following
+    following: bool  # if that follower is following you
 
 
 class ConnectionRepository:
-    def get_connection(self, id: int) -> Union[ConnectionOut,  Error]:
+    def get_connection(self, id: int) -> Union[ConnectionOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -37,18 +38,20 @@ class ConnectionRepository:
                         [id],
                     )
                     if cur.rowcount <= 0:
-                            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Social not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Social not found",
+                        )
                     record = cur.fetchone()
-                    
-                    
+
                     return ConnectionOut(
                         id=record[0],
                         user_id=record[1],
                         following_id=record[2],
-                        following=record[3]
+                        following=record[3],
                     )
         except HTTPException:
-            raise  
+            raise
         except Exception as e:
             print(e)
             return {"Message": "Something went wrong"}
@@ -67,8 +70,9 @@ class ConnectionRepository:
                     for record in cur:
                         connection = ConnectionOut(
                             id=record[0],
-                            user_id=record[1], following_id=record[2],
-                            following=record[3]
+                            user_id=record[1],
+                            following_id=record[2],
+                            following=record[3],
                         )
                         results.append(connection)
                     return results
@@ -79,11 +83,7 @@ class ConnectionRepository:
     def create_connection(self, data: ConnectionIn):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                params = [
-                    data.user_id,
-                    data.following_id,
-                    data.following
-                ]
+                params = [data.user_id, data.following_id, data.following]
                 res = cur.execute(
                     """
                     INSERT INTO connections (user_id, following_id, following)
@@ -97,7 +97,9 @@ class ConnectionRepository:
                 data["id"] = id
                 return ConnectionOut(**data)
 
-    def update_connection(self, connection_id: int, data: ConnectionIn) -> Union[ConnectionOut, Error]:
+    def update_connection(
+        self, connection_id: int, data: ConnectionIn
+    ) -> Union[ConnectionOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -105,7 +107,7 @@ class ConnectionRepository:
                         data.user_id,
                         data.following_id,
                         data.following,
-                        connection_id
+                        connection_id,
                     ]
                     cur.execute(
                         """
@@ -118,7 +120,10 @@ class ConnectionRepository:
                         params,
                     )
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Connection not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Connection not found",
+                        )
                     data = data.dict()
                     data["id"] = connection_id
                     return ConnectionOut(**data)
@@ -127,7 +132,6 @@ class ConnectionRepository:
         except Exception as e:
             print(e)
             return {"message": "Could not update a Connection with that ID"}
-
 
     def delete_connection(self, connection_id: int) -> Union[bool, Error]:
         try:
@@ -138,10 +142,13 @@ class ConnectionRepository:
                         DELETE FROM connections
                         WHERE id = %s
                         """,
-                        [connection_id]
+                        [connection_id],
                     )
                     if cur.rowcount <= 0:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Connection not found")
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Connection not found",
+                        )
                     return True
         except HTTPException:
             raise
@@ -149,11 +156,10 @@ class ConnectionRepository:
             print(e)
             return False
 
-
     def record_to_comment_out(self, record):
         return ConnectionOut(
             id=record[0],
             user_id=record[1],
             following_id=record[2],
-            following=record[3]
+            following=record[3],
         )

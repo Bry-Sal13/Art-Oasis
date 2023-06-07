@@ -70,10 +70,10 @@ class UserRepository:
                             last_name=record[6],
                             username=record[8],
                             category=record[9],
-                            about=record[10]
+                            about=record[10],
                         )
                         results.append(user)
-                    return  results
+                    return results
         except Exception as e:
             print(e)
             return {"message": "Could not get all users"}
@@ -111,7 +111,7 @@ class UserRepository:
                         hashed_password=record[7],
                         username=record[8],
                         category=record[9],
-                        about=record[10]
+                        about=record[10],
                     )
         except HTTPException:
             raise
@@ -137,7 +137,6 @@ class UserRepository:
                             detail="User not found",
                         )
                     record = cur.fetchone()
-                    print("user when grabbed: ", record)
                     if record is None:
                         return None
                     return UserOut(
@@ -150,7 +149,7 @@ class UserRepository:
                         last_name=record[6],
                         username=record[8],
                         category=record[9],
-                        about=record[10]
+                        about=record[10],
                     )
         except HTTPException:
             raise
@@ -174,18 +173,28 @@ class UserRepository:
                         hashed_password,
                         data.username,
                         data.category,
-                        data.about
+                        data.about,
                     ]
                     cur.execute(
                         """
-                        INSERT INTO users (email, profile_picture, display_name, header_image, first_name, last_name, password, username, category, about)
+                        INSERT INTO users(
+                            email,
+                            profile_picture,
+                            display_name,
+                            header_image,
+                            first_name,
+                            last_name,
+                            password,
+                            username,
+                            category,
+                            about
+                        )
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING *;
                         """,
                         params,
                     )
                     record = cur.fetchone()
-                    print("user when created: ", record)
                     return UserOutWithPassword(
                         user_id=record[0],
                         email=record[1],
@@ -197,7 +206,7 @@ class UserRepository:
                         username=record[8],
                         hashed_password=record[7],
                         category=record[9],
-                        about=record[10]
+                        about=record[10],
                     )
         except Exception as e:
             print(e)
@@ -220,7 +229,7 @@ class UserRepository:
                         data.last_name,
                         data.category,
                         data.about,
-                        username
+                        username,
                     ]
                     cur.execute(
                         """
@@ -246,7 +255,8 @@ class UserRepository:
                             status_code=status.HTTP_404_NOT_FOUND,
                             detail="User not found for username: {username}",
                         )
-                    return UserOut(user_id=record[0],
+                    return UserOut(
+                        user_id=record[0],
                         first_name=record[5],
                         last_name=record[6],
                         email=record[1],
@@ -255,7 +265,8 @@ class UserRepository:
                         display_name=record[3],
                         header_image=record[4],
                         category=record[9],
-                        about=record[10])
+                        about=record[10],
+                    )
         except HTTPException:
             raise
         except Exception as e:
@@ -280,7 +291,3 @@ class UserRepository:
                 "deleted": False,
                 "message": "User with that ID does not exist",
             }
-
-    def to_user_out(self, id: int, user: UserIn):
-        data = user.dict()
-        return UserOutWithPassword(id=id, **data)
