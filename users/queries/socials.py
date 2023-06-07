@@ -148,7 +148,3 @@ class SocialsRepository:
         except Exception as e:
             print(e)
             return False
-
-    def to_social_out(self, id: int, user: SocialsIn):
-        data = user.dict()
-        return SocialsOut(id=id, **data)

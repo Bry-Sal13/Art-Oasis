@@ -8,6 +8,7 @@ from queries.connections import (
     Error,
 )
 
+
 router = APIRouter(prefix="/api")
 
 

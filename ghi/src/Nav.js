@@ -3,7 +3,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
-function Nav({ users, token, setUserInfo }) {
+function Nav({ users, token, setUserInfo, getUser, searchUser, setUser }) {
   const navigate = useNavigate();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,6 +30,14 @@ function Nav({ users, token, setUserInfo }) {
     var term = event.target.value;
     setSearchTerm(term);
   }
+
+  const handleGetUser = async (user) => {
+    await getUser(user.username);
+    setUser(user);
+    if (user) {
+      navigate("/others-profile");
+    }
+  };
 
   async function handleSearch(event) {
     event.preventDefault();
@@ -71,7 +79,10 @@ function Nav({ users, token, setUserInfo }) {
             placeholder="Search"
             aria-label="Search"
           />
-          <button className="btn btn-outline-light " type="submit">
+          <button
+            className="btn btn-outline-light position-absolute"
+            type="submit"
+          >
             Search
           </button>
         </form>
@@ -81,17 +92,12 @@ function Nav({ users, token, setUserInfo }) {
               return (
                 <div className="search-result-margins " key={user.user_id}>
                   <div className="dataItem d-flex flex-row align-items-center justify-content-around flex-wrap">
-                    <NavLink
-                      to={`/profile/${user.username}`}
-                      className=""
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <NavLink onClick={() => handleGetUser(user)}>
                       <img
                         className="left-align "
                         src={user.profile_picture}
                         alt="Profile"
-                        style={{ width: "48px", height:"48px" }}
+                        style={{ width: "48px", height: "48px" }}
                       />
                     </NavLink>
                     <p className="text-align-right mb-0">{user.display_name}</p>
