@@ -29,7 +29,7 @@ const LoginForm = () => {
     event.target.reset();
     const timer = setTimeout(() => {
       if (!token) {
-        setErrorMessage("Invalid username or password")
+        setErrorMessage("Invalid username or password");
       }
     }, 350);
     return () => clearTimeout(timer);
@@ -42,7 +42,7 @@ const LoginForm = () => {
     if (token) {
       navigate("/profile");
     }
-  }, [token]);
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="row justify-content-center mt-5">

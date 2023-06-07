@@ -92,7 +92,7 @@ function App() {
 
   useEffect(() => {
     getUserData();
-  }, [token]);
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Get list of users only after you're logged in
   useEffect(() => {
@@ -105,7 +105,7 @@ function App() {
       getUserInfo();
       getUser();
     }
-  }, [userData]);
+  }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
