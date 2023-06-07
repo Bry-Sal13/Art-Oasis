@@ -54,7 +54,7 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
 
   useEffect(() => {
     checkLoggedIn();
-  }, [token]);
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">

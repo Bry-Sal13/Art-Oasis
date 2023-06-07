@@ -91,7 +91,7 @@ function OthersProfile({
       getUser(username.username);
     }
     
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (user !== "" && user !== null && user !== undefined) {
     if (isLoading) {
