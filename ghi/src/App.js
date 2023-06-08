@@ -124,6 +124,22 @@ function App() {
           <Routes>
             <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/" element={<LandingPage />} />
+            <Route
+              path="/home"
+              element={
+                <MainPage
+                  getComments={getComments}
+                  getPosts={getPosts}
+                  posts={posts}
+                  userInfo={userInfo}
+                  getUserInfo={getUserInfo}
+                  users={users}
+                  connections={connections}
+                  userData={userData}
+                  comments={comments}
+                />
+              }
+            />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/login" element={<LoginForm />} />
             <Route
