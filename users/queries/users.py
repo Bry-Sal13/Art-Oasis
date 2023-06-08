@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Union
 from psycopg_pool import ConnectionPool
 from fastapi import HTTPException, status
-import os
+
 
 pool = ConnectionPool("postgresql://users:password@postgres:5432/users")
 
