@@ -137,7 +137,7 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
                 </NavLink>
               </li>
 
-              <li className="nav-item px-2">
+              <li className="nav-item px-2 d-none">
                 <NavLink
                   className="nav-link"
                   aria-current="page"
