@@ -24,6 +24,8 @@ function App() {
   const [userInfo, setUserInfo] = useState(userData.user);
   const { token, fetchWithCookie } = useToken();
   const [user, setUser] = useState("");
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -109,7 +111,7 @@ function App() {
 
   return (
     <div>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <Nav
           users={users}
           searchUser={user}
@@ -127,11 +129,7 @@ function App() {
             <Route
               path="/name"
               element={
-                <NameForm
-                  userInfo={userInfo}
-                  setUserInfo={setUserInfo}
-                  getUserInfo={getUserInfo}
-                />
+                <NameForm userInfo={userInfo} setUserInfo={setUserInfo} />
               }
             />
             <Route
@@ -143,41 +141,39 @@ function App() {
             <Route
               path="/category"
               element={
-                <CategoryForm
-                  userInfo={userInfo}
-                  getUserInfo={getUserInfo}
-                  setUserInfo={setUserInfo}
-                />
+                <CategoryForm userInfo={userInfo} setUserInfo={setUserInfo} />
               }
             />
-            <Route
-              path="/profile"
-              element={
-                <UserProfile
-                  posts={posts}
-                  userInfo={userInfo}
-                  socials={socials}
-                  carousels={carousels}
-                  getCarousels={getCarousels}
-                  getPosts={getPosts}
-                  getSocials={getSocials}
-                />
-              }
-            />
-            <Route
-              path="/others-profile"
-              element={
-                <OthersProfile
-                  posts={posts}
-                  user={user}
-                  socials={socials}
-                  userInfo={userInfo}
-                  carousels={carousels}
-                  getSocials={getSocials}
-                  getUser={getUser}
-                />
-              }
-            />
+            <Route path="profiles">
+              <Route
+                path="me"
+                element={
+                  <UserProfile
+                    posts={posts}
+                    userInfo={userInfo}
+                    socials={socials}
+                    carousels={carousels}
+                    getCarousels={getCarousels}
+                    getPosts={getPosts}
+                    getSocials={getSocials}
+                  />
+                }
+              />
+              <Route
+                path=":username"
+                element={
+                  <OthersProfile
+                    posts={posts}
+                    user={user}
+                    socials={socials}
+                    userInfo={userInfo}
+                    carousels={carousels}
+                    getSocials={getSocials}
+                    getUser={getUser}
+                  />
+                }
+              />
+            </Route>
             <Route
               path="/profile/edit"
               element={
