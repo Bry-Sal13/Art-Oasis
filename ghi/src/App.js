@@ -27,8 +27,19 @@ function App() {
     const [userInfo, setUserInfo] = useState(userData.user);
     const { token, fetchWithCookie } = useToken();
     const [user, setUser] = useState("");
+    const [likes, setLikes] = useState([]);
+
     const domain = /https:\/\/[^/]+/;
     const basename = process.env.PUBLIC_URL.replace(domain, "");
+
+    const GetLikes = async () => {
+        const url = "http://localhost:8010/api/likes";
+        const response = await fetch(url, { credentials: "include" });
+        if (response.ok) {
+            const data = await response.json();
+            setLikes(data);
+        }
+    };
 
     const getUserData = async () => {
         const tokenUrl = "http://localhost:8000/token";
@@ -120,15 +131,9 @@ function App() {
     }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        // If token is falsy, then don't call getUsers
         if (userData) {
             getPosts();
-        }
-    }, [userData]);
-    // Get list of users only after you're logged in
-    useEffect(() => {
-        // If token is falsy, then don't call getUsers
-        if (userData) {
+            GetLikes();
             getUsers();
             getComments();
             getCarousels();
