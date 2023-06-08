@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate, NavLink, useParams } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
 function Nav({ users, token, setUserInfo, getUser, setUser }) {
-  const { username } = useParams();
+
   const navigate = useNavigate();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
