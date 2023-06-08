@@ -93,9 +93,7 @@ class PostRepository:
                         ],
                     )
                     record = db.fetchone()
-
                     if record is not None:
-                        id = record[0]
                         created = record[4]
                         return self.post_in_to_out(post_id, created, post)
         except Exception as e:
