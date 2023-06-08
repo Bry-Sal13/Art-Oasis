@@ -11,7 +11,7 @@ import UserProfile from "./Profile/UserProfile";
 import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
 import OthersProfile from "./Profile/OthersProfile";
-import MainPage from "./MainPage/MainPage"
+import MainPage from "./MainPage/MainPage";
 import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav";
 import "./App.css";
@@ -123,7 +123,6 @@ function App() {
       getPosts();
     }
   }, [userData, comments]);
-
 
   // Get list of users only after you're logged in
   useEffect(() => {

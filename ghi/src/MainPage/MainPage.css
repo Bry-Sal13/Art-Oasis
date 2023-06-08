@@ -1,215 +1,215 @@
 .container {
-    margin-top: 45px;
-    max-width: 50%;
+  margin-top: 45px;
+  max-width: 50%;
 }
 
 .pic-border {
-    border-radius: 10px;
-    border: 2px solid #7f669d;
+  border-radius: 10px;
+  border: 2px solid #7f669d;
 }
 
 .card {
-    border-radius: 10px !important;
+  border-radius: 10px !important;
 }
 
 .comment-form {
 }
 
 .comment-margin {
-    margin-left: 7px;
-    margin-top: 5px;
+  margin-left: 7px;
+  margin-top: 5px;
 }
 
 .commenter-img {
-    height: 50px;
-    width: 50px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+  height: 70px;
+  width: 70px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .less-padding {
-    padding: 0.05rem 0.05rem;
+  padding: 0.05rem 0.05rem;
 }
 .text-border {
-    border: 2px solid #7f669d;
-    border-radius: 10px;
+  border: 2px solid #7f669d;
+  border-radius: 10px;
 }
 
 .button-width {
-    width: 100px;
+  width: 100px;
 }
 
 .bottom-mar {
-    margin-bottom: 8px !important;
+  margin-bottom: 8px !important;
 }
 
 .bg-pastel-purp {
-    background-color: #735c8f;
-    border: 5px;
-    border-color: #695582;
-    padding: 5px 10px;
-    border-radius: 10px;
-    cursor: pointer;
+  background-color: #735c8f;
+  border: 5px;
+  border-color: #695582;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
-    background-color: #debace;
-    border: none;
+  background-color: #debace;
+  border: none;
 }
 
 .margins {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 #picUrl {
-    width: 90%;
+  width: 90%;
 }
 #postText {
-    width: 90%;
-    height: 80px;
+  width: 90%;
+  height: 80px;
 }
 .card-profile {
-    width: 335px;
-    border: 2px solid #7f669d;
-    border-radius: 15px;
-    padding: 8px;
-    background-color: #c2aad1;
-    position: fixed;
-    top: 100px;
-    left: 50px;
-    height: 325px;
+  width: 335px;
+  border: 2px solid #7f669d;
+  border-radius: 15px;
+  padding: 8px;
+  background-color: #c2aad1;
+  position: fixed;
+  top: 100px;
+  left: 50px;
+  height: 325px;
 }
 
 .max-height {
-    max-height: 450px;
-    aspect-ratio: 1/1;
-    object-fit: contain;
+  max-height: 450px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
 }
 
 .feed-margins {
-    margin-bottom: 45px;
+  margin-bottom: 45px;
 }
 
 .post {
-    background-color: #c2aad1;
-    padding-left: 0px;
-    padding-right: 0px;
-    border: 2px solid #7f669d;
-    margin-bottom: 45px;
+  background-color: #c2aad1;
+  padding-left: 0px;
+  padding-right: 0px;
+  border: 2px solid #7f669d;
+  margin-bottom: 45px;
 }
 
 .upper {
-    height: 100px;
+  height: 100px;
 }
 
 .upper img {
-    width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .user {
-    position: relative;
+  position: relative;
 }
 
 .profile img {
-    height: 80px;
-    width: 80px;
-    margin-top: 2px;
+  height: 80px;
+  width: 80px;
+  margin-top: 2px;
 }
 
 .profile {
-    position: absolute;
-    top: -50px;
-    left: 38%;
-    height: 90px;
-    width: 90px;
-    border: 3px solid #fff;
-    border-radius: 50%;
+  position: absolute;
+  top: -50px;
+  left: 38%;
+  height: 90px;
+  width: 90px;
+  border: 3px solid #fff;
+  border-radius: 50%;
 }
 
 .stats span {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .ellipsis {
-    color: #a09c9c;
+  color: #a09c9c;
 }
 
 hr {
-    color: #a09c9c;
-    margin-top: 4px;
-    margin-bottom: 8px;
+  color: #a09c9c;
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
 .muted-color {
-    color: #a09c9c;
-    font-size: 13px;
+  color: #a09c9c;
+  font-size: 13px;
 }
 
 .ellipsis i {
-    margin-top: 3px;
-    cursor: pointer;
+  margin-top: 3px;
+  cursor: pointer;
 }
 
 .icons i {
-    font-size: 25px;
+  font-size: 25px;
 }
 
 .icons .fa-heart {
-    color: red;
+  color: red;
 }
 
 .icons .fa-smile-o {
-    color: yellow;
-    font-size: 29px;
+  color: yellow;
+  font-size: 29px;
 }
 
 .card-header {
-    border-bottom: 2px solid #7f669d;
-    background-color: #a986be;
-    font-weight: bold;
+  border-bottom: 2px solid #7f669d;
+  background-color: #a986be;
+  font-weight: bold;
 }
 .rounded-image {
-    border-radius: 50% !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 50px;
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
 }
 
 .name {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .comment-text {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .status small {
-    margin-right: 10px;
-    color: blue;
+  margin-right: 10px;
+  color: blue;
 }
 
 .form-control {
-    border-radius: 26px;
+  border-radius: 26px;
 }
 
 .comment-input {
-    position: relative;
+  position: relative;
 }
 
 .fonts {
-    position: absolute;
-    right: 13px;
-    top: 8px;
-    color: #a09c9c;
+  position: absolute;
+  right: 13px;
+  top: 8px;
+  color: #a09c9c;
 }
 
 .form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #8bbafe;
-    outline: 0;
-    box-shadow: none;
+  color: #495057;
+  background-color: #fff;
+  border-color: #8bbafe;
+  outline: 0;
+  box-shadow: none;
 }
