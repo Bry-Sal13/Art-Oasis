@@ -171,6 +171,8 @@ function App() {
                             path="/home"
                             element={
                                 <MainPage
+                                    getUser={getUser}
+                                    setUser={setUser}
                                     getLikes={getLikes}
                                     likes={likes}
                                     getComments={getComments}

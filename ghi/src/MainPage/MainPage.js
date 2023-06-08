@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MainPage.css";
 
 function MyProfileSidebar({ connections, userInfo, posts }) {
@@ -155,15 +156,16 @@ function Feed({
     getComments,
     users,
     userInfo,
+    getUser,
+    setUser,
     posts,
     comments,
     likes,
     getLikes,
-    getPosts,
 }) {
     // const [likeCount, setLikeCount] = useState(0);
     const [commentText, setCommentText] = useState("");
-
+    const navigate = useNavigate();
     const handleCommentChange = (event) => {
         setCommentText(event.target.value);
     };
@@ -189,6 +191,14 @@ function Feed({
             }
         } catch (error) {
             console.log("error creating comment: ", error);
+        }
+    };
+
+    const handleProfileRedirect = async (user) => {
+        await getUser(user.username);
+        setUser(user);
+        if (user) {
+            navigate(`/profiles/${user.username}`);
         }
     };
 
@@ -247,12 +257,16 @@ function Feed({
                         like.username === userInfo.username
                     );
                 });
+
                 return (
                     <div key={post.id} id="feed-margins" className="card">
                         <div id="post-body" className="card-body">
                             <div className="row">
                                 <div className="col-2">
                                     <img
+                                        onClick={() =>
+                                            handleProfileRedirect(user)
+                                        }
                                         id="post-profile-img"
                                         className="ms-4"
                                         src={user.profile_picture}
@@ -397,6 +411,8 @@ function MainPage({
     posts,
     userInfo,
     users,
+    getUser,
+    setUser,
     connections,
     comments,
     getLikes,
@@ -427,8 +443,9 @@ function MainPage({
                 <CreatePost userInfo={userInfo} getPosts={getPosts} />
                 {/* FEED */}
                 <Feed
+                    getUser={getUser}
+                    setUser={setUser}
                     getLikes={getLikes}
-                    getPosts={getPosts}
                     likes={likes}
                     getComments={getComments}
                     users={users}
