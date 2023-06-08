@@ -9,7 +9,7 @@ glv-cloud-cli deploy -a users3-api -i registry.gitlab.com/code-and-canvas/projec
 
 glv-cloud-cli deploy -a posts3-api -i registry.gitlab.com/code-and-canvas/project-gamma/project-gamma-posts-api:latest -e SIGNING_KEY=Jt0YTdSeVWxZ4BYvVdbseJy0puDvKPpl615aYqGvDkNm7dgdvs/jv4Y8V/epWoZUhuyOKmPsiRBA5oveFWxBlevVYYK7rq+ofyXwtoBpgQTZAy9kciI1xsZNrlTLXf17/m5jC1h7DflO9+Lp7HorscnT3u99LjhPwfrkSUt9f8OOEUB5+khjJ/TleJwmn1eoEAPeOwnL0mBrUVtyTVizWARUsl0rMnAv2dBSKLhMRC6ybQrU5MFEMot7IlPFYVx7OJi6PqQa0tMEgT2PRxJmqu6vAwrA3yzwVsfk2AYgjXtGzyc2kIX3aT7r0MeSTb1soIE2xQpR4ePGPiSyvmuKnh3TjCV5SjBcvbzkhhuXbQhJKc68MYsTk/ph7BSa2kawW+5MEidC+rtbqF7EoAK4dbfm9TQ+c/rEoSo6BYGeKsZVwgsvLPqKhI/4GuqqtsnCGpg7as9eLOJt3ye35Q3q82v2fKFjlP3jxRAttJAbeLGuMlCPXk4JuL1sUGnDvKe/U0Mv/4wG/mGsraKS3OxEDeFBLUCTqOc5tt2/YTlX+DR63H0UcYpNs2uQbXSzZ4QfXjDTRXdUBA4Hrs8NOVikzRklgFJItpSYfE87KpPTQKbThYRyMacOPik6JENEA4rHRKDJpzDmIWSLIjfMl5iw62snoSFS15JglvFSOdjPnVw= -e DATABASE_URL=postgresql://posts:password@feb-23-pt-1-codeandcanvas-db-service.default.svc.cluster.local/posts -e CORS_HOST=https://code-and-canvas.gitlab.io
 
-glv-cloud-cli deploy -a codeandcanvas-db -i postgres:14.2-bullseye -e 'POSTGRES_MULTIPLE_DATABASES=users,posts' -e POSTGRES_PASSWORD=test-databases -m var/lib/postgresql -p 5432 -x=false
+glv-cloud-cli deploy -a codeandcanvas-db2 -i postgres:14.2-bullseye -e POSTGRES_MULTIPLE_DATABASES=users -e POSTGRES_PASSWORD=test-databases -m var/lib/postgresql -p 5432 -x=false
 
 
 glv-cloud-cli deploy -a codeandcanvas2-db -i postgres:14.5-bullseye -e POSTGRES_DB=codeandcanvas-db -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -m /var/lib/postgresql -p 5432 -x=false
