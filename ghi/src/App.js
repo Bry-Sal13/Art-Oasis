@@ -124,7 +124,7 @@ function App() {
         if (userData) {
             getPosts();
         }
-    }, [userData, posts.length]);
+    }, [userData]);
     // Get list of users only after you're logged in
     useEffect(() => {
         // If token is falsy, then don't call getUsers
@@ -161,6 +161,8 @@ function App() {
                             path="/home"
                             element={
                                 <MainPage
+                                    getComments={getComments}
+                                    getPosts={getPosts}
                                     posts={posts}
                                     userInfo={userInfo}
                                     getUserInfo={getUserInfo}

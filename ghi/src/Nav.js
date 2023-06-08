@@ -143,7 +143,7 @@ function Nav({ users, token, setUserInfo, getUser, searchUser, setUser }) {
                                 <NavLink
                                     className="nav-link"
                                     aria-current="page"
-                                    to="/">
+                                    to="/home">
                                     Home
                                 </NavLink>
                             </li>
