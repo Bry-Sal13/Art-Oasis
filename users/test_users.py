@@ -70,4 +70,3 @@ def test_get_user():
         category="krze art",
         about="krze art dude",
     )
-
