@@ -14,14 +14,12 @@ class Error(BaseModel):
 class ConnectionIn(BaseModel):
     user_id: int
     following_id: int  # the person who the user_id is following
-    following: bool  # if that follower is following you
 
 
 class ConnectionOut(BaseModel):
     id: int
     user_id: int
     following_id: int  # the person who the user_id is following
-    following: bool  # if that follower is following you
 
 
 class ConnectionRepository:
@@ -31,7 +29,7 @@ class ConnectionRepository:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT id, user_id, following_id, following
+                        SELECT id, user_id, following_id
                         FROM connections
                         WHERE id = %s
                         """,
@@ -48,7 +46,6 @@ class ConnectionRepository:
                         id=record[0],
                         user_id=record[1],
                         following_id=record[2],
-                        following=record[3],
                     )
         except HTTPException:
             raise
@@ -72,7 +69,6 @@ class ConnectionRepository:
                             id=record[0],
                             user_id=record[1],
                             following_id=record[2],
-                            following=record[3],
                         )
                         results.append(connection)
                     return results
@@ -83,12 +79,12 @@ class ConnectionRepository:
     def create_connection(self, data: ConnectionIn):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                params = [data.user_id, data.following_id, data.following]
+                params = [data.user_id, data.following_id]
                 res = cur.execute(
                     """
-                    INSERT INTO connections (user_id, following_id, following)
-                    VALUES (%s, %s, %s)
-                    RETURNING id, user_id, following_id, following
+                    INSERT INTO connections (user_id, following_id)
+                    VALUES (%s, %s)
+                    RETURNING id, user_id, following_id
                     """,
                     params,
                 )
@@ -103,18 +99,12 @@ class ConnectionRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    params = [
-                        data.user_id,
-                        data.following_id,
-                        data.following,
-                        connection_id,
-                    ]
+                    params = [data.user_id, data.following_id, connection_id]
                     cur.execute(
                         """
                         UPDATE connections
                         SET user_id = %s
                         , following_id = %s
-                        , following = %s
                         WHERE id = %s
                         """,
                         params,
@@ -161,5 +151,4 @@ class ConnectionRepository:
             id=record[0],
             user_id=record[1],
             following_id=record[2],
-            following=record[3],
         )

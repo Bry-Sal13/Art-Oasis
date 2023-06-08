@@ -25,9 +25,11 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE connections(
-            id SERIAL NOT NULL UNIQUE PRIMARY KEY,
-            user_id INT,
-            following_id INT
+            id SERIAL PRIMARY KEY,
+            user_id INT NOT NULL,
+            following_id INT NOT NULL,
+            UNIQUE (user_id , following_id ),
+            CHECK (user_id <> following_id )
         );
         """,
         # "Down" SQL statement

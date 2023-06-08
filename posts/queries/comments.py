@@ -13,16 +13,15 @@ class Error(BaseModel):
 # Comment in
 class CommentsIn(BaseModel):
     post_id: int
-    user_id: int
+    username: str
     text: str
-    created: datetime
 
 
 # Comment Out
 class CommentsOut(BaseModel):
     id: int
     post_id: int
-    user_id: int
+    username: str
     text: str
     created: datetime
 
@@ -30,7 +29,7 @@ class CommentsOut(BaseModel):
 # Repo Class
 class CommentsRepository:
     # get one
-    def get_one(self, comment_id: int) -> Optional[CommentsOut]:
+    def get_one_(self, comment_id: int) -> Optional[CommentsOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -38,7 +37,7 @@ class CommentsRepository:
                         """
             SELECT id
             , post_id
-            , user_id
+            , username
             , text
             , created
             FROM comments
@@ -63,7 +62,7 @@ class CommentsRepository:
                         """
             select id
             , post_id
-            , user_id
+            , username
             , text
             , created
             FROM comments
@@ -83,23 +82,28 @@ class CommentsRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
             INSERT INTO comments
-              (post_id,user_id,text,created)
+              (post_id,username,text)
             VALUES
-              (%s,%s,%s,%s)
-            RETURNING id;
+              (%s,%s,%s)
+            RETURNING *;
             """,
                         [
                             comment.post_id,
-                            comment.user_id,
+                            comment.username,
                             comment.text,
-                            comment.created,
                         ],
                     )
-                    id = result.fetchone()[0]
-                    return self.comment_in_to_out(id, comment)
+                    record = db.fetchone()
+                    if record is not None:
+                        id = record[0]
+                        created = record[4]
+                        return self.comment_in_to_out(id, created, comment)
+                    else:
+                        return {"message": "Creating post did not work"}
+
         except Exception as e:
             print(e)
             return {"message": "Creating comment did not work"}
@@ -139,16 +143,14 @@ class CommentsRepository:
                         """
             UPDATE comments
             SET post_id = %s
-            , user_id = %s
+            , username = %s
             , text = %s
-            , created = %s
             WHERE id = %s
             """,
                         [
                             comment.post_id,
-                            comment.user_id,
+                            comment.username,
                             comment.text,
-                            comment.created,
                             comment_id,
                         ],
                     )
@@ -165,16 +167,18 @@ class CommentsRepository:
             return {"message": "Could not update Comment"}
 
     # comment in to out
-    def comment_in_to_out(self, id: int, comment: CommentsIn):
+    def comment_in_to_out(
+        self, id: int, created: datetime, comment: CommentsIn
+    ):
         old_data = comment.dict()
-        return CommentsOut(id=id, **old_data)
+        return CommentsOut(id=id, created=created, **old_data)
 
     # record to comment out
     def record_to_comment_out(self, record):
         return CommentsOut(
             id=record[0],
             post_id=record[1],
-            user_id=record[2],
+            username=record[2],
             text=record[3],
             created=record[4],
         )
