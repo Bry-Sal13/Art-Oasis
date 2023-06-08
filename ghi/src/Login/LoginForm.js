@@ -23,7 +23,6 @@ const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await login(username, password);
-    console.log(token);
     setUsername("");
     setPassword("");
     event.target.reset();
@@ -40,9 +39,9 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/profile");
+      navigate("/profiles/me");
     }
-  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [token, navigate]);
 
   return (
     <div className="row justify-content-center mt-5">
