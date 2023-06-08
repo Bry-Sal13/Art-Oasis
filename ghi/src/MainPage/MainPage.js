@@ -152,7 +152,7 @@ function CreatePost({ userInfo, getPosts }) {
 }
 
 function Feed({ getComments, users, userInfo, posts, comments }) {
-    const [likeCount, setLikeCount] = useState(0);
+    // const [likeCount, setLikeCount] = useState(0);
     const [commentText, setCommentText] = useState("");
 
     const handleCommentChange = (event) => {
