@@ -29,9 +29,23 @@
     border-radius: 10px;
     cursor: pointer;
 }
-
-#create-comment-body, #post-body, #post-comment-body {
+#post-profile-img {
+    border-radius: 50% !important;
+    height: 70px;
+    width: 70px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#create-comment-body,
+#post-body,
+#post-comment-body {
     background-color: #c2aad1 !important;
+}
+
+#like-button {
+    position: absolute;
+    top: 30px;
+    right: 26px;
 }
 
 #post-btn {

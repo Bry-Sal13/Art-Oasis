@@ -37,7 +37,8 @@ steps = [
         CREATE TABLE likes(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             post_id INT NOT NULL,
-            username VARCHAR(20) NOT NULL
+            username VARCHAR(20) NOT NULL,
+            UNIQUE (username , post_id )
         );
         """,
         # "Down" SQL statement
