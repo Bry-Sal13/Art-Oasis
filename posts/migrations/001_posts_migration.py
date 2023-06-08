@@ -4,7 +4,7 @@ steps = [
         """
         CREATE TABLE posts (
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
-            user_id INT NOT NULL,
+            username VARCHAR(20) NOT NULL,
             text VARCHAR(600) DEFAULT NULL,
             image VARCHAR(2500) DEFAULT NULL,
             created TIMESTAMP DEFAULT NOW()
@@ -21,7 +21,7 @@ steps = [
         CREATE TABLE comments(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             post_id INT NOT NULL,
-            user_id INT NOT NULL,
+            username VARCHAR(20) NOT NULL,
             text VARCHAR(600) NOT NULL,
             created TIMESTAMP DEFAULT NOW()
         );
@@ -37,7 +37,7 @@ steps = [
         CREATE TABLE likes(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             post_id INT NOT NULL,
-            user_id INT NOT NULL
+            username VARCHAR(20) NOT NULL
         );
         """,
         # "Down" SQL statement

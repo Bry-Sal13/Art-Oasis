@@ -27,8 +27,7 @@ def get_connections(
     repo: ConnectionRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    connections = repo.get_connections()
-    return connections
+    return repo.get_connections()
 
 
 @router.get(

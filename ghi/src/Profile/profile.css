@@ -44,3 +44,11 @@
   top: 72px;
   left: 26px;
 }
+
+.card {
+  background-color: rgb(245, 245, 245) !important;
+}
+
+.inner-card {
+  background-color: rgb(249, 244, 244) !important;
+}

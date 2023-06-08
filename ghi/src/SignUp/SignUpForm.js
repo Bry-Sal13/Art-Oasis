@@ -71,27 +71,32 @@ const SignUpForm = () => {
       },
     };
 
-    try {
-      if (password === confirmPassword) {
-        const response = await fetch(userUrl, fetchConfig);
-        if (response.ok) {
-          await login(username, password);
-          setUsername("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          navigate("/name");
-        } else {
-          console.log("Form submission failed!");
-        }
+  try {
+    if (password === confirmPassword){
+      const response = await fetch(userUrl, fetchConfig);
+
+      if (response.ok) {
+        login(username, password);
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        navigate("/name");
       } else {
-        throw new Error("Passwords do not match!");
-        //TODO: Maybe put an alert here?
+        console.log("Form submission failed!");
       }
-    } catch (error) {
-      console.log("Error submitting form:", error);
     }
-  };
+    else{
+      throw new Error("Passwords do not match!")
+      //TODO: Maybe put an alert here?
+    }
+
+  } catch (error) {
+    console.log("Error submitting form:", error);
+  }
+
+
+};
 
   return (
     <div className="row justify-content-center mt-5">

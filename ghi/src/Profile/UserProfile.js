@@ -118,7 +118,7 @@ function UserProfile({
 
     if (posts.length !== 0 && Array.isArray(posts)) {
       filteredPosts = posts.filter((post) => {
-        return post.user_id === userInfo.user_id;
+        return post.username === userInfo.username;
       });
     }
 
@@ -145,7 +145,7 @@ function UserProfile({
         <div className="container">
           <div className="row mt-5 mx-3">
             <div className="card mb-5">
-              <div className="card m-3">
+              <div className="card inner-card m-3">
                 <div
                   className="card-header  d-flex  justify-content-between  align-items-center"
                   style={{
