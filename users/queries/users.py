@@ -4,7 +4,7 @@ from psycopg_pool import ConnectionPool
 from fastapi import HTTPException, status
 import os
 
-pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
+pool = ConnectionPool("postgresql://users:password@postgres:5432/users")
 
 
 # IN MODEL
