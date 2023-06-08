@@ -114,7 +114,7 @@ function App() {
         if (userData) {
             getPosts();
         }
-    }, [userData, comments]);
+    }, [userData, posts.length]);
     // Get list of users only after you're logged in
     useEffect(() => {
         // If token is falsy, then don't call getUsers

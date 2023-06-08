@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
 from authenticator import authenticator
-from queries.connections import(
+from queries.connections import (
     ConnectionIn,
     ConnectionOut,
     ConnectionRepository,
-    Error
+    Error,
 )
 
 router = APIRouter(prefix="/api")
@@ -26,31 +26,27 @@ def get_connections(
     repo: ConnectionRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    connections = repo.get_connections()
-    if not connections:
-        return {
-                "connections": connections,
-                "message": "create some connections you currently have none"
-            }
-    return connections
+    return repo.get_connections()
 
 
-@router.get("/connections/{connection_id}", response_model=Union[ConnectionOut, Error])
+@router.get(
+    "/connections/{connection_id}", response_model=Union[ConnectionOut, Error]
+)
 def get_one_connection(
     connection_id: int,
     response: Response,
     repo: ConnectionRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> ConnectionOut:
-    
-    
     connection = repo.get_connection(connection_id)
     if not connection:
         response.status_code = 404
     return connection
 
 
-@router.put("/connections/{connection_id}", response_model=Union[ConnectionOut, Error])
+@router.put(
+    "/connections/{connection_id}", response_model=Union[ConnectionOut, Error]
+)
 def update_connection(
     connection_id: int,
     connection: ConnectionIn,
@@ -58,11 +54,12 @@ def update_connection(
     repo: ConnectionRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[ConnectionOut, Error]:
-    
     return repo.update_connection(connection_id, connection)
 
 
-@router.delete("/connections/{connection_id}", response_model=Union[bool, Error])
+@router.delete(
+    "/connections/{connection_id}", response_model=Union[bool, Error]
+)
 def delete_connection(
     connection_id: int,
     response: Response,

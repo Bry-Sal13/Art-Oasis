@@ -5,27 +5,30 @@ function MyProfileSidebar({ connections, userInfo, posts }) {
     const [following, setFollowing] = useState(0);
     const [followers, setFollowers] = useState(0);
     const [postNum, setPostNum] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+
     const getUserStats = () => {
-        if (connections.length !== 0) {
-            const copyOfConnections = connections;
-            console.log(copyOfConnections);
-            const followingNum = copyOfConnections.filter((connection) => {
-                return connection.user_id === userInfo.user_id;
-            });
-            const followerNum = connections.filter((connection) => {
-                return connection.following_id === userInfo.user_id;
-            });
-            setFollowers(followerNum.length);
-            setFollowing(followingNum.length);
-        }
+        const followingNum = connections.filter((connection) => {
+            return connection.user_id === userInfo.user_id;
+        });
+        const followerNum = connections.filter((connection) => {
+            return connection.following_id === userInfo.user_id;
+        });
+
         const postNum = posts.filter((post) => {
             return post.username === userInfo.username;
         });
         setPostNum(postNum.length);
+        setFollowers(followerNum.length);
+        setFollowing(followingNum.length);
     };
+
     useEffect(() => {
-        getUserStats();
-    }, [connections, posts]); // eslint-disable-line react-hooks/exhaustive-deps
+        if (userInfo && posts.length !== 0 && connections.length !== 0) {
+            getUserStats();
+        }
+    }, [userInfo, connections, posts]); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <div className="container d-flex justify-content-center align-items-center bg-light-purp">
             <div className="card card-profile">
@@ -152,7 +155,8 @@ function CreatePost({ userInfo }) {
                             />
                             <br />
                             <button
-                                className="btn btn-primary bg-pastel-purp button-width"
+                                id="post-btn"
+                                className="btn btn-primary"
                                 type="submit">
                                 Post
                             </button>
@@ -217,34 +221,40 @@ function Feed({ users, userInfo, posts, comments }) {
                         <div className="card-body">
                             <div className="card comment-form">
                                 <div className="card-body">
-                                    <div className="row align-items-center">
-                                        <div className="col-3 text-center">
+                                    <div className="row">
+                                        <div className="col-1">
                                             <img
                                                 className="rounded-circle commenter-img"
                                                 alt="profile"
                                                 src={userInfo.profile_picture}
                                             />
                                         </div>
-                                        <div className="col align-items-center">
-                                            <form onSubmit={handlePostSubmit}>
+                                        <div className="col">
+                                            <form
+                                                className="ms-3"
+                                                onSubmit={handlePostSubmit}>
                                                 <label htmlFor="commentText">
                                                     Comment:
                                                 </label>
-                                                <br />
-                                                <textarea
-                                                    onChange={handleTextChange}
-                                                    className="margins text-border"
-                                                    id="commentText"
-                                                    name="commentText"
-                                                    value={commentText}
-                                                    rows="2"
-                                                    required
-                                                />
-                                                <button
-                                                    className="btn btn-primary bg-pastel-purp mb-5"
-                                                    type="submit">
-                                                    Post
-                                                </button>
+                                                <div>
+                                                    <textarea
+                                                        onChange={
+                                                            handleTextChange
+                                                        }
+                                                        className="margins text-border"
+                                                        id="commentText"
+                                                        name="commentText"
+                                                        value={commentText}
+                                                        rows="2"
+                                                        required
+                                                    />
+                                                    <button
+                                                        id="comment-btn"
+                                                        className="btn btn-primary bg-pastel-purp"
+                                                        type="submit">
+                                                        Post
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -294,13 +304,7 @@ function Feed({ users, userInfo, posts, comments }) {
 function MainPage({ posts, userInfo, users, connections, comments }) {
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        if (
-            userInfo &&
-            posts.length !== 0 &&
-            users.length !== 0 &&
-            connections.length !== 0 &&
-            comments.length !== 0
-        ) {
+        if (userInfo) {
             setIsLoading(false);
         }
     }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps

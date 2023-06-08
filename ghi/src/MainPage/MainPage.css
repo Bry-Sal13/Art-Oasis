@@ -12,17 +12,33 @@
     border-radius: 10px !important;
 }
 
-.comment-form {
+#comment-btn {
+    position: absolute;
+    background-color: #735c8f;
+    border: 5px;
+    border-color: #695582;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
+#post-btn {
+    width: 100px;
+    background-color: #735c8f;
+    border: 5px;
+    border-color: #695582;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
 .comment-margin {
     margin-left: 7px;
     margin-top: 5px;
 }
 
 .commenter-img {
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -36,7 +52,6 @@
 }
 
 .button-width {
-    width: 100px;
 }
 
 .bottom-mar {
