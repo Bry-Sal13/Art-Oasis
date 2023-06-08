@@ -1,61 +1,61 @@
 # volumes:
 volumes:
-  postgres-data:
-    external: true
+    postgres-data:
+        external: true
 services:
-  users-api:
-    build:
-      context: users
-      dockerfile: Dockerfile.dev
-    ports:
-      - 8000:80
-    volumes:
-      - ./users:/app
-    environment:
-      SIGNING_KEY: nMJtTgjIag6Dhd9FCdFhXiMXku4R9LB+59AFlEcJLz6aKRsFCXsKM1OrhsPOwujC7UmoNbVAnie8ORxZ/0dqqRExE+vzvmoY+E4IAb9EnEA4bJ5yGyn9HZ1ljFlZugwxxf/8ME3IMLhy+tt+Rp/0ieJsJHw8ui6q2VfYc4/x4KSk1WplMHPvlrqielBKBcNorj05SoAdbEyYiBZH4YYS7ax5MJ146KQ1Sfl7RgkhLPRSD+IXZKkJQeX6wEeH05IgrHtwIw7YzE6ECrRCe32l24My7i7rbLnVhaRpxLWapiYr82b0BoS6+G3AAqiJtjeXd+g1Jb8/Pto+D5cbWdhYQg==
-      DATABASE_URL: postgresql://users:password@postgres:5432/users
-      WAIT_HOSTS: postgres:5432
-      CORS_HOST: http://localhost:3000
-    depends_on:
-      - postgres
-  posts-api:
-    build:
-      context: posts
-      dockerfile: Dockerfile.dev
-    ports:
-      - 8010:80
-    volumes:
-      - ./posts:/app
-    environment:
-      DATABASE_URL: postgresql://posts:password@postgres:5432/posts
-      SIGNING_KEY: Jt0YTdSeVWxZ4BYvVdbseJy0puDvKPpl615aYqGvDkNm7dgdvs/jv4Y8V/epWoZUhuyOKmPsiRBA5oveFWxBlevVYYK7rq+ofyXwtoBpgQTZAy9kciI1xsZNrlTLXf17/m5jC1h7DflO9+Lp7HorscnT3u99LjhPwfrkSUt9f8OOEUB5+khjJ/TleJwmn1eoEAPeOwnL0mBrUVtyTVizWARUsl0rMnAv2dBSKLhMRC6ybQrU5MFEMot7IlPFYVx7OJi6PqQa0tMEgT2PRxJmqu6vAwrA3yzwVsfk2AYgjXtGzyc2kIX3aT7r0MeSTb1soIE2xQpR4ePGPiSyvmuKnh3TjCV5SjBcvbzkhhuXbQhJKc68MYsTk/ph7BSa2kawW+5MEidC+rtbqF7EoAK4dbfm9TQ+c/rEoSo6BYGeKsZVwgsvLPqKhI/4GuqqtsnCGpg7as9eLOJt3ye35Q3q82v2fKFjlP3jxRAttJAbeLGuMlCPXk4JuL1sUGnDvKe/U0Mv/4wG/mGsraKS3OxEDeFBLUCTqOc5tt2/YTlX+DR63H0UcYpNs2uQbXSzZ4QfXjDTRXdUBA4Hrs8NOVikzRklgFJItpSYfE87KpPTQKbThYRyMacOPik6JENEA4rHRKDJpzDmIWSLIjfMl5iw62snoSFS15JglvFSOdjPnVw=
-      WAIT_HOSTS: postgres:5432
-    depends_on:
-      - postgres
-  postgres:
-    build:
-      context: ./relational-data
-      dockerfile: ./Dockerfile.dev
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_MULTIPLE_DATABASES=users,posts
-      - POSTGRES_PASSWORD=test-databases
-    ports:
-      - 15432:5432
+    users-api:
+        build:
+            context: users
+            dockerfile: Dockerfile.dev
+        ports:
+            - 8000:80
+        volumes:
+            - ./users:/app
+        environment:
+            SIGNING_KEY: nMJtTgjIag6Dhd9FCdFhXiMXku4R9LB+59AFlEcJLz6aKRsFCXsKM1OrhsPOwujC7UmoNbVAnie8ORxZ/0dqqRExE+vzvmoY+E4IAb9EnEA4bJ5yGyn9HZ1ljFlZugwxxf/8ME3IMLhy+tt+Rp/0ieJsJHw8ui6q2VfYc4/x4KSk1WplMHPvlrqielBKBcNorj05SoAdbEyYiBZH4YYS7ax5MJ146KQ1Sfl7RgkhLPRSD+IXZKkJQeX6wEeH05IgrHtwIw7YzE6ECrRCe32l24My7i7rbLnVhaRpxLWapiYr82b0BoS6+G3AAqiJtjeXd+g1Jb8/Pto+D5cbWdhYQg==
+            DATABASE_URL: postgresql://users:password@postgres:5432/users
+            WAIT_HOSTS: postgres:5432
+            CORS_HOST: http://localhost:3000
+        depends_on:
+            - postgres
+    posts-api:
+        build:
+            context: posts
+            dockerfile: Dockerfile.dev
+        ports:
+            - 8010:80
+        volumes:
+            - ./posts:/app
+        environment:
+            DATABASE_URL: postgresql://posts:password@postgres:5432/posts
+            SIGNING_KEY: Jt0YTdSeVWxZ4BYvVdbseJy0puDvKPpl615aYqGvDkNm7dgdvs/jv4Y8V/epWoZUhuyOKmPsiRBA5oveFWxBlevVYYK7rq+ofyXwtoBpgQTZAy9kciI1xsZNrlTLXf17/m5jC1h7DflO9+Lp7HorscnT3u99LjhPwfrkSUt9f8OOEUB5+khjJ/TleJwmn1eoEAPeOwnL0mBrUVtyTVizWARUsl0rMnAv2dBSKLhMRC6ybQrU5MFEMot7IlPFYVx7OJi6PqQa0tMEgT2PRxJmqu6vAwrA3yzwVsfk2AYgjXtGzyc2kIX3aT7r0MeSTb1soIE2xQpR4ePGPiSyvmuKnh3TjCV5SjBcvbzkhhuXbQhJKc68MYsTk/ph7BSa2kawW+5MEidC+rtbqF7EoAK4dbfm9TQ+c/rEoSo6BYGeKsZVwgsvLPqKhI/4GuqqtsnCGpg7as9eLOJt3ye35Q3q82v2fKFjlP3jxRAttJAbeLGuMlCPXk4JuL1sUGnDvKe/U0Mv/4wG/mGsraKS3OxEDeFBLUCTqOc5tt2/YTlX+DR63H0UcYpNs2uQbXSzZ4QfXjDTRXdUBA4Hrs8NOVikzRklgFJItpSYfE87KpPTQKbThYRyMacOPik6JENEA4rHRKDJpzDmIWSLIjfMl5iw62snoSFS15JglvFSOdjPnVw=
+            WAIT_HOSTS: postgres:5432
+        depends_on:
+            - postgres
+    postgres:
+        build:
+            context: ./relational-data
+            dockerfile: ./Dockerfile.dev
+        volumes:
+            - postgres-data:/var/lib/postgresql
+        environment:
+            - POSTGRES_MULTIPLE_DATABASES=users,posts
+            - POSTGRES_PASSWORD=test-databases
+        ports:
+            - 15432:5432
 
-  ghi:
-    image: node:lts-bullseye
-    command: /bin/bash run.sh
-    working_dir: /app
-    volumes:
-      - ./ghi:/app
-    ports:
-      - "3000:3000"
-    environment:
-      HOST_OS: ${OS}
-      NODE_ENV: development
-      HOST: "0.0.0.0"
-      PUBLIC_URL: http://localhost:3000
-      REACT_APP_SAMPLE_SERVICE_API_HOST: ${REACT_APP_SAMPLE_SERVICE_API_HOST}
-      WATCHPACK_POLLING: true
+    ghi:
+        image: node:lts-bullseye
+        command: /bin/bash run.sh
+        working_dir: /app
+        volumes:
+            - ./ghi:/app
+        ports:
+            - "3000:3000"
+        environment:
+            HOST_OS: ${OS}
+            NODE_ENV: development
+            HOST: "0.0.0.0"
+            PUBLIC_URL: http://localhost:3000
+            REACT_APP_SAMPLE_SERVICE_API_HOST: ${REACT_APP_SAMPLE_SERVICE_API_HOST}
+            WATCHPACK_POLLING: true
