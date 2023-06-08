@@ -12,7 +12,7 @@ function UserProfile({
   getCarousels,
   getPosts,
   getSocials,
-  connections
+  connections,
 }) {
   const { token } = useAuthContext();
   const [postsNum, setPostsNum] = useState(10);
@@ -197,7 +197,7 @@ function UserProfile({
                   <div className="text-center">
                     <h4 className="m-3">{userInfo.display_name}</h4>
                     <h5>{`${userInfo.first_name} - ${userInfo.last_name}`}</h5>
-                    <h5>Followers  - {followers}</h5>
+                    <h5>Followers - {followers}</h5>
                   </div>
                 </div>
                 <div className="d-flex flex-column align-content-evenly flex-wrap">

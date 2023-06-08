@@ -6,14 +6,14 @@ import { useParams } from "react-router-dom";
 import "./profile.css";
 
 function OthersProfile({
-    posts,
-    carousels,
-    socials,
-    user,
-    userInfo,
-    getSocials,
-    getUser,
-    connections
+  posts,
+  carousels,
+  socials,
+  user,
+  userInfo,
+  getSocials,
+  getUser,
+  connections,
 }) {
   const username = useParams();
   const { token } = useAuthContext();
