@@ -21,25 +21,12 @@ function App() {
     const [userData, setUserData] = useState("");
     const [posts, setPosts] = useState([]);
     const [socials, setSocials] = useState([]);
-    const [connections, setConnections] = useState([]);
-    const [comments, setComments] = useState([]);
     const [carousels, setCarousels] = useState([]);
     const [userInfo, setUserInfo] = useState(userData.user);
     const { token, fetchWithCookie } = useToken();
     const [user, setUser] = useState("");
-    const [likes, setLikes] = useState([]);
-
     const domain = /https:\/\/[^/]+/;
     const basename = process.env.PUBLIC_URL.replace(domain, "");
-
-    const GetLikes = async () => {
-        const url = "http://localhost:8010/api/likes";
-        const response = await fetch(url, { credentials: "include" });
-        if (response.ok) {
-            const data = await response.json();
-            setLikes(data);
-        }
-    };
 
     const getUserData = async () => {
         const tokenUrl = "http://localhost:8000/token";
@@ -130,16 +117,15 @@ function App() {
         getUserData();
     }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // Get list of users only after you're logged in
     useEffect(() => {
+        // If token is falsy, then don't call getUsers
         if (userData) {
-            getPosts();
-            GetLikes();
             getUsers();
-            getComments();
+            getPosts();
             getCarousels();
             getSocials();
             getUserInfo();
-            getAllConnections();
             getUser();
         }
     }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -162,23 +148,6 @@ function App() {
                             element={<CookiePolicy />}
                         />
                         <Route path="/" element={<LandingPage />} />
-                        <Route
-                            path="/home"
-                            element={
-                                <MainPage
-                                    likes={likes}
-                                    getComments={getComments}
-                                    getPosts={getPosts}
-                                    posts={posts}
-                                    userInfo={userInfo}
-                                    getUserInfo={getUserInfo}
-                                    users={users}
-                                    connections={connections}
-                                    userData={userData}
-                                    comments={comments}
-                                />
-                            }
-                        />
                         <Route path="/signup" element={<SignUpForm />} />
                         <Route path="/login" element={<LoginForm />} />
                         <Route
@@ -187,7 +156,6 @@ function App() {
                                 <NameForm
                                     userInfo={userInfo}
                                     setUserInfo={setUserInfo}
-                                    getUserInfo={getUserInfo}
                                 />
                             }
                         />
@@ -205,39 +173,40 @@ function App() {
                             element={
                                 <CategoryForm
                                     userInfo={userInfo}
-                                    getUserInfo={getUserInfo}
                                     setUserInfo={setUserInfo}
                                 />
                             }
                         />
-                        <Route
-                            path="/profile"
-                            element={
-                                <UserProfile
-                                    posts={posts}
-                                    userInfo={userInfo}
-                                    socials={socials}
-                                    carousels={carousels}
-                                    getCarousels={getCarousels}
-                                    getPosts={getPosts}
-                                    getSocials={getSocials}
-                                />
-                            }
-                        />
-                        <Route
-                            path="/others-profile"
-                            element={
-                                <OthersProfile
-                                    posts={posts}
-                                    user={user}
-                                    socials={socials}
-                                    userInfo={userInfo}
-                                    carousels={carousels}
-                                    getSocials={getSocials}
-                                    getUser={getUser}
-                                />
-                            }
-                        />
+                        <Route path="profiles">
+                            <Route
+                                path="me"
+                                element={
+                                    <UserProfile
+                                        posts={posts}
+                                        userInfo={userInfo}
+                                        socials={socials}
+                                        carousels={carousels}
+                                        getCarousels={getCarousels}
+                                        getPosts={getPosts}
+                                        getSocials={getSocials}
+                                    />
+                                }
+                            />
+                            <Route
+                                path=":username"
+                                element={
+                                    <OthersProfile
+                                        posts={posts}
+                                        user={user}
+                                        socials={socials}
+                                        userInfo={userInfo}
+                                        carousels={carousels}
+                                        getSocials={getSocials}
+                                        getUser={getUser}
+                                    />
+                                }
+                            />
+                        </Route>
                         <Route
                             path="/profile/edit"
                             element={

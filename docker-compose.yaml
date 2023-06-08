@@ -15,6 +15,7 @@ services:
             SIGNING_KEY: nMJtTgjIag6Dhd9FCdFhXiMXku4R9LB+59AFlEcJLz6aKRsFCXsKM1OrhsPOwujC7UmoNbVAnie8ORxZ/0dqqRExE+vzvmoY+E4IAb9EnEA4bJ5yGyn9HZ1ljFlZugwxxf/8ME3IMLhy+tt+Rp/0ieJsJHw8ui6q2VfYc4/x4KSk1WplMHPvlrqielBKBcNorj05SoAdbEyYiBZH4YYS7ax5MJ146KQ1Sfl7RgkhLPRSD+IXZKkJQeX6wEeH05IgrHtwIw7YzE6ECrRCe32l24My7i7rbLnVhaRpxLWapiYr82b0BoS6+G3AAqiJtjeXd+g1Jb8/Pto+D5cbWdhYQg==
             DATABASE_URL: postgresql://users:password@postgres:5432/users
             WAIT_HOSTS: postgres:5432
+            CORS_HOST: http://localhost:3000
         depends_on:
             - postgres
     posts-api:
