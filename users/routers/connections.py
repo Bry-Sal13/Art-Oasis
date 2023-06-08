@@ -28,11 +28,6 @@ def get_connections(
     user_data: dict = Depends(authenticator.get_current_account_data),
 ):
     connections = repo.get_connections()
-    if not connections:
-        return {
-            "connections": connections,
-            "message": "create some connections you currently have none",
-        }
     return connections
 
 

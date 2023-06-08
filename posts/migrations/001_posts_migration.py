@@ -6,7 +6,7 @@ steps = [
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             user_id INT NOT NULL,
             text VARCHAR(600) DEFAULT NULL,
-            image VARCHAR(1000) DEFAULT NULL,
+            image VARCHAR(2500) DEFAULT NULL,
             created TIMESTAMP DEFAULT NOW()
         );
         """,
