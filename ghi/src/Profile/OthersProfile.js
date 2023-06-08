@@ -33,15 +33,17 @@ function OthersProfile({
         );
     };
 
-  const handleFollow = async () => {
+  const handleFollow = async (event) => {
+    event.preventDefault()
     const connectionUrl = "http://localhost:8000/api/connections";
     const fetchConfig = {
       method: "post",
+      credentials: "include",
       body: JSON.stringify({
-        username: userInfo.username,
+        user_id: userInfo.user_id,
         following_id: user.user_id,
       }),
-      credentials: "include",
+
       headers: {
         "Content-Type": "application/json",
       },
@@ -106,7 +108,7 @@ function OthersProfile({
 
         if (posts.length !== 0 && Array.isArray(posts)) {
             filteredPosts = posts.filter((post) => {
-                return post.user_id === user.user_id;
+                return post.username === user.username;
             });
         }
 
@@ -157,7 +159,7 @@ function OthersProfile({
 
                   <button
                     className="btn btn-dark align-self-end flex-shrink-1"
-                    onClick={() => handleFollow}
+                    onClick={(event) => handleFollow(event)}
                   >
                     {followed}
                   </button>
@@ -327,7 +329,7 @@ function OthersProfile({
                         <div>
                           <img
                             src={post.image}
-                            className="rounded mb-3"
+                            className="rounded mb-3 mt-3"
                             alt="post pic"
                           />
                           <p>{post.text}</p>

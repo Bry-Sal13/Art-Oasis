@@ -13,7 +13,7 @@ import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
 import OthersProfile from "./Profile/OthersProfile";
 import CookiePolicy from "./Agreement/CookiePolicy";
-import Nav from "./Nav";
+import Nav from "./Nav/Nav";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -171,6 +171,7 @@ function App() {
             />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/login" element={<LoginForm />} />
+            <Route path="/cookie" element={<CookiePolicy />} />
             <Route
               path="/name"
               element={
@@ -233,6 +234,7 @@ function App() {
                   setUserInfo={setUserInfo}
                   getSocials={getSocials}
                   getCarousels={getCarousels}
+                  getUsers={getUsers}
                 />
               }
             />

@@ -358,7 +358,7 @@ function UserProfile({
                         <div>
                           <img
                             src={post.image}
-                            className="rounded mb-3"
+                            className="rounded mb-3 mt-3"
                             alt="post pic"
                           />
                           <p>{post.text}</p>

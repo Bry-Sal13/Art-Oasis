@@ -110,7 +110,7 @@ function CreatePost({ userInfo, getPosts }) {
   return (
     <div id="post" className="card">
       <div className="card-header">Create a Post</div>
-      <div className="card-body">
+      <div id="create-comment-body" className="card-body">
         <div className="row align-items-center">
           <form onSubmit={handlePostSubmit}>
             <label htmlFor="picUrl">Picture Url:</label>
@@ -137,7 +137,7 @@ function CreatePost({ userInfo, getPosts }) {
               required
             />
             <br />
-            <button id="post-btn" className="btn btn-primary" type="submit">
+            <button id="post-btn" className="btn btn-primary mt-1" type="submit">
               Post
             </button>
           </form>
@@ -192,7 +192,7 @@ function Feed({ getComments, users, userInfo, posts, comments }) {
         });
         return (
           <div key={post.id} id="feed-margins" className="card">
-            <div className="card-body">
+            <div id="post-body" className="card-body">
               <h5 className="card-title">{user.display_name}</h5>
               <p className="card-text">{post.text}</p>
             </div>
@@ -201,7 +201,7 @@ function Feed({ getComments, users, userInfo, posts, comments }) {
               className="card-img-top max-height"
               alt="post"
             />
-            <div className="card-body">
+            <div id="post-comment-body" className="card-body">
               <div className="card comment-form">
                 <div id="comment-form-body" className="card-body">
                   <form

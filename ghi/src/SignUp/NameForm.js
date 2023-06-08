@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../gradient.css";
+import "./Signup.css";
+import "./Name.css";
 import { useNavigate } from "react-router-dom";
 
 const NameForm = ({ userInfo, setUserInfo }) => {
@@ -47,42 +48,41 @@ const NameForm = ({ userInfo, setUserInfo }) => {
   };
 
   return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-6 card">
-        <div className="card-body">
-          <h1 className="text-center mb-3">
-            I'm sorry, I didn't catch your name
-          </h1>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>First Name</label>
-              <input
-                type="text"
-                value={firstName}
-                onChange={handleFirstNameChange}
-                className="form-control input-field"
-              />
-            </div>
-            <div className="form-group">
-              <label>Last Name</label>
-              <input
-                type="text"
-                value={lastName}
-                onChange={handleLastNameChange}
-                className="form-control input-field"
-              />
-            </div>
-            <br></br>
-            <button
-              type="submit"
-              className="btn btn-primary btn-block btn-field"
-            >
-              Continue
-            </button>
-          </form>
+    <div className="nameform-color">
+      <div className="container_2">
+        <div className="form-container_2">
+          <div className="form-groupp fixed-inputt">
+            <h1 className="top-text">I'm sorry, I didn't catch your name</h1>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>First Name</label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={handleFirstNameChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={handleLastNameChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <br></br>
+              <button
+                type="submit"
+                className="btn btn-black btn-block btn-field"
+              >
+                Continue
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-      <div className="footer"></div>
     </div>
   );
 };
