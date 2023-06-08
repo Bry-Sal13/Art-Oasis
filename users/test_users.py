@@ -1,7 +1,7 @@
 from main import app
 from fastapi.testclient import TestClient
 from authenticator import authenticator
-from queries.users import UserOut, UserIn, UserOutWithPassword, UserRepository
+from queries.users import UserOut, UserRepository
 
 
 client = TestClient(app)
@@ -11,7 +11,7 @@ def test_init():
     assert 1 == 1
 
 
-## TEST CREATE USER ##
+# TEST CREATE USER
 def fake_get_current_account_data():
     return UserOut(
         user_id=1,

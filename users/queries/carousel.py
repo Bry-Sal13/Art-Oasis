@@ -1,6 +1,5 @@
 from typing import List, Union
 from pydantic import BaseModel
-from typing import List, Union, Optional
 from psycopg_pool import ConnectionPool
 from fastapi import HTTPException, status
 import os
