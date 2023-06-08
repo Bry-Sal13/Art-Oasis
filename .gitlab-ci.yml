@@ -46,6 +46,9 @@ build-fastapi-service-posts-image:
 users-api-unit-tests-job:
   image: python:3-bullseye
   stage: test
+  variables:
+    DATABASE_URL: ${USERS_DATABASE_URL}
+    SIGNING_KEY: ${USERS_SIGNING_KEY}
   needs:
     - lint-test-job
   script:
