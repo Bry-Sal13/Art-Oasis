@@ -8,12 +8,12 @@ import CategoryForm from "./SignUp/CategoryForm";
 import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
+import MainPage from "./MainPage/MainPage";
 import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
 import OthersProfile from "./Profile/OthersProfile";
 import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav";
-import "./App.css";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -23,6 +23,8 @@ function App() {
   const [carousels, setCarousels] = useState([]);
   const [userInfo, setUserInfo] = useState(userData.user);
   const { token, fetchWithCookie } = useToken();
+  const [connections, setConnections] = useState([]);
+  const [comments, setComments] = useState([]);
   const [user, setUser] = useState("");
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
@@ -92,19 +94,46 @@ function App() {
     }
   };
 
+  const getComments = async () => {
+    const CommentsUrl = `http://localhost:8010/api/comments`;
+    const response = await fetch(CommentsUrl, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setComments(data);
+    }
+  };
+
+  const getAllConnections = async () => {
+    const connectionsURL = "http://localhost:8000/api/connections";
+    const response = await fetch(connectionsURL, {
+      credentials: "include",
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setConnections(data);
+    }
+  };
+
   useEffect(() => {
     getUserData();
   }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    // If token is falsy, then don't call getUsers
+    if (userData) {
+      getPosts();
+    }
+  }, [userData]);
   // Get list of users only after you're logged in
   useEffect(() => {
     // If token is falsy, then don't call getUsers
     if (userData) {
       getUsers();
-      getPosts();
+      getComments();
       getCarousels();
       getSocials();
       getUserInfo();
+      getAllConnections();
       getUser();
     }
   }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
