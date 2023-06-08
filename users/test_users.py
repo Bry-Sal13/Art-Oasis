@@ -28,7 +28,7 @@ def fake_get_current_account_data():
 
 
 class fakeUserRepo:
-    def fe_get_user(self):
+    def fe_get_user(self, username: str):
         return UserOut(
             user_id=1,
             email="krze@gmail.com",
