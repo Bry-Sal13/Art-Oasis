@@ -1,0 +1,54 @@
+.cookie {
+  font-family: "Tajawal", sans-serif;
+  font-size: small;
+  font: 15px;
+}
+
+.btn-field {
+  background-color: #000000 !important; /* Change the color to your desired color. This is blue. */
+  color: white; /* Change text color if needed */
+  border-radius: 50px; /* Make the button rounded */
+  width: 200px; /* Set a specific width */
+  margin: 0 auto;
+  display: block; /* Needed for margin auto to work */
+  font-family: "Lato", sans-serif !important;
+  border-radius: 30px !important;
+  border: black;
+  position: center;
+}
+
+/* font-family: "Lato", Impact */
+
+.text-top {
+  font-family: "Prata", serif;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 30px;
+  width: 100%;
+}
+
+.card-body {
+  background-color: #fff5f0;
+}
+
+.container_2 {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  height: 100vh;
+}
+
+.form-container_2 {
+  max-width: 500px; /* Adjust as per your need */
+  width: 100%; /* Full width */
+  margin-top: 5%;
+}
+
+.form-groupp label,
+.form-groupp input,
+.form-groupp button {
+  margin-bottom: 15px;
+}
+
+.signup-color {
+  background-color: #dbebdb;
+}

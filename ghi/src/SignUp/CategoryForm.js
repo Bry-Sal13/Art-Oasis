@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../gradient.css";
+import "./Signup.css";
+import "./Category.css";
 import { useNavigate } from "react-router-dom";
 
 const CategoryForm = ({ setUserInfo, userInfo }) => {
@@ -34,31 +36,33 @@ const CategoryForm = ({ setUserInfo, userInfo }) => {
   };
 
   return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-6 card">
-        <div className="card-body">
-          <h1 className="text-center mb-3">What kind of work do you do?</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Art category</label>
-              <input
-                type="text"
-                value={category}
-                onChange={handleCategoryChange}
-                className="form-control input-field"
-              />
-            </div>
-            <br></br>
-            <button
-              type="submit"
-              className="btn btn-primary btn-block btn-field"
-            >
-              Continue
-            </button>
-          </form>
+    <div className="category-color">
+      <div className="container_2">
+        <div className="form-container_2">
+          <div className="form-groupp fixed-inputt">
+            <h1 className="top-text">What kind of work do you do?</h1>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Art category</label>
+                <input
+                  type="text"
+                  value={category}
+                  onChange={handleCategoryChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <br></br>
+              <button
+                type="submit"
+                className="btn btn-black btn-block btn-field"
+              >
+                Continue
+              </button>
+            </form>
+          </div>
         </div>
+        <div className="footer"></div>
       </div>
-      <div className="footer"></div>
     </div>
   );
 };

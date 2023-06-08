@@ -6,7 +6,7 @@ steps = [
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             username VARCHAR(20) NOT NULL,
             text VARCHAR(600) DEFAULT NULL,
-            image VARCHAR(1000) DEFAULT NULL,
+            image VARCHAR(2500) DEFAULT NULL,
             created TIMESTAMP DEFAULT NOW()
         );
         """,
@@ -37,7 +37,8 @@ steps = [
         CREATE TABLE likes(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             post_id INT NOT NULL,
-            username VARCHAR(20) NOT NULL
+            username VARCHAR(20) NOT NULL,
+            UNIQUE (username , post_id )
         );
         """,
         # "Down" SQL statement
