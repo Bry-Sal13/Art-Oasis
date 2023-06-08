@@ -166,6 +166,7 @@ function App() {
                             path="/home"
                             element={
                                 <MainPage
+                                    likes={likes}
                                     getComments={getComments}
                                     getPosts={getPosts}
                                     posts={posts}
