@@ -13,28 +13,41 @@ function OthersProfile({
     userInfo,
     getSocials,
     getUser,
+    connections
 }) {
   const username = useParams();
   const { token } = useAuthContext();
   const [postsNum, setPostsNum] = useState(10);
+  const [followers, setFollowers] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingSocials, setLoadingSocials] = useState(true);
   const [followed, setFollowed] = useState("Follow me!");
   const navigate = useNavigate();
 
-    const handleCarouselNext = () => {
-        setActiveIndex((prevIndex) => (prevIndex + 1) % carousels.length);
-    };
+  let filteredConnections = [];
 
-    const handleCarouselPrev = () => {
-        setActiveIndex((prevIndex) =>
-            prevIndex === 0 ? carousels.length - 1 : prevIndex - 1
-        );
-    };
+  const handleCarouselNext = () => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % carousels.length);
+  };
+
+  const handleCarouselPrev = () => {
+    setActiveIndex((prevIndex) =>
+      prevIndex === 0 ? carousels.length - 1 : prevIndex - 1
+    );
+  };
+
+  const getUserStats = () => {
+    if (connections.length !== 0 && Array.isArray(connections)) {
+      filteredConnections = connections.filter((connection) => {
+        return (connection.user_id = userInfo.user_id);
+      });
+      setFollowers(filteredConnections.length);
+    }
+  };
 
   const handleFollow = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const connectionUrl = "http://localhost:8000/api/connections";
     const fetchConfig = {
       method: "post",
@@ -54,30 +67,28 @@ function OthersProfile({
     }
   };
 
-    useEffect(() => {
-        if ((userInfo !== undefined) | (userInfo !== "")) {
-            setIsLoading(false);
+  useEffect(() => {
+    if ((userInfo !== undefined) | (userInfo !== "")) {
+      setIsLoading(false);
+    }
+    let i =
+      performance.getEntriesByType("navigation")[0].type === "reload" ? 0 : 1;
+    if (i === 1) {
+      const timer = setTimeout(() => {
+        if (!token) {
+          navigate("/login");
         }
-        let i =
-            performance.getEntriesByType("navigation")[0].type === "reload"
-                ? 0
-                : 1;
-        if (i === 1) {
-            const timer = setTimeout(() => {
-                if (!token) {
-                    navigate("/login");
-                }
-            }, 3250);
-            return () => clearTimeout(timer);
-        } else {
-            const timer = setTimeout(() => {
-                if (!token) {
-                    navigate("/login");
-                }
-            }, 200);
-            return () => clearTimeout(timer);
+      }, 3250);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        if (!token) {
+          navigate("/login");
         }
-    }, [token, navigate, userInfo]);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [token, navigate, userInfo]);
 
   useEffect(() => {
     const fetchSocials = async () => {
@@ -90,50 +101,55 @@ function OthersProfile({
       }
     };
     fetchSocials();
-    if (!(user)){
+    if (!user) {
       getUser(username.username);
     }
-    
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (user !== "" && user !== null && user !== undefined) {
-        if (isLoading) {
-            return;
-        }
-        socials = socials || [];
-        carousels = carousels || [];
-        let filteredPosts = [];
-        let filteredCarousels = [];
-        let filteredSocials = [];
+  useEffect(() => {
+    if (userInfo) {
+      getUserStats();
+    }
+  }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
-        if (posts.length !== 0 && Array.isArray(posts)) {
-            filteredPosts = posts.filter((post) => {
-                return post.username === user.username;
-            });
-        }
+  if (user !== "" && user !== null && user !== undefined) {
+    if (isLoading) {
+      return;
+    }
+    socials = socials || [];
+    carousels = carousels || [];
+    let filteredPosts = [];
+    let filteredCarousels = [];
+    let filteredSocials = [];
 
-        if (carousels.length !== 0 && Array.isArray(carousels)) {
-            filteredCarousels = carousels.filter((carousel) => {
-                return carousel.user_id === user.user_id;
-            });
-        }
+    if (posts.length !== 0 && Array.isArray(posts)) {
+      filteredPosts = posts.filter((post) => {
+        return post.username === user.username;
+      });
+    }
 
-        if (socials.length !== 0 && Array.isArray(socials)) {
-            filteredSocials = socials.filter((social) => {
-                return social.user_id === user.user_id;
-            });
-        }
+    if (carousels.length !== 0 && Array.isArray(carousels)) {
+      filteredCarousels = carousels.filter((carousel) => {
+        return carousel.user_id === user.user_id;
+      });
+    }
 
-        const slicedPosts = filteredPosts.slice(0, postsNum);
+    if (socials.length !== 0 && Array.isArray(socials)) {
+      filteredSocials = socials.filter((social) => {
+        return social.user_id === user.user_id;
+      });
+    }
 
-        const handlePosts = () => {
-            setPostsNum(postsNum + 10);
-        };
+    const slicedPosts = filteredPosts.slice(0, postsNum);
+
+    const handlePosts = () => {
+      setPostsNum(postsNum + 10);
+    };
 
     if (user !== "" && user !== null && user !== undefined) {
       return (
         <div className="container">
-          <div className="row mt-5 mx-3">
+          <div id="profile-body" className="row mt-5 mx-3">
             <div className="card mb-5">
               <div className="card inner-card m-3">
                 <div
@@ -168,11 +184,12 @@ function OthersProfile({
                   <div className="text-center">
                     <h4 className="m-3">{user.display_name}</h4>
                     <h5>{`${user.first_name} ${user.last_name}`}</h5>
+                    <h5>Followers - {followers}</h5>
                   </div>
                 </div>
-                <div className="d-flex flex-column align-content-evenly flex-wrap">
+                <div className=" mt-3 mb-3 d-block text-center">
                   <div className="p-2">
-                    <h2 className="text-center">About Me</h2>
+                    <h2 className="">About Me</h2>
                     <p>{`${user.about}`}</p>
                   </div>
                 </div>

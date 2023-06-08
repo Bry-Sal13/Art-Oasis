@@ -12,13 +12,17 @@ function UserProfile({
   getCarousels,
   getPosts,
   getSocials,
+  connections
 }) {
   const { token } = useAuthContext();
   const [postsNum, setPostsNum] = useState(10);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [followers, setFollowers] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingSocials, setLoadingSocials] = useState(true);
   const navigate = useNavigate();
+
+  let filteredConnections = [];
 
   const handlePostDelete = async (event, id) => {
     event.preventDefault();
@@ -69,6 +73,15 @@ function UserProfile({
     );
   };
 
+  const getUserStats = () => {
+    if (connections.length !== 0 && Array.isArray(connections)) {
+      filteredConnections = connections.filter((connection) => {
+        return (connection.user_id = userInfo.user_id);
+      });
+      setFollowers(filteredConnections.length);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       setIsLoading(false);
@@ -105,6 +118,12 @@ function UserProfile({
 
     fetchSocials();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (userInfo) {
+      getUserStats();
+    }
+  }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
     if (isLoading) {
@@ -177,7 +196,8 @@ function UserProfile({
                 <div className="mt-3 mb-3 d-block">
                   <div className="text-center">
                     <h4 className="m-3">{userInfo.display_name}</h4>
-                    <h5>{`${userInfo.first_name} ${userInfo.last_name}`}</h5>
+                    <h5>{`${userInfo.first_name} - ${userInfo.last_name}`}</h5>
+                    <h5>Followers  - {followers}</h5>
                   </div>
                 </div>
                 <div className="d-flex flex-column align-content-evenly flex-wrap">

@@ -202,6 +202,7 @@ function App() {
                     getCarousels={getCarousels}
                     getPosts={getPosts}
                     getSocials={getSocials}
+                    connections={connections}
                   />
                 }
               />
@@ -216,6 +217,7 @@ function App() {
                     carousels={carousels}
                     getSocials={getSocials}
                     getUser={getUser}
+                    connections={connections}
                   />
                 }
               />
