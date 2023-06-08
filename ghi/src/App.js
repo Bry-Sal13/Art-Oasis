@@ -28,6 +28,16 @@ function App() {
   const [user, setUser] = useState("");
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
+  const [likes, setLikes] = useState([]);
+
+  const getLikes = async () => {
+    const url = "http://localhost:8010/api/likes";
+    const response = await fetch(url, { credentials: "include" });
+    if (response.ok) {
+      const data = await response.json();
+      setLikes(data);
+    }
+  };
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -135,6 +145,7 @@ function App() {
       getUserInfo();
       getAllConnections();
       getUser();
+      getLikes();
     }
   }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -157,6 +168,10 @@ function App() {
               path="/home"
               element={
                 <MainPage
+                  getUser={getUser}
+                  setUser={setUser}
+                  getLikes={getLikes}
+                  likes={likes}
                   getComments={getComments}
                   getPosts={getPosts}
                   posts={posts}
