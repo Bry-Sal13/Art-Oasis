@@ -24,6 +24,8 @@ function App() {
   const [userInfo, setUserInfo] = useState(userData.user);
   const { token, fetchWithCookie } = useToken();
   const [user, setUser] = useState("");
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
 
   const getUserData = async () => {
     const tokenUrl = "http://localhost:8000/token";
@@ -109,7 +111,7 @@ function App() {
 
   return (
     <div>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <Nav
           users={users}
           searchUser={user}

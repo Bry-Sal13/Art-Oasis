@@ -28,7 +28,7 @@ const LoginForm = () => {
     event.target.reset();
     const timer = setTimeout(() => {
       if (!token) {
-        setErrorMessage("Invalid username or password")
+        setErrorMessage("Invalid username or password");
       }
     }, 350);
     return () => clearTimeout(timer);
