@@ -1,14 +1,9 @@
+from typing import List, Union
 from fastapi import APIRouter, Depends, Response
-from typing import List, Optional, Union
-from authenticator import authenticator
-from queries.socials import(
-    SocialsIn,
-    SocialsOut,
-    SocialsRepository,
-    Error
-)
+from queries.socials import SocialsIn, SocialsOut, SocialsRepository, Error
 
 router = APIRouter(prefix="/api")
+
 
 @router.post("/socials", response_model=Union[SocialsOut, Error])
 def create_social(
@@ -33,8 +28,6 @@ def get_one_social(
     response: Response,
     repo: SocialsRepository = Depends(),
 ) -> SocialsOut:
-    
-    
     social = repo.get_social(social_id)
     if not social:
         response.status_code = 404
@@ -48,7 +41,6 @@ def update_social(
     response: Response,
     repo: SocialsRepository = Depends(),
 ) -> Union[SocialsOut, Error]:
-    
     return repo.update_social(social_id, social)
 
 

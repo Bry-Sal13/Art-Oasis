@@ -8,13 +8,12 @@ import CategoryForm from "./SignUp/CategoryForm";
 import PictureForm from "./SignUp/PictureForm";
 import LandingPage from "./Landing/LandingPage";
 import UserProfile from "./Profile/UserProfile";
-import AboutForm from "./Profile/AboutForm";
-import CarouselForm from "./Profile/CarouselForm";
-import SocialsForm from "./Profile/SocialsForm";
 import EditForm from "./Profile/EditProfile";
 import LoginForm from "./Login/LoginForm";
-import Nav from "./Nav";
+import OthersProfile from "./Profile/OthersProfile";
 import MainPage from "./MainPage/MainPage";
+import CookiePolicy from "./Agreement/CookiePolicy";
+import Nav from "./Nav";
 import "./App.css";
 
 function App() {
@@ -22,30 +21,18 @@ function App() {
     const [userData, setUserData] = useState("");
     const [posts, setPosts] = useState([]);
     const [socials, setSocials] = useState([]);
-    const [carousels, setCarousels] = useState([]);
-    const [userInfo, setUserInfo] = useState();
-    const { token, fetchWithCookie } = useToken();
     const [connections, setConnections] = useState([]);
-    const [username, setUsername] = useState();
     const [comments, setComments] = useState([]);
-
-    const getAllConnections = async () => {
-        const connectionsURL = "http://localhost:8000/api/connections";
-        const response = await fetch(connectionsURL, {
-            credentials: "include",
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setConnections(data);
-        }
-    };
+    const [carousels, setCarousels] = useState([]);
+    const [userInfo, setUserInfo] = useState(userData.user);
+    const { token, fetchWithCookie } = useToken();
+    const [user, setUser] = useState("");
 
     const getUserData = async () => {
         const tokenUrl = "http://localhost:8000/token";
         const response = await fetchWithCookie(tokenUrl);
-        if (response) {
+        if (response != null) {
             setUserData(response);
-            setUsername(response.user.username);
         }
     };
 
@@ -86,13 +73,12 @@ function App() {
     };
 
     const getUserInfo = async () => {
-        if (username !== undefined) {
-            const url = `http://localhost:8000/api/users/${username}`;
-            const response = await fetch(url, { credentials: "include" });
-            if (response.ok) {
-                const data = await response.json();
-                setUserInfo(data);
-            }
+        const username = userData.user.username;
+        const url = `http://localhost:8000/api/users/${username}`;
+        const response = await fetch(url, { credentials: "include" });
+        if (response.ok) {
+            const data = await response.json();
+            setUserInfo(data);
         }
     };
 
@@ -102,6 +88,28 @@ function App() {
         if (response.ok) {
             const data = await response.json();
             setComments(data);
+        }
+    };
+
+    const getAllConnections = async () => {
+        const connectionsURL = "http://localhost:8000/api/connections";
+        const response = await fetch(connectionsURL, {
+            credentials: "include",
+        });
+        if (response.ok) {
+            const data = await response.json();
+            setConnections(data);
+        }
+    };
+
+    const getUser = async (username) => {
+        if (username) {
+            const url = `http://localhost:8000/api/users/${username}`;
+            const response = await fetch(url, { credentials: "include" });
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data);
+            }
         }
     };
 
@@ -119,104 +127,129 @@ function App() {
     useEffect(() => {
         // If token is falsy, then don't call getUsers
         if (userData) {
-            getComments();
             getUsers();
+            getComments();
             getCarousels();
             getSocials();
-            getAllConnections();
             getUserInfo();
+            getAllConnections();
+            getUser();
         }
     }, [userData]);
 
     return (
         <div>
             <BrowserRouter>
-                <Nav users={users} token={token} setUserInfo={setUserInfo} />
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route
-                        path="/home"
-                        element={
-                            <MainPage
-                                posts={posts}
-                                userInfo={userInfo}
-                                getUserInfo={getUserInfo}
-                                users={users}
-                                connections={connections}
-                                userData={userData}
-                                comments={comments}
+                <Nav
+                    users={users}
+                    searchUser={user}
+                    setUserInfo={setUserInfo}
+                    getUser={getUser}
+                    token={token}
+                    setUser={setUser}
+                />
+                <div className="routes">
+                    <Routes>
+                        <Route
+                            path="/cookie-policy"
+                            element={<CookiePolicy />}
+                        />
+                        <Route path="/" element={<LandingPage />} />
+                        <Route
+                            path="/home"
+                            element={
+                                <MainPage
+                                    posts={posts}
+                                    userInfo={userInfo}
+                                    getUserInfo={getUserInfo}
+                                    users={users}
+                                    connections={connections}
+                                    userData={userData}
+                                    comments={comments}
+                                />
+                            }
+                        />
+                        <Route path="/signup" element={<SignUpForm />} />
+                        <Route path="/login" element={<LoginForm />} />
+                        <Route
+                            path="/name"
+                            element={
+                                <NameForm
+                                    userInfo={userInfo}
+                                    setUserInfo={setUserInfo}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/picture"
+                            element={
+                                <PictureForm
+                                    userInfo={userInfo}
+                                    setUserInfo={setUserInfo}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/category"
+                            element={
+                                <CategoryForm
+                                    userInfo={userInfo}
+                                    setUserInfo={setUserInfo}
+                                />
+                            }
+                        />
+                        <Route path="profiles">
+                            <Route
+                                path="me"
+                                element={
+                                    <UserProfile
+                                        posts={posts}
+                                        userInfo={userInfo}
+                                        socials={socials}
+                                        carousels={carousels}
+                                        getCarousels={getCarousels}
+                                        getPosts={getPosts}
+                                        getSocials={getSocials}
+                                    />
+                                }
                             />
-                        }
-                    />
-                    <Route
-                        path="/signup"
-                        element={
-                            <SignUpForm
-                                getUserData={getUserData}
-                                setUserData={setUserData}
-                                userData={userData}
+                            <Route
+                                path=":username"
+                                element={
+                                    <OthersProfile
+                                        posts={posts}
+                                        user={user}
+                                        socials={socials}
+                                        userInfo={userInfo}
+                                        carousels={carousels}
+                                        getSocials={getSocials}
+                                        getUser={getUser}
+                                    />
+                                }
                             />
-                        }
-                    />
-                    <Route path="/login" element={<LoginForm />} />
-                    <Route
-                        path="/name"
-                        element={
-                            <NameForm
-                                userInfo={userInfo}
-                                setUserInfo={setUserInfo}
-                                getUserInfo={getUserInfo}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/picture"
-                        element={
-                            <PictureForm
-                                userInfo={userInfo}
-                                setUserInfo={setUserInfo}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/category"
-                        element={
-                            <CategoryForm
-                                userInfo={userInfo}
-                                getUserInfo={getUserInfo}
-                                setUserInfo={setUserInfo}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/profile"
-                        element={
-                            <UserProfile
-                                posts={posts}
-                                userInfo={userInfo}
-                                socials={socials}
-                                carousels={carousels}
-                                getUserInfo={getUserInfo}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/profile/edit"
-                        element={
-                            <EditForm
-                                posts={posts}
-                                userInfo={userInfo}
-                                socials={socials}
-                                carousels={carousels}
-                                setCarousels={setCarousels}
-                                setSocials={setSocials}
-                                setUserInfo={setUserInfo}
-                            />
-                        }
-                    />
-                </Routes>
+                        </Route>
+                        <Route
+                            path="/profile/edit"
+                            element={
+                                <EditForm
+                                    token={userData.access_token}
+                                    posts={posts}
+                                    userInfo={userInfo}
+                                    socials={socials}
+                                    carousels={carousels}
+                                    setCarousels={setCarousels}
+                                    setSocials={setSocials}
+                                    setUserInfo={setUserInfo}
+                                    getSocials={getSocials}
+                                    getCarousels={getCarousels}
+                                />
+                            }
+                        />
+                    </Routes>
+                </div>
             </BrowserRouter>
         </div>
     );
 }
+
 export default App;

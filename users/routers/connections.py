@@ -1,5 +1,5 @@
+from typing import List, Union
 from fastapi import APIRouter, Depends, Response
-from typing import List, Optional, Union
 from authenticator import authenticator
 from queries.connections import (
     ConnectionIn,
@@ -7,6 +7,7 @@ from queries.connections import (
     ConnectionRepository,
     Error,
 )
+
 
 router = APIRouter(prefix="/api")
 

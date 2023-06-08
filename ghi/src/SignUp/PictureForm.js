@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../gradient.css";
 import { useNavigate } from "react-router-dom";
 
 const PictureForm = ({ userInfo, setUserInfo }) => {
@@ -45,27 +46,40 @@ const PictureForm = ({ userInfo, setUserInfo }) => {
   };
 
   return (
-    <div>
-      <h1>Profile Page</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="profilePicture">Profile Picture URL:</label>
-          <input
-            type="text"
-            value={profilePicture}
-            onChange={handleProfileImageChange}
-          />
+    <div className="row justify-content-center mt-5">
+      <div className="col-6 card">
+        <div className="card-body">
+          <h1 className="text-center mb-3">Say cheese</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Profile picture</label>
+              <input
+                type="text"
+                value={profilePicture}
+                onChange={handleProfileImageChange}
+                className="form-control input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Banner Image</label>
+              <input
+                type="text"
+                value={headerImage}
+                onChange={handleHeaderImageChange}
+                className="form-control input-field"
+              />
+            </div>
+            <br></br>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block btn-field"
+            >
+              Continue
+            </button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="headerImage">Header Image URL:</label>
-          <input
-            type="text"
-            value={headerImage}
-            onChange={handleHeaderImageChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      </div>
+      <div className="footer"></div>
     </div>
   );
 };

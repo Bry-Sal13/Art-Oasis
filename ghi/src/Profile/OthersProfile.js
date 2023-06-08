@@ -2,62 +2,26 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import { useParams } from "react-router-dom";
 import "./profile.css";
 
-function UserProfile({
+function OthersProfile({
   posts,
-  userInfo,
   carousels,
   socials,
-  getCarousels,
-  getPosts,
+  user,
+  userInfo,
   getSocials,
+  getUser,
 }) {
+  const username = useParams();
   const { token } = useAuthContext();
   const [postsNum, setPostsNum] = useState(10);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingSocials, setLoadingSocials] = useState(true);
+  const [followed, setFollowed] = useState("Follow me!");
   const navigate = useNavigate();
-
-  const handlePostDelete = async (event, id) => {
-    event.preventDefault();
-    const postsUrl = `http://localhost:8010/api/posts/${id}`;
-    const fetchConfig = {
-      method: "delete",
-      credentials: "include",
-    };
-    const response = await fetch(postsUrl, fetchConfig);
-    if (response.ok) {
-      getPosts();
-    }
-  };
-
-  const handleSocialDelete = async (event, id) => {
-    event.preventDefault();
-    const socailsUrl = `http://localhost:8000/api/socials/${id}`;
-    const fetchConfig = {
-      method: "delete",
-      credentials: "include",
-    };
-    const response = await fetch(socailsUrl, fetchConfig);
-    if (response.ok) {
-      getSocials();
-    }
-  };
-
-  const handleCarouselDelete = async (event, id) => {
-    event.preventDefault();
-    const caroselsUrl = `http://localhost:8000/api/carousels/${id}`;
-    const fetchConfig = {
-      method: "delete",
-      credentials: "include",
-    };
-    const response = await fetch(caroselsUrl, fetchConfig);
-    if (response.ok) {
-      getCarousels();
-    }
-  };
 
   const handleCarouselNext = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % carousels.length);
@@ -69,8 +33,27 @@ function UserProfile({
     );
   };
 
+  const handleFollow = async () => {
+    const connectionUrl = "http://localhost:8000/api/connections";
+    const fetchConfig = {
+      method: "post",
+      body: JSON.stringify({
+        username: userInfo.username,
+        following_id: user.user_id,
+      }),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await fetch(connectionUrl, fetchConfig);
+    if (response.ok) {
+      setFollowed("followed");
+    }
+  };
+
   useEffect(() => {
-    if (token) {
+    if ((userInfo !== undefined) | (userInfo !== "")) {
       setIsLoading(false);
     }
     let i =
@@ -80,7 +63,7 @@ function UserProfile({
         if (!token) {
           navigate("/login");
         }
-      }, 4000);
+      }, 3250);
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
@@ -90,7 +73,7 @@ function UserProfile({
       }, 200);
       return () => clearTimeout(timer);
     }
-  }, [token, navigate]);
+  }, [token, navigate, userInfo]);
 
   useEffect(() => {
     const fetchSocials = async () => {
@@ -102,11 +85,13 @@ function UserProfile({
         setLoadingSocials(false);
       }
     };
-
     fetchSocials();
+    if (!user) {
+      getUser(username.username);
+    }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
+  if (user !== "" && user !== null && user !== undefined) {
     if (isLoading) {
       return;
     }
@@ -118,19 +103,19 @@ function UserProfile({
 
     if (posts.length !== 0 && Array.isArray(posts)) {
       filteredPosts = posts.filter((post) => {
-        return post.user_id === userInfo.user_id;
+        return post.user_id === user.user_id;
       });
     }
 
     if (carousels.length !== 0 && Array.isArray(carousels)) {
       filteredCarousels = carousels.filter((carousel) => {
-        return carousel.user_id === userInfo.user_id;
+        return carousel.user_id === user.user_id;
       });
     }
 
     if (socials.length !== 0 && Array.isArray(socials)) {
       filteredSocials = socials.filter((social) => {
-        return social.user_id === userInfo.user_id;
+        return social.user_id === user.user_id;
       });
     }
 
@@ -140,7 +125,7 @@ function UserProfile({
       setPostsNum(postsNum + 10);
     };
 
-    if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
+    if (user !== "" && user !== null && user !== undefined) {
       return (
         <div className="container">
           <div className="row mt-5 mx-3">
@@ -149,7 +134,7 @@ function UserProfile({
                 <div
                   className="card-header  d-flex  justify-content-between  align-items-center"
                   style={{
-                    backgroundImage: `url(${userInfo.header_image})`,
+                    backgroundImage: `url(${user.header_image})`,
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center center",
@@ -158,7 +143,7 @@ function UserProfile({
                   <div
                     className="d-flex flex-column-reverse align-items-center"
                     style={{
-                      backgroundImage: `url(${userInfo.profile_picture})`,
+                      backgroundImage: `url(${user.profile_picture})`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center center",
                       backgroundSize: "128px",
@@ -169,21 +154,21 @@ function UserProfile({
 
                   <button
                     className="btn btn-dark align-self-end flex-shrink-1"
-                    onClick={() => navigate("/profile/edit")}
+                    onClick={() => handleFollow}
                   >
-                    edit profile
+                    {followed}
                   </button>
                 </div>
                 <div className="mt-3 mb-3 d-block">
                   <div className="text-center">
-                    <h4 className="m-3">{userInfo.display_name}</h4>
-                    <h5>{`${userInfo.first_name} ${userInfo.last_name}`}</h5>
+                    <h4 className="m-3">{user.display_name}</h4>
+                    <h5>{`${user.first_name} ${user.last_name}`}</h5>
                   </div>
                 </div>
                 <div className="d-flex flex-column align-content-evenly flex-wrap">
                   <div className="p-2">
                     <h2 className="text-center">About Me</h2>
-                    <p>{`${userInfo.about}`}</p>
+                    <p>{`${user.about}`}</p>
                   </div>
                 </div>
                 <h2 className="text-center">My Socials</h2>
@@ -208,14 +193,6 @@ function UserProfile({
                           >
                             <span className="position-relative">
                               {social.link}
-                              <button
-                                className="btn btn-danger delete-button-hover position-absolute top-0 end-0 mt-n2 mx-n2 p-1"
-                                onClick={(event) =>
-                                  handleSocialDelete(event, social.id)
-                                }
-                              >
-                                <i className="fas fa-times"></i>
-                              </button>
                             </span>
                           </a>
                         );
@@ -229,14 +206,6 @@ function UserProfile({
                             >
                               {social.link}
                             </p>
-                            <button
-                              className="btn btn-danger text delete-button-hover position-absolute top-0 end-0 mt-n2 mx-n2 p-1"
-                              onClick={(event) =>
-                                handleSocialDelete(event, social.id)
-                              }
-                            >
-                              <i className="fas fa-times"></i>
-                            </button>
                           </>
                         );
                       }
@@ -272,14 +241,6 @@ function UserProfile({
                             }`}
                             key={image.id}
                           >
-                            <button
-                              className="btn btn-outline-danger delete-button position-absolute top-0 end-0 mt-2 mx-2"
-                              onClick={(event) =>
-                                handleCarouselDelete(event, image.id)
-                              }
-                            >
-                              <i className="fas fa-trash"></i>
-                            </button>
                             <img
                               src={image.link}
                               alt="..."
@@ -334,15 +295,9 @@ function UserProfile({
                   return (
                     <div className="card m-3 " key={post.id}>
                       <div className="card-header d-flex flex-column">
-                        <button
-                          className="btn btn-outline-danger delete-button position-absolute top-0 end-0 mt-2 mx-2"
-                          onClick={(event) => handlePostDelete(event, post.id)}
-                        >
-                          <i className="fas fa-trash"></i>
-                        </button>
                         <div>
                           <img
-                            src={userInfo.profile_picture}
+                            src={user.profile_picture}
                             alt="user pfp"
                             className="rounded img-thumbnail"
                             style={{ width: "68px", float: "left" }}
@@ -352,7 +307,7 @@ function UserProfile({
                             className="position-absolute"
                             style={{ float: "left" }}
                           >
-                            <strong>{userInfo.display_name}</strong>
+                            <strong>{user.display_name}</strong>
                           </small>
                         </div>
                         <div>
@@ -398,4 +353,4 @@ function UserProfile({
   }
 }
 
-export default UserProfile;
+export default OthersProfile;

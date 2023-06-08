@@ -1,5 +1,5 @@
-from datetime import datetime
 from typing import List, Union
+from datetime import datetime
 from pydantic import BaseModel
 from queries.pool import pool
 

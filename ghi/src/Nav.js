@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, useParams } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
-function Nav({ users, token, setUserInfo }) {
+function Nav({ users, token, setUserInfo, getUser, setUser }) {
+  const { username } = useParams();
   const navigate = useNavigate();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +23,6 @@ function Nav({ users, token, setUserInfo }) {
     logout();
     setLoggedIn(false);
     setUserInfo("");
-    console.log("You are logged out");
     navigate("/login");
   }
 
@@ -30,6 +30,14 @@ function Nav({ users, token, setUserInfo }) {
     var term = event.target.value;
     setSearchTerm(term);
   }
+
+  const handleGetUser = async (user) => {
+    await getUser(user.username);
+    setUser(user);
+    if (user) {
+      navigate(`/profiles/${user.username}`);
+    }
+  };
 
   async function handleSearch(event) {
     event.preventDefault();
@@ -62,15 +70,19 @@ function Nav({ users, token, setUserInfo }) {
       )}
 
       <div className="search">
-        <form onSubmit={handleSearch} className="d-flex" role="search">
+        <form onSubmit={handleSearch} role="search">
           <input
             onChange={handleSearchChange}
-            className="form-control me-2"
+            className="form-control me-2 d-inline"
             type="search"
+            id="search"
             placeholder="Search"
             aria-label="Search"
           />
-          <button className="btn btn-outline-light" type="submit">
+          <button
+            className="btn btn-outline-light position-absolute"
+            type="submit"
+          >
             Search
           </button>
         </form>
@@ -78,20 +90,21 @@ function Nav({ users, token, setUserInfo }) {
           <div className="dataResult">
             {filteredUsers.slice(0, 10).map((user) => {
               return (
-                <div className="search-result-margins" key={user.user_id}>
-                  <NavLink
-                    to={`/profile/${user.username}`}
-                    className="dataItem"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img
-                      className="left-align"
-                      src={user.profile_picture}
-                      alt="Profile"
-                    />
-                    <p className="text-align-right">{user.display_name}</p>
-                  </NavLink>
+                <div className="search-result-margins " key={user.user_id}>
+                  <div className="dataItem d-flex flex-row align-items-center justify-content-around flex-wrap">
+                    <NavLink onClick={() => handleGetUser(user)}>
+                      <img
+                        className="left-align "
+                        src={user.profile_picture}
+                        alt="Profile"
+                        style={{ width: "48px", height: "48px" }}
+                      />
+
+                      <p className="text-align-right mb-0">
+                        {user.display_name}
+                      </p>
+                    </NavLink>
+                  </div>
                 </div>
               );
             })}
@@ -133,7 +146,11 @@ function Nav({ users, token, setUserInfo }) {
               </li>
 
               <li className="nav-item px-2">
-                <NavLink className="nav-link" aria-current="page" to="/profile">
+                <NavLink
+                  className="nav-link"
+                  aria-current="page"
+                  to="/profiles/me"
+                >
                   Profile
                 </NavLink>
               </li>
