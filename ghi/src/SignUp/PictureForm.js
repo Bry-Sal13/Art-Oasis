@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import "../gradient.css";
+import "./Signup.css";
 import { useNavigate } from "react-router-dom";
+import "./Picture.css";
 
 const PictureForm = ({ userInfo, setUserInfo }) => {
   const [profilePicture, setProfilePicture] = useState("");
@@ -46,40 +47,41 @@ const PictureForm = ({ userInfo, setUserInfo }) => {
   };
 
   return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-6 card">
-        <div className="card-body">
-          <h1 className="text-center mb-3">Say cheese</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Profile picture</label>
-              <input
-                type="text"
-                value={profilePicture}
-                onChange={handleProfileImageChange}
-                className="form-control input-field"
-              />
-            </div>
-            <div className="form-group">
-              <label>Banner Image</label>
-              <input
-                type="text"
-                value={headerImage}
-                onChange={handleHeaderImageChange}
-                className="form-control input-field"
-              />
-            </div>
-            <br></br>
-            <button
-              type="submit"
-              className="btn btn-primary btn-block btn-field"
-            >
-              Continue
-            </button>
-          </form>
+    <div className="pictureform-color">
+      <div className="container_2">
+        <div className="form-container_2">
+          <div className="form-groupp fixed-inputt">
+            <h1 className="top-text">Say cheese!</h1>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Profile picture</label>
+                <input
+                  type="text"
+                  value={profilePicture}
+                  onChange={handleProfileImageChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label>Banner Image</label>
+                <input
+                  type="text"
+                  value={headerImage}
+                  onChange={handleHeaderImageChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <br></br>
+              <button
+                type="submit"
+                className="btn btn-black btn-block btn-field"
+              >
+                Continue
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-      <div className="footer"></div>
     </div>
   );
 };

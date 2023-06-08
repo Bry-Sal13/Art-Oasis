@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import "../gradient.css";
+import "./Signup.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const SignUpForm = () => {
@@ -99,75 +99,74 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-6 card">
-        <div className="card-body">
-          <h1 className="text-center mb-3">
-            Make the most of your artistic life
-          </h1>
-          {errorMessage && <p className="text-danger">{errorMessage}</p>}
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Username</label>
-              <input
-                type="text"
-                value={username}
-                onChange={handleUsernameChange}
-                className="form-control input-field"
-              />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
-                className="form-control input-field"
-              />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type={passwordShown ? "text" : "password"}
-                value={password}
-                onChange={handlePasswordChange}
-                className="form-control input-field"
-              />
-              <i onClick={togglePasswordVisibility} className="password-icon">
-                {passwordShown ? <FiEyeOff /> : <FiEye />}
-              </i>
-            </div>
-            <div className="form-group">
-              <label>Confirm password</label>
-              <input
-                type={passwordShown ? "text" : "password"}
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-                className="form-control input-field"
-              />
-              <i onClick={togglePasswordVisibility} className="password-icon">
-                {passwordShown ? <FiEyeOff /> : <FiEye />}
-              </i>
-            </div>
-            <br></br>
-            <label>
-              By clicking Agree & Join, you agree to the ArtOasis User Agreement
-              and{" "}
-              <Link to="/cookie" className="cookie-link">
-                Cookie Policy
-              </Link>
-              .
-            </label>
-            <button
-              type="submit"
-              className="btn btn-primary btn-block btn-field"
-            >
-              Agree & Join
-            </button>
-          </form>
+    <div className="signup-color">
+      <div className="container_2">
+        <div className="form-container_2">
+          <div className="form-groupp fixed-inputt">
+            <h1 className="text-top">Make the most of your artistic life</h1>
+            {errorMessage && <p className="text-danger">{errorMessage}</p>}
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Username</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={handleUsernameChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  className="form-control input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type={passwordShown ? "text" : "password"}
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className="form-control input-field"
+                />
+                <i onClick={togglePasswordVisibility} className="password-icon">
+                  {passwordShown ? <FiEyeOff /> : <FiEye />}
+                </i>
+              </div>
+              <div className="form-group">
+                <label>Confirm password</label>
+                <input
+                  type={passwordShown ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  className="form-control input-field"
+                />
+                <i onClick={togglePasswordVisibility} className="password-icon">
+                  {passwordShown ? <FiEyeOff /> : <FiEye />}
+                </i>
+              </div>
+              <label className="cookie">
+                By clicking Agree & Join, you agree to the ArtOasis User
+                Agreement and{" "}
+                <Link to="/cookie" className="cookie-link">
+                  Cookie Policy
+                </Link>
+                .
+              </label>
+              <br></br>
+              <button
+                type="submit"
+                className="btn btn-black btn-block btn-field"
+              >
+                Agree & Join
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-      <div className="footer"></div>
     </div>
   );
 };

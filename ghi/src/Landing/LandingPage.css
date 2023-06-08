@@ -1,28 +1,73 @@
 .container {
   display: flex;
   justify-content: center;
-  height: 100%;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  flex-wrap: nowrap; /* Do not wrap items */
+  flex-wrap: nowrap;
 }
 
 .form-container {
-  width: 30%; /* adjust as needed */
-  margin-top: 20%; /* increase as needed to lower the form */
+  width: 100%;
+  margin-top: 30%;
+  margin-bottom: 90%;
+  background-color: #fff5f0;
+  border-radius: 10px;
+  font-size: 15px;
 }
 
 .img-container {
-  flex-basis: 70%; /* Increase from 50% to 60% */
-  max-width: none; /* Remove maximum width constraint */
-  margin-top: 10%; /* Add top margin to lower the image */
+  flex-basis: 70%;
 }
 
 .img-fluid {
-  width: 200%; /* Adjusts the width automatically to fill the parent element */
-  height: auto; /* Maintains the aspect ratio */
-  min-height: 500px; /* Minimum height to make the image taller */
+  width: 200%;
+  height: auto;
+  min-height: 500px;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.btn-black {
+  background-color: black !important;
+  color: white !important;
+  border: none;
+  border-radius: 30px !important; /* Adjus me for rounding on buttons */
+  font-family: "Lato", sans-serif !important;
+  font-size: 10px; /* adjust as needed */
+  padding: 15px 30px;
+  width: 100%; /* adjust as needed */
+}
+
+.btn-white {
+  background-color: white !important;
+  color: black !important;
+  border: 2px solid black !important;
+  border-radius: 30px !important;
+  font-family: "Lato", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif !important;
+  width: 100%;
+}
+
+.btn-black:active,
+.btn-black:focus {
+  background-color: black !important;
+  outline: none;
+  box-shadow: none;
+}
+
+.top-text {
+  font-family: "Prata", serif;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+.my-main-container {
+  background-color: white;
+  max-height: 100vh;
+  min-height: 100%;
 }

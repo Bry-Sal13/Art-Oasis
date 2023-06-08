@@ -91,7 +91,7 @@ function Nav({ users, token, setUserInfo }) {
                         className="left-align "
                         src={user.profile_picture}
                         alt="Profile"
-                        style={{ width: "48px", height:"48px" }}
+                        style={{ width: "48px", height: "48px" }}
                       />
                     </NavLink>
                     <p className="text-align-right mb-0">{user.display_name}</p>
@@ -150,7 +150,7 @@ function Nav({ users, token, setUserInfo }) {
               <>
                 <li className="nav-item px-2">
                   <NavLink
-                    className="nav-link"
+                    className="join-sign-button"
                     aria-current="page"
                     to="/signup"
                   >
@@ -159,7 +159,11 @@ function Nav({ users, token, setUserInfo }) {
                 </li>
 
                 <li className="nav-item px-2">
-                  <NavLink className="nav-link" aria-current="page" to="/login">
+                  <NavLink
+                    className="join-sign-button"
+                    aria-current="page"
+                    to="/login"
+                  >
                     Sign in
                   </NavLink>
                 </li>
