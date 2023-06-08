@@ -27,7 +27,7 @@ const LandingPage = () => {
     setPassword("");
     setUsername("");
     event.target.reset();
-    navigate("/profile");
+    navigate("/profiles/me");
   };
 
   const togglePasswordVisiblity = () => {
