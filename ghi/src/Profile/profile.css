@@ -51,4 +51,10 @@
 
 .inner-card {
   background-color: rgb(249, 244, 244) !important;
+  max-width: 1200px;
+}
+
+
+#profile-body{
+  min-width: 100%;
 }

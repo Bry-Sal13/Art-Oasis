@@ -143,7 +143,7 @@ function UserProfile({
     if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
       return (
         <div className="container">
-          <div className="row mt-5 mx-3">
+          <div id="profile-body" className="row mt-5 me-3">
             <div className="card mb-5">
               <div className="card inner-card m-3">
                 <div
@@ -181,8 +181,8 @@ function UserProfile({
                   </div>
                 </div>
                 <div className="d-flex flex-column align-content-evenly flex-wrap">
-                  <div className="p-2">
-                    <h2 className="text-center">About Me</h2>
+                  <div className="p-2 text-center">
+                    <h2 className="">About Me</h2>
                     <p>{`${userInfo.about}`}</p>
                   </div>
                 </div>
@@ -358,11 +358,12 @@ function UserProfile({
                         <div>
                           <img
                             src={post.image}
-                            className="rounded mb-3 mt-3"
+                            className="rounded mb-3 mt-3 w-100"
                             alt="post pic"
+                            style={{ maxHeight: "1080px" }}
                           />
-                          <p>{post.text}</p>
                         </div>
+                        <p className="mb-0">{post.text}</p>
                       </div>
                     </div>
                   );

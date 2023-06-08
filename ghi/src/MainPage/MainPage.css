@@ -3,6 +3,173 @@
     max-width: 70%;
 }
 
+@media only screen and (max-width: 1100px) {
+    #feed-container {
+        margin-left: 38% !important;
+    }
+    #commenter-img {
+        max-width: 48px !important;
+        max-height: 48px !important;
+    }
+
+    #comment-text {
+        max-width: 70% !important;
+    }
+
+    #comment-btn {
+        right: 9px !important;
+    }
+
+    #card-profile {
+        max-width: 30% !important;
+        min-height: 50% !important;
+        max-height: 52%;
+        left: 2.5% !important;
+    }
+    #profile {
+        left: 35% !important;
+        right: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 1150px) {
+    #feed-container {
+        margin-left: 38% !important;
+    }
+    #commenter-img {
+        max-width: 48px !important;
+        max-height: 48px !important;
+    }
+
+    #comment-text {
+        max-width: 70% !important;
+    }
+
+    #comment-btn {
+        right: 9px !important;
+    }
+
+    #profile-card-header{
+        max-width: 99%;
+    }
+
+    #card-profile {
+        max-width: 30% !important;
+        min-height: 46% !important;
+        max-height: 52% !important;
+        left: 2.5% !important;
+    }
+    #profile {
+        left: 35% !important;
+        right: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 1550px) {
+    #feed-container {
+        margin-left: 30%;
+    }
+    #card-profile {
+        max-width: 30%;
+        min-height: 50%;
+        max-height: 55%;
+        left: 2.5% !important;
+    }
+}
+
+@media only screen and (max-width: 1650px) {
+    #feed-container {
+        margin-left: 30%;
+    }
+    #card-profile {
+        max-width: 30%;
+        min-height: 40%;
+        max-height: 35%;
+        left: 2.5% !important;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    #feed-container {
+        margin-left: 40%;
+    }
+    
+    #card-profile {
+        max-width: 30% !important;
+        max-height: 30% !important;
+        left: 2.5% !important;
+    }
+    
+    #profile-card-header {
+        max-width: 100%;
+    }
+
+    #profile-picture {
+        max-width: 100%;
+    }
+    
+    #profile {
+        left: 35% !important;
+        right: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    #profile {
+        left: 28% !important;
+        right: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #profile {
+        left: 24% !important;
+        right: 50% !important;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    #feed-container {
+        margin-left: 30% !important;
+    }
+    
+    #card-profile {
+        max-width: 30%;
+        min-height: 50%;
+        left: 2.5% !important;
+    }
+    
+    #profile-card-header {
+        max-width: 100%;
+    }
+
+    #profile-picture {
+        max-width: 100%;
+    }
+    
+    #profile {
+        left: 3% !important;
+    }
+
+    #stats-container{
+        max-width: 100%;
+        font-size: small !important;
+    }
+
+    #comment-text {
+        max-width: 70% !important;
+    }
+
+    #comment-btn {
+        right: 9px !important;
+    }
+
+    #commenter-img {
+        max-width: 28px !important;
+        max-height: 28px !important;
+    }
+}
+
 .pic-border {
     border-radius: 10px;
     border: 2px solid #7f669d;
@@ -108,8 +275,9 @@
     background-color: #c2aad1 !important;
     position: fixed;
     top: 100px;
-    left: 50px;
-    height: 325px;
+    left: 3.5%;
+    min-height: 32.5%;
+    max-height: 40%;
 }
 
 .max-height {

@@ -53,16 +53,12 @@ function MyProfileSidebar({ connections, userInfo, posts }) {
         <h4 className="mb-0">{userInfo.display_name}</h4>
         <span className="text-muted d-block mb-2"></span>
         <span className="text-muted d-block mb-2">{userInfo.category}</span>
-        <div className="d-flex justify-content-between align-items-center mt-4 px-4">
+        <div id="stats-container">
           <div className="stats">
             <h6 className="mb-0">Following</h6>
             <span>{following}</span>
-          </div>
-          <div className="stats">
             <h6 className="mb-0">Followers</h6>
             <span>{followers}</span>
-          </div>
-          <div className="stats">
             <h6 className="mb-0">Posts</h6>
             <span>{postNum}</span>
           </div>
