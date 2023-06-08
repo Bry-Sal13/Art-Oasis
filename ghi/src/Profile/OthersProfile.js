@@ -6,13 +6,13 @@ import { useParams } from "react-router-dom";
 import "./profile.css";
 
 function OthersProfile({
-  posts,
-  carousels,
-  socials,
-  user,
-  userInfo,
-  getSocials,
-  getUser,
+    posts,
+    carousels,
+    socials,
+    user,
+    userInfo,
+    getSocials,
+    getUser,
 }) {
   const username = useParams();
   const { token } = useAuthContext();
@@ -23,15 +23,15 @@ function OthersProfile({
   const [followed, setFollowed] = useState("Follow me!");
   const navigate = useNavigate();
 
-  const handleCarouselNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % carousels.length);
-  };
+    const handleCarouselNext = () => {
+        setActiveIndex((prevIndex) => (prevIndex + 1) % carousels.length);
+    };
 
-  const handleCarouselPrev = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? carousels.length - 1 : prevIndex - 1
-    );
-  };
+    const handleCarouselPrev = () => {
+        setActiveIndex((prevIndex) =>
+            prevIndex === 0 ? carousels.length - 1 : prevIndex - 1
+        );
+    };
 
   const handleFollow = async () => {
     const connectionUrl = "http://localhost:8000/api/connections";
@@ -52,28 +52,30 @@ function OthersProfile({
     }
   };
 
-  useEffect(() => {
-    if ((userInfo !== undefined) | (userInfo !== "")) {
-      setIsLoading(false);
-    }
-    let i =
-      performance.getEntriesByType("navigation")[0].type === "reload" ? 0 : 1;
-    if (i === 1) {
-      const timer = setTimeout(() => {
-        if (!token) {
-          navigate("/login");
+    useEffect(() => {
+        if ((userInfo !== undefined) | (userInfo !== "")) {
+            setIsLoading(false);
         }
-      }, 3250);
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        if (!token) {
-          navigate("/login");
+        let i =
+            performance.getEntriesByType("navigation")[0].type === "reload"
+                ? 0
+                : 1;
+        if (i === 1) {
+            const timer = setTimeout(() => {
+                if (!token) {
+                    navigate("/login");
+                }
+            }, 3250);
+            return () => clearTimeout(timer);
+        } else {
+            const timer = setTimeout(() => {
+                if (!token) {
+                    navigate("/login");
+                }
+            }, 200);
+            return () => clearTimeout(timer);
         }
-      }, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [token, navigate, userInfo]);
+    }, [token, navigate, userInfo]);
 
   useEffect(() => {
     const fetchSocials = async () => {
@@ -86,44 +88,45 @@ function OthersProfile({
       }
     };
     fetchSocials();
-    if (!user) {
+    if (!(user)){
       getUser(username.username);
     }
+    
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (user !== "" && user !== null && user !== undefined) {
-    if (isLoading) {
-      return;
-    }
-    socials = socials || [];
-    carousels = carousels || [];
-    let filteredPosts = [];
-    let filteredCarousels = [];
-    let filteredSocials = [];
+    if (user !== "" && user !== null && user !== undefined) {
+        if (isLoading) {
+            return;
+        }
+        socials = socials || [];
+        carousels = carousels || [];
+        let filteredPosts = [];
+        let filteredCarousels = [];
+        let filteredSocials = [];
 
-    if (posts.length !== 0 && Array.isArray(posts)) {
-      filteredPosts = posts.filter((post) => {
-        return post.user_id === user.user_id;
-      });
-    }
+        if (posts.length !== 0 && Array.isArray(posts)) {
+            filteredPosts = posts.filter((post) => {
+                return post.user_id === user.user_id;
+            });
+        }
 
-    if (carousels.length !== 0 && Array.isArray(carousels)) {
-      filteredCarousels = carousels.filter((carousel) => {
-        return carousel.user_id === user.user_id;
-      });
-    }
+        if (carousels.length !== 0 && Array.isArray(carousels)) {
+            filteredCarousels = carousels.filter((carousel) => {
+                return carousel.user_id === user.user_id;
+            });
+        }
 
-    if (socials.length !== 0 && Array.isArray(socials)) {
-      filteredSocials = socials.filter((social) => {
-        return social.user_id === user.user_id;
-      });
-    }
+        if (socials.length !== 0 && Array.isArray(socials)) {
+            filteredSocials = socials.filter((social) => {
+                return social.user_id === user.user_id;
+            });
+        }
 
-    const slicedPosts = filteredPosts.slice(0, postsNum);
+        const slicedPosts = filteredPosts.slice(0, postsNum);
 
-    const handlePosts = () => {
-      setPostsNum(postsNum + 10);
-    };
+        const handlePosts = () => {
+            setPostsNum(postsNum + 10);
+        };
 
     if (user !== "" && user !== null && user !== undefined) {
       return (

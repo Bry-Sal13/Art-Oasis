@@ -10,63 +10,71 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
   const { logout } = useToken();
   const [loggedIn, setLoggedIn] = useState();
 
-  const checkLoggedIn = async () => {
-    if (token) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
+    const checkLoggedIn = async () => {
+        if (token) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    };
+
+    async function handleLogout(event) {
+        logout();
+        setLoggedIn(false);
+        setUserInfo("");
+        navigate("/login");
     }
-  };
 
-  async function handleLogout(event) {
-    logout();
-    setLoggedIn(false);
-    setUserInfo("");
-    navigate("/login");
-  }
-
-  async function handleSearchChange(event) {
-    var term = event.target.value;
-    setSearchTerm(term);
-  }
-
-  const handleGetUser = async (user) => {
-    await getUser(user.username);
-    setUser(user);
-    if (user) {
-      navigate(`/profiles/${user.username}`);
+    async function handleSearchChange(event) {
+        var term = event.target.value;
+        setSearchTerm(term);
     }
-  };
 
-  async function handleSearch(event) {
-    event.preventDefault();
-    setFilteredUsers([]);
-    const newFilter = users.filter((user) => {
-      return user.display_name.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-    if (searchTerm === "") {
-      setFilteredUsers([]);
-    } else {
-      setFilteredUsers(newFilter);
+    const handleGetUser = async (user) => {
+        await getUser(user.username);
+        setUser(user);
+        if (user) {
+            navigate(`/profiles/${user.username}`);
+        }
+    };
+
+    async function handleSearch(event) {
+        event.preventDefault();
+        setFilteredUsers([]);
+        const newFilter = users.filter((user) => {
+            return user.display_name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+        });
+        if (searchTerm === "") {
+            setFilteredUsers([]);
+        } else {
+            setFilteredUsers(newFilter);
+        }
     }
-  }
 
-  useEffect(() => {
-    checkLoggedIn();
-  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        checkLoggedIn();
+    }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
-      {loggedIn === false && (
-        <NavLink className="navbar-brand ms-3" aria-current="page" to="/">
-          Art Oasis
-        </NavLink>
-      )}
-      {loggedIn !== false && (
-        <NavLink className="navbar-brand ms-3" aria-current="page" to="/home">
-          Art Oasis
-        </NavLink>
-      )}
+    return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-pastel-blue">
+            {loggedIn === false && (
+                <NavLink
+                    className="navbar-brand ms-3"
+                    aria-current="page"
+                    to="/">
+                    Art Oasis
+                </NavLink>
+            )}
+            {loggedIn !== false && (
+                <NavLink
+                    className="navbar-brand ms-3"
+                    aria-current="page"
+                    to="/home">
+                    Art Oasis
+                </NavLink>
+            )}
 
       <div className="search">
         <form onSubmit={handleSearch} role="search">
@@ -137,66 +145,65 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
                 </NavLink>
               </li>
 
-              <li className="nav-item px-2">
-                <NavLink
-                  className="nav-link"
-                  aria-current="page"
-                  to="/connections"
-                >
-                  Connections
-                </NavLink>
-              </li>
+                            <li className="nav-item px-2">
+                                <NavLink
+                                    className="nav-link"
+                                    aria-current="page"
+                                    to="/connections">
+                                    Connections
+                                </NavLink>
+                            </li>
 
-              <li className="nav-item px-2">
-                <NavLink
-                  className="nav-link"
-                  aria-current="page"
-                  to="/profiles/me"
-                >
-                  Profile
-                </NavLink>
-              </li>
-            </>
-          )}
+                            <li className="nav-item px-2">
+                                <NavLink
+                                    className="nav-link"
+                                    aria-current="page"
+                                    to="/profiles/me">
+                                    Profile
+                                </NavLink>
+                            </li>
+                        </>
+                    )}
 
-          <div className="d-flex justify-content-between">
-            {/* if token is not valid show */}
-            {loggedIn === false && (
-              <>
-                <li className="nav-item px-2">
-                  <NavLink
-                    className="nav-link"
-                    aria-current="page"
-                    to="/signup"
-                  >
-                    Signup
-                  </NavLink>
-                </li>
+                    <div className="d-flex justify-content-between">
+                        {/* if token is not valid show */}
+                        {loggedIn === false && (
+                            <>
+                                <li className="nav-item px-2">
+                                    <NavLink
+                                        className="nav-link"
+                                        aria-current="page"
+                                        to="/signup">
+                                        Signup
+                                    </NavLink>
+                                </li>
 
-                <li className="nav-item px-2">
-                  <NavLink className="nav-link" aria-current="page" to="/login">
-                    Login
-                  </NavLink>
-                </li>
-              </>
-            )}
+                                <li className="nav-item px-2">
+                                    <NavLink
+                                        className="nav-link"
+                                        aria-current="page"
+                                        to="/login">
+                                        Login
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
 
-            {/* if token is valid show */}
-            {loggedIn !== false && (
-              <li className="nav-item px-2">
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-outline-light"
-                >
-                  Logout
-                </button>
-              </li>
-            )}
-          </div>
-        </ul>
-      </div>
-    </nav>
-  );
+                        {/* if token is valid show */}
+                        {loggedIn !== false && (
+                            <li className="nav-item px-2">
+                                <button
+                                    onClick={handleLogout}
+                                    className="btn btn-outline-light">
+                                    Logout
+                                </button>
+                            </li>
+                        )}
+                    </div>
+                </ul>
+            </div>
+        </nav>
+    );
 }
 
 export default Nav;
