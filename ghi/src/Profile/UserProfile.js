@@ -12,13 +12,17 @@ function UserProfile({
   getCarousels,
   getPosts,
   getSocials,
+  connections,
 }) {
   const { token } = useAuthContext();
   const [postsNum, setPostsNum] = useState(10);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [followers, setFollowers] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingSocials, setLoadingSocials] = useState(true);
   const navigate = useNavigate();
+
+  let filteredConnections = [];
 
   const handlePostDelete = async (event, id) => {
     event.preventDefault();
@@ -69,6 +73,15 @@ function UserProfile({
     );
   };
 
+  const getUserStats = () => {
+    if (connections.length !== 0 && Array.isArray(connections)) {
+      filteredConnections = connections.filter((connection) => {
+        return (connection.user_id = userInfo.user_id);
+      });
+      setFollowers(filteredConnections.length);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       setIsLoading(false);
@@ -106,6 +119,12 @@ function UserProfile({
     fetchSocials();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (userInfo) {
+      getUserStats();
+    }
+  }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
     if (isLoading) {
       return;
@@ -118,7 +137,7 @@ function UserProfile({
 
     if (posts.length !== 0 && Array.isArray(posts)) {
       filteredPosts = posts.filter((post) => {
-        return post.user_id === userInfo.user_id;
+        return post.username === userInfo.username;
       });
     }
 
@@ -143,9 +162,9 @@ function UserProfile({
     if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
       return (
         <div className="container">
-          <div className="row mt-5 mx-3">
+          <div id="profile-body" className="row mt-5 me-3">
             <div className="card mb-5">
-              <div className="card m-3">
+              <div className="card inner-card m-3">
                 <div
                   className="card-header  d-flex  justify-content-between  align-items-center"
                   style={{
@@ -177,12 +196,13 @@ function UserProfile({
                 <div className="mt-3 mb-3 d-block">
                   <div className="text-center">
                     <h4 className="m-3">{userInfo.display_name}</h4>
-                    <h5>{`${userInfo.first_name} ${userInfo.last_name}`}</h5>
+                    <h5>{`${userInfo.first_name} - ${userInfo.last_name}`}</h5>
+                    <h5>Followers - {followers}</h5>
                   </div>
                 </div>
                 <div className="d-flex flex-column align-content-evenly flex-wrap">
-                  <div className="p-2">
-                    <h2 className="text-center">About Me</h2>
+                  <div className="p-2 text-center">
+                    <h2 className="">About Me</h2>
                     <p>{`${userInfo.about}`}</p>
                   </div>
                 </div>
@@ -358,11 +378,12 @@ function UserProfile({
                         <div>
                           <img
                             src={post.image}
-                            className="rounded mb-3"
+                            className="rounded mb-3 mt-3 w-100"
                             alt="post pic"
+                            style={{ maxHeight: "1080px" }}
                           />
-                          <p>{post.text}</p>
                         </div>
+                        <p className="mb-0">{post.text}</p>
                       </div>
                     </div>
                   );

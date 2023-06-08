@@ -4,7 +4,7 @@
   margin-top: 3px;
   width: 25%;
   height: 150px;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   overflow: hidden;
   overflow-y: auto;
@@ -37,10 +37,6 @@ input:focus {
   height: 49px;
 }
 
-.bg-pastel-blue {
-  background-color: #7f669d;
-}
-
 .btn {
   border-radius: 10px;
 }
@@ -50,16 +46,12 @@ a {
   border-radius: 10px;
 }
 
-.dataItem:hover {
-  background-color: rgb(240, 240, 240);
-  border-radius: 10px;
-}
-
 .navbar {
   position: fixed;
   z-index: 1;
   top: 0px !important;
   width: 100% !important;
+  background-color: #a28fce;
 }
 
 .btn-outline-light {
@@ -71,4 +63,16 @@ a {
 }
 .search {
   width: 35%;
+
+  background-color: #a28fce;
+}
+.navbar-brand {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900; /* Bold */
+  color: #f9f3e1 !important;
+}
+
+.join-sign-button {
+  color: rgb(255, 255, 255); /*Change this to your desired color*/
+  text-decoration: none;
 }
