@@ -41,16 +41,20 @@ build-fastapi-service-posts-image:
     - docker push $GITLAB_IMAGE:latest
   only:
     - main
+
 # # Run the unit tests
-# api-unit-tests-job:
-#   image: python:3-bullseye
-#   stage: test
-#   needs:
-#     - lint-test-job
-#   script:
-#     - cd sample_service
-#     - pip install -r requirements.txt
-#     - python -m pytest
+users-api-unit-tests-job:
+  image: python:3-bullseye
+  stage: test
+  variables:
+    DATABASE_URL: ${USERS_DATABASE_URL}
+    SIGNING_KEY: ${USERS_SIGNING_KEY}
+  needs:
+    - lint-test-job
+  script:
+    - cd users
+    - pip install -r requirements.txt
+    - python -m pytest
 
 # # Build the React/JavaScript front-end
 build-front-end-job:
@@ -58,6 +62,7 @@ build-front-end-job:
   image: node:lts-bullseye
   needs:
     - lint-test-job
+    - users-api-unit-tests-job
   variables:
     #     # If either of these variables is defined in the GitLab
     #     # CI/CD variables, that value will override the value here.

@@ -5,9 +5,9 @@ steps = [
         CREATE TABLE users (
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             email TEXT NOT NULL UNIQUE,
-            profile_picture VARCHAR(1000) DEFAULT NULL,
+            profile_picture VARCHAR(2500) DEFAULT NULL,
             display_name VARCHAR(100) DEFAULT NULL,
-            header_image VARCHAR(1000) DEFAULT NULL,
+            header_image VARCHAR(2500) DEFAULT NULL,
             first_name  VARCHAR(100) DEFAULT NULL,
             last_name  VARCHAR(100) DEFAULT NULL,
             password VARCHAR(128) NOT NULL,
@@ -43,7 +43,7 @@ steps = [
         CREATE TABLE image_carousel(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             user_id INT,
-            image_href VARCHAR(1000) DEFAULT NULL
+            image_href VARCHAR(2500) DEFAULT NULL
         );
         """,
         # "Down" SQL statement
@@ -57,7 +57,7 @@ steps = [
         CREATE TABLE socials(
             id SERIAL NOT NULL UNIQUE PRIMARY KEY,
             user_id INT,
-            link VARCHAR(1000) DEFAULT NULL
+            link VARCHAR(2500) DEFAULT NULL
         );
         """,
         # "Down" SQL statement

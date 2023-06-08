@@ -12,6 +12,7 @@ const EditForm = ({
   token,
   getCarousels,
   getSocials,
+  getUsers
 }) => {
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState("");
@@ -148,6 +149,7 @@ const EditForm = ({
         let newData = { ...userInfo };
         newData.user = result;
         setUserInfo(newData);
+        getUsers();
         navigate("/profiles/me");
       }
     } catch (error) {
