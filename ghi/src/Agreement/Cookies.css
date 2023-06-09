@@ -1,0 +1,20 @@
+.container_3 {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+
+  height: 100vh; /* Full height */
+}
+
+.form-container_3 {
+  max-width: 500px; /* Adjust as per your need */
+  width: 100%; /* Full width */
+  margin-top: 5% !important;
+}
+
+.tip-toptext {
+  font-family: "Prata", serif;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 30px;
+  width: 100%;
+}

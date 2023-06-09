@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.form-container {
+  width: 100%;
+  margin-top: 30%;
+  margin-bottom: 90%;
+  background-color: #fff5f0;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.img-container {
+  flex-basis: 70%;
+}
+
+.img-fluid {
+  width: 200%;
+  height: auto;
+  min-height: 500px;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.btn-black {
+  background-color: black !important;
+  color: white !important;
+  border: none;
+  border-radius: 30px !important; /* Adjus me for rounding on buttons */
+  font-family: "Lato", sans-serif !important;
+  font-size: 10px; /* adjust as needed */
+  padding: 15px 30px;
+  width: 100%; /* adjust as needed */
+}
+
+.btn-white {
+  background-color: white !important;
+  color: black !important;
+  border: 2px solid black !important;
+  border-radius: 30px !important;
+  font-family: "Lato", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif !important;
+  width: 100%;
+}
+
+.btn-black:active,
+.btn-black:focus {
+  background-color: black !important;
+  outline: none;
+  box-shadow: none;
+}
+
+.top-text {
+  font-family: "Prata", serif;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+.my-main-container {
+  background-color: white;
+  max-height: 100vh;
+  min-height: 100%;
+}

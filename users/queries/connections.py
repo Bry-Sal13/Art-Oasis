@@ -1,79 +1,59 @@
+from typing import List, Union
 from pydantic import BaseModel
-from typing import List
 from psycopg_pool import ConnectionPool
+from fastapi import HTTPException, status
 import os
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
 
+class Error(BaseModel):
+    message: str
+
+
 class ConnectionIn(BaseModel):
     user_id: int
-    following_id: int
-    following: bool
-
+    following_id: int  # the person who the user_id is following
 
 
 class ConnectionOut(BaseModel):
+    id: int
     user_id: int
-    following_id: int
-    following: bool
+    following_id: int  # the person who the user_id is following
 
 
 class ConnectionRepository:
-    def get_connection(self, id):
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT u.id AS user_id, u.first_name, u.last_name,
-                    u.profile_picture, u.display_name, u.header_image, u.category,
-                    c.user_id, c.following_id, c.following
-                    FROM users u
-                    JOIN comments c
-                    ON(u.id = c.user_id)
-                    WHERE c.id = %s
-                    """,
-                    [id],
-                )
+    def get_connection(self, id: int) -> Union[ConnectionOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT id, user_id, following_id
+                        FROM connections
+                        WHERE id = %s
+                        """,
+                        [id],
+                    )
+                    if cur.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Social not found",
+                        )
+                    record = cur.fetchone()
 
-                connection = None
-                row  = cur.fetchone()
+                    return ConnectionOut(
+                        id=record[0],
+                        user_id=record[1],
+                        following_id=record[2],
+                    )
+        except HTTPException:
+            raise
+        except Exception as e:
+            print(e)
+            return {"Message": "Something went wrong"}
 
-                if row is not None:
-                    connection = {}
-                    connection_fields = [
-                        "connection_id",
-                        "user_id",
-                        "following_id",
-                        "following"
-                    ]
-                    for i, column in enumerate(cur.description):
-                        if column.name in connection_fields:
-                            connection[column.name] = row[i]
-                    connection["id"] = connection["connection_id"]
-
-                    user = {}
-                    user_fields = [
-                            "user_id",
-                            "first_name",
-                            "last_name",
-                            "email",
-                            "username",
-                            "password",
-                            "profile_picture",
-                            "display_name",
-                            "header_image",
-                            "category"
-                        ]
-                    for i, column in enumerate(cur.description):
-                        if column.name in user_fields:
-                            user[column.name] = row[i]
-                    user["id"] = user["user_id"]
-                    connection["owner"] = user
-                    print("connection output", connection)
-                return connection
-
-    def get_connections(self) -> List[ConnectionOut]:
+    def get_connections(self) -> Union[List[ConnectionOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -86,73 +66,89 @@ class ConnectionRepository:
                     results = []
                     for record in cur:
                         connection = ConnectionOut(
-                            user_id=record[0], following_id=record[1],
-                            following=record[2]
+                            id=record[0],
+                            user_id=record[1],
+                            following_id=record[2],
                         )
                         results.append(connection)
                     return results
-        except Exception:
+        except Exception as e:
+            print(e)
             return {"message": "Could not get all connections"}
 
-    def create_connection(self, data):
+    def create_connection(self, data: ConnectionIn):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                params = [
-                    data.user_id,
-                    data.following_id,
-                    data.following
-                ]
-                cur.execute(
+                params = [data.user_id, data.following_id]
+                res = cur.execute(
                     """
-                    INSERT INTO connections (user_id, following_id, following)
-                    VALUES (%s, %s, %s)
-                    RETURNING id, user_id, following_id, following
+                    INSERT INTO connections (user_id, following_id)
+                    VALUES (%s, %s)
+                    RETURNING id, user_id, following_id
                     """,
                     params,
                 )
+                id = res.fetchone()[0]
+                data = data.dict()
+                data["id"] = id
+                return ConnectionOut(**data)
 
-                record = None
-                row = cur.fetchOne()
-                if row is not None:
-                    record = {}
-                    for i, column in enumerate(cur.description):
-                        record[column.name] = row[i]
-                return record
-
-    def update_connection(self, connection_id, data):
+    def update_connection(
+        self, connection_id: int, data: ConnectionIn
+    ) -> Union[ConnectionOut, Error]:
+        try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    params = [
-                        data.user_id,
-                        data.following_id,
-                        data.following,
-                        connection_id
-                    ]
+                    params = [data.user_id, data.following_id, connection_id]
                     cur.execute(
                         """
                         UPDATE connections
                         SET user_id = %s
                         , following_id = %s
-                        , following = %s
+                        WHERE id = %s
                         """,
                         params,
                     )
+                    if cur.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Connection not found",
+                        )
+                    data = data.dict()
+                    data["id"] = connection_id
+                    return ConnectionOut(**data)
+        except HTTPException:
+            raise
+        except Exception as e:
+            print(e)
+            return {"message": "Could not update a Connection with that ID"}
 
-                    record = None
-                    row = cur.fetchOne()
-                    if row is not None:
-                        record = {}
-                        for i, column in enumerate(cur.description):
-                            record[column.name] = row[i]
-                    return record
-
-    def delete_social(self, connection_id):
+    def delete_connection(self, connection_id: int) -> Union[bool, Error]:
+        try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
                         DELETE FROM connections
-                        where id = %s
+                        WHERE id = %s
                         """,
-                        [connection_id]
+                        [connection_id],
                     )
+                    if cur.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Connection not found",
+                        )
+                    return True
+        except HTTPException:
+            raise
+        except Exception as e:
+            print(e)
+            return False
+
+    def record_to_comment_out(self, record):
+        return ConnectionOut(
+            id=record[0],
+            user_id=record[1],
+            following_id=record[2],
+        )
