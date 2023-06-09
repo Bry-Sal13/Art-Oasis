@@ -31,7 +31,7 @@ function App() {
   const [likes, setLikes] = useState([]);
 
   const getLikes = async () => {
-    const url = "http://localhost:8010/api/likes";
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/likes`;
     const response = await fetch(url, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
@@ -40,7 +40,7 @@ function App() {
   };
 
   const getUserData = async () => {
-    const tokenUrl = "http://localhost:8000/token";
+    const tokenUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/token`;
     const response = await fetchWithCookie(tokenUrl);
     if (response != null) {
       setUserData(response);
@@ -48,7 +48,7 @@ function App() {
   };
 
   const getPosts = async () => {
-    const postsUrl = "http://localhost:8010/api/posts";
+    const postsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/posts`;
     const response = await fetch(postsUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
@@ -57,7 +57,7 @@ function App() {
   };
 
   const getUsers = async () => {
-    const usersUrl = "http://localhost:8000/api/users";
+    const usersUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users`;
     const response = await fetch(usersUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
@@ -66,7 +66,7 @@ function App() {
   };
 
   const getSocials = async () => {
-    const socialsUrl = "http://localhost:8000/api/socials";
+    const socialsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/socials`;
     const response = await fetch(socialsUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
@@ -75,7 +75,7 @@ function App() {
   };
 
   const getCarousels = async () => {
-    const carouselsUrl = "http://localhost:8000/api/carousels";
+    const carouselsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/carousels`;
     const response = await fetch(carouselsUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
@@ -85,7 +85,7 @@ function App() {
 
   const getUserInfo = async () => {
     const username = userData.user.username;
-    const url = `http://localhost:8000/api/users/${username}`;
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${username}`;
     const response = await fetch(url, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
@@ -95,7 +95,7 @@ function App() {
 
   const getUser = async (username) => {
     if (username) {
-      const url = `http://localhost:8000/api/users/${username}`;
+      const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${username}`;
       const response = await fetch(url, { credentials: "include" });
       if (response.ok) {
         const data = await response.json();
@@ -105,7 +105,7 @@ function App() {
   };
 
   const getComments = async () => {
-    const CommentsUrl = `http://localhost:8010/api/comments`;
+    const CommentsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/comments`;
     const response = await fetch(CommentsUrl, { credentials: "include" });
     if (response.ok) {
       const data = await response.json();
@@ -114,7 +114,7 @@ function App() {
   };
 
   const getAllConnections = async () => {
-    const connectionsURL = "http://localhost:8000/api/connections";
+    const connectionsURL = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/connections`;
     const response = await fetch(connectionsURL, {
       credentials: "include",
     });
@@ -217,6 +217,7 @@ function App() {
                     getCarousels={getCarousels}
                     getPosts={getPosts}
                     getSocials={getSocials}
+                    getAllConnections={getAllConnections}
                     connections={connections}
                   />
                 }
@@ -232,6 +233,7 @@ function App() {
                     carousels={carousels}
                     getSocials={getSocials}
                     getUser={getUser}
+                    getAllConnections={getAllConnections}
                     connections={connections}
                   />
                 }

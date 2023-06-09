@@ -1,7 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from authenticator import authenticator
-from routers import users, socials, connections, carousel
+from routers import (
+    users,
+    socials,
+    connections,
+    carousel,
+    posts,
+    comments,
+    likes,
+)
 import os
 
 app = FastAPI()
@@ -10,6 +18,10 @@ app.include_router(users.router)
 app.include_router(socials.router)
 app.include_router(connections.router)
 app.include_router(carousel.router)
+app.include_router(posts.router)
+app.include_router(comments.router)
+app.include_router(likes.router)
+
 
 app.add_middleware(
     CORSMiddleware,

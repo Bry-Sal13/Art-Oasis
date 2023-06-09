@@ -69,7 +69,7 @@ const SignUpForm = () => {
       about: about,
     };
 
-    const userUrl = "http://localhost:8000/api/users";
+    const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(data),

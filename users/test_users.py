@@ -7,10 +7,6 @@ from queries.users import UserOut, UserIn, UserRepository
 client = TestClient(app)
 
 
-def test_init():
-    assert 1 == 1
-
-
 # TEST CREATE USER
 def fake_get_current_account_data():
     return UserOut(
