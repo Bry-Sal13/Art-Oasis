@@ -47,7 +47,9 @@
 
 .inner-card {
   background-color: rgb(249, 244, 244) !important;
-  max-width: 1200px;
+  max-width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 #profile-body {

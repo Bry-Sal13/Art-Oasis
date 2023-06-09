@@ -14,6 +14,7 @@ import LoginForm from "./Login/LoginForm";
 import OthersProfile from "./Profile/OthersProfile";
 import CookiePolicy from "./Agreement/CookiePolicy";
 import Nav from "./Nav/Nav";
+import "./app.css"
 
 function App() {
   const [users, setUsers] = useState([]);

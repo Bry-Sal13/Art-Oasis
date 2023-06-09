@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./edit.css";
 
 const EditForm = ({
   userInfo,
@@ -161,74 +162,78 @@ const EditForm = ({
     return;
   }
   return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-6 card">
+    <div id="edit-container" className="container">
+      <div className="card justify-content-center" style={{ minWidth: "60%" }}>
         <div className="card-body">
-          <form onSubmit={handleSubmit} className="row g-3">
-            <h1>Edit Your Profile</h1>
+          <h1 className="card-title">Edit Your Profile</h1>
+          <form onSubmit={handleSubmit} className="g-3">
             <input
               value={displayName}
               onChange={(event) => handleChange(event, setDisplayName)}
-              className="form-control  mt-0"
+              className="form-control mb-3"
               placeholder={`${displayName}`}
             />
             <input
               value={firstName}
               onChange={(event) => handleChange(event, setFirstName)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder={`${firstName}`}
             />
             <input
               value={lastName}
               onChange={(event) => handleChange(event, setLastName)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder={`${lastName}`}
             />
             <input
               value={profilePicture}
               onChange={(event) => handleChange(event, setProfilePicture)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder={`${profilePicture}`}
             />
             <input
               value={headerImage}
               onChange={(event) => handleChange(event, setHeaderImage)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder={`${headerImage}`}
             />
             <input
               value={category}
               onChange={(event) => handleChange(event, setCategory)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder={`${category}`}
             />
-            <input
+            <textarea
               value={about}
               onChange={(event) => handleChange(event, setAbout)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder={`${about}`}
             />
             <input
               value={social}
               onChange={(event) => handleChange(event, setSocial)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder="social media link"
             />
             <input
               value={carousel}
               onChange={(event) => handleChange(event, setCarousel)}
               type="text"
-              className="form-control"
+              className="form-control mb-3"
               placeholder="image link"
             />
-            <button type="submit" className="w-25 btn btn-primary mb-3">
+            <button
+              type="submit"
+              className="btn btn-primary mb-1"
+              style={{ backgroundColor: "#7F669D", borderColor: "#7F669D" }}
+            >
               Finish
             </button>
           </form>
