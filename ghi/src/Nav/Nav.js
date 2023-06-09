@@ -13,22 +13,30 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
   const { setToken } = useAuthContext();
 
   const checkLoggedIn = async () => {
-    if (token) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-      navigate("/login");
-    }
+    const timer = setTimeout(() => {
+      if (!token) {
+        navigate("/login");
+        setLoggedIn(false);
+      } else {
+        setLoggedIn(true)
+      }
+    }, 250);
+    return () => clearTimeout(timer);
   };
 
   async function handleLogout(event) {
     logout();
-    setUserInfo("");
-    setToken("");
-    if (!token) {
-      setLoggedIn(false);
-      navigate("/login");
-    }
+    const timer = setTimeout(() => {
+      setUserInfo("");
+      setToken("");
+      if (!token) {
+        navigate("/login");
+        setLoggedIn(false);
+      } else {
+        setLoggedIn(true);
+      }
+    }, 250);
+    return () => clearTimeout(timer);
   }
 
   async function handleSearchChange(event) {
