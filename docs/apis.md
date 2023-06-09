@@ -62,7 +62,6 @@ ALL OTHER OUTPUTS:
 
 creating a new user also sends a post request to `/token` which automatically logs you which returns your access token and the user's info
 
-
 ## Token
 
 - **Methods**: `GET`, `POST`, `DELETE`
@@ -85,7 +84,6 @@ Output:
   "token_type": "Bearer"
 }
 ```
-
 
 `GET` /token Output:
 
@@ -111,7 +109,6 @@ Output:
 these methods just logs a user in and out, and get's the `token` and the userdata associated with that `token`
 and gets handled automatically by jwt-down-fastapi and jwt-down-for-react
 
-
 ## Socials
 
 - **Methods**: `GET`, `PUT`, `POST`, `DELETE`
@@ -122,7 +119,7 @@ Input:
 ```json
 {
   "user_id": 0, <---- this is the user id of the person logged in and creating a link
-  "link": "string" 
+  "link": "string"
 }
 ```
 
@@ -137,7 +134,6 @@ Output:
 ```
 
 this creates a link that goes on a user's profile, that can removed by hovering and clicking the red button the user_id is for the front end to filter who it belongs to
-
 
 ## Connections
 
@@ -165,7 +161,6 @@ Output:
 
 this is used for the follower count and follow button (we originally planned to create a connections page that shows a list of their followers and who they are following, but that got cut due to DB issues)
 
-
 ## carousels
 
 - **Methods**: `GET`, `PUT`, `POST`, `DELETE`
@@ -191,7 +186,6 @@ Output:
 ```
 
 this is a an image that will go inside the image carousel made in bootstrap on the front end
-
 
 ## posts
 
@@ -252,7 +246,6 @@ Output:
 
 shows up below the post with on screen forms that automatically update when you send your comment (we aren't using websockets so without a refresh we can't update the comment section when another user creates a comment)
 
-
 ## likes
 
 - **Methods**: `GET`, `PUT`, `POST`, `DELETE`
@@ -277,4 +270,4 @@ Output:
 }
 ```
 
-the front end grabs the username from the logged in user and when you click it passes that to the json body  use to toggle a like button
+the front end grabs the username from the logged in user and when you click it passes that to the json body use to toggle a like button
