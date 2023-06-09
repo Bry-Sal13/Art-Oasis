@@ -57,8 +57,6 @@ def test_get_post():
 
     response = client.get(f"/api/posts/{id}")
     app.dependency_overrides = {}
-    print(response.json())
-    print(desired_result)
     # ASSERT
     assert response.status_code == 200
     assert response.json() == desired_result
