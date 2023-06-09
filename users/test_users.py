@@ -180,7 +180,7 @@ def test_get_users():
     assert response.status_code == 200
     assert response.json() == desired_result
 
-
+# Justin's unit tests
 class BadUserRepo:
     def fe_get_user(self, username: str):
         user_id = 1
@@ -437,7 +437,6 @@ def test_no_auth_get_user():
     assert response.status_code == 401
 
 
-# SHANE'S UNIT TESTS
 def test_no_auth_get_users():
     # Arrange
     app.dependency_overrides[UserRepository] = NoAuthUserRepo
