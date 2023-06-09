@@ -3,7 +3,7 @@ volumes:
   postgres-data:
     external: true
 services:
-  users-api:
+  fastapi:
     build:
       context: users
       dockerfile: Dockerfile.dev
@@ -18,32 +18,16 @@ services:
       CORS_HOST: http://localhost:3000
     depends_on:
       - postgres
-  posts-api:
-    build:
-      context: posts
-      dockerfile: Dockerfile.dev
-    ports:
-      - 8010:80
-    volumes:
-      - ./posts:/app
-    environment:
-      DATABASE_URL: ${POSTS_DATABASE_URL}
-      SIGNING_KEY: ${POSTS_SIGNING_KEY}
-      WAIT_HOSTS: postgres:5432
-    depends_on:
-      - postgres
   postgres:
-    build:
-      context: ./relational-data
-      dockerfile: ./Dockerfile.dev
+    image: postgres:14.2-bullseye
     volumes:
       - postgres-data:/var/lib/postgresql
     environment:
-      - POSTGRES_MULTIPLE_DATABASES=users,posts
-      - POSTGRES_PASSWORD=test-databases
+      POSTGRES_PASSWORD: user
+      POSTGRES_USER: user
+      POSTGRES_DB: user
     ports:
       - 15432:5432
-
   ghi:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -57,5 +41,5 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
-      REACT_APP_SAMPLE_SERVICE_API_HOST: ${REACT_APP_SAMPLE_SERVICE_API_HOST}
+      REACT_APP_USERS_SERVICE_API_HOST: ${REACT_APP_USERS_SERVICE_API_HOST}
       WATCHPACK_POLLING: true

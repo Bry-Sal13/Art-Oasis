@@ -13,6 +13,7 @@ function OthersProfile({
   userInfo,
   getSocials,
   getUser,
+  getAllConnections,
   connections,
 }) {
   const username = useParams();
@@ -22,10 +23,9 @@ function OthersProfile({
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingSocials, setLoadingSocials] = useState(true);
-  const [followed, setFollowed] = useState("Follow me!");
-  const navigate = useNavigate();
+  const [filteredConnections, setFilteredConnections] = useState([]);
 
-  let filteredConnections = [];
+  const navigate = useNavigate();
 
   const handleCarouselNext = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % carousels.length);
@@ -38,17 +38,18 @@ function OthersProfile({
   };
 
   const getUserStats = () => {
-    if (connections.length !== 0 && Array.isArray(connections)) {
-      filteredConnections = connections.filter((connection) => {
-        return (connection.user_id = userInfo.user_id);
+    if (Array.isArray(connections)) {
+      const connectionsFiltered = connections.filter((connection) => {
+        return connection.user_id === userInfo.user_id;
       });
-      setFollowers(filteredConnections.length);
+      setFollowers(connectionsFiltered.length);
+      setFilteredConnections(connectionsFiltered);
     }
   };
 
   const handleFollow = async (event) => {
     event.preventDefault();
-    const connectionUrl = "http://localhost:8000/api/connections";
+    const connectionUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/connections`;
     const fetchConfig = {
       method: "post",
       credentials: "include",
@@ -63,22 +64,46 @@ function OthersProfile({
     };
     const response = await fetch(connectionUrl, fetchConfig);
     if (response.ok) {
-      setFollowed("followed");
+      const data = await response.json();
+      console.log(data)
+      setFilteredConnections([data]);
+      setFollowers(followers + 1)
     }
   };
 
+  const handleUnFollow = async (event, connection_id) => {
+    event.preventDefault();
+    const connectionUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/connections/${connection_id}`;
+    const fetchConfig = {
+      method: "delete",
+      credentials: "include",
+    };
+    const response = await fetch(connectionUrl, fetchConfig);
+    if (response.ok) {
+      setFilteredConnections([])
+      setFollowers(followers - 1);
+    }
+  };
+
+  const isFollowed = filteredConnections?.find((connection) => {
+    return (
+      connection.following_id === user.user_id &&
+      connection.user_id === userInfo.user_id
+    );
+  });
+
   useEffect(() => {
-    if ((userInfo !== undefined) | (userInfo !== "")) {
+    if (userInfo !== undefined || userInfo !== "") {
       setIsLoading(false);
     }
-    let i =
-      performance.getEntriesByType("navigation")[0].type === "reload" ? 0 : 1;
+    let i = 
+      performance.getEntriesByType("navigation")[0].type === "reload" ? 1 : 0;
     if (i === 1) {
       const timer = setTimeout(() => {
         if (!token) {
           navigate("/login");
         }
-      }, 3250);
+      }, 3750);
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
@@ -109,8 +134,13 @@ function OthersProfile({
   useEffect(() => {
     if (userInfo) {
       getUserStats();
+      getAllConnections();
     }
   }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    getAllConnections();
+  }, [filteredConnections]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (user !== "" && user !== null && user !== undefined) {
     if (isLoading) {
@@ -146,6 +176,7 @@ function OthersProfile({
       setPostsNum(postsNum + 10);
     };
 
+
     if (user !== "" && user !== null && user !== undefined) {
       return (
         <div className="container">
@@ -172,13 +203,26 @@ function OthersProfile({
                       height: "128px",
                     }}
                   ></div>
-
-                  <button
-                    className="btn btn-dark align-self-end flex-shrink-1"
-                    onClick={(event) => handleFollow(event)}
-                  >
-                    {followed}
-                  </button>
+                  <>
+                    {isFollowed === undefined && (
+                      <button
+                        className="btn btn-dark align-self-end flex-shrink-1"
+                        onClick={(event) => handleFollow(event)}
+                      >
+                        Follow me!
+                      </button>
+                    )}
+                    {isFollowed !== undefined && (
+                      <button
+                        className="btn btn-dark align-self-end flex-shrink-1"
+                        onClick={(event) =>
+                          handleUnFollow(event, isFollowed.id)
+                        }
+                      >
+                        Unfollow
+                      </button>
+                    )}
+                  </>
                 </div>
                 <div className="mt-3 mb-3 d-block">
                   <div className="text-center">
@@ -346,11 +390,11 @@ function OthersProfile({
                         <div>
                           <img
                             src={post.image}
-                            className="rounded mb-3 mt-3"
+                            className="rounded mb-3 mt-3 w-100"
                             alt="post pic"
                           />
-                          <p>{post.text}</p>
                         </div>
+                        <p className="mb-0">{post.text}</p>
                       </div>
                     </div>
                   );

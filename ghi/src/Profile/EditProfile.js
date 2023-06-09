@@ -12,7 +12,7 @@ const EditForm = ({
   token,
   getCarousels,
   getSocials,
-  getUsers
+  getUsers,
 }) => {
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState("");
@@ -43,7 +43,7 @@ const EditForm = ({
       setIsLoading(false);
     }
     let i =
-      performance.getEntriesByType("navigation")[0].type === "reload" ? 0 : 1;
+      performance.getEntriesByType("navigation")[0].type === "reload" ? 1 : 0;
     if (i === 1) {
       const timer = setTimeout(() => {
         if (!token) {
@@ -85,9 +85,9 @@ const EditForm = ({
     carouselData["user_id"] = userInfo.user_id;
     carouselData["link"] = carousel;
 
-    const userUrl = `http://localhost:8000/api/users/${userInfo.username}`;
-    const carouselsUrl = "http://localhost:8000/api/carousels";
-    const socialsUrl = "http://localhost:8000/api/socials";
+    const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${userInfo.username}`;
+    const carouselsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/carousels`;
+    const socialsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/socials`;
 
     const userConfig = {
       method: "put",

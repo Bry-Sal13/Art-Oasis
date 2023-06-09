@@ -16,7 +16,7 @@ const CategoryForm = ({ setUserInfo, userInfo }) => {
     event.preventDefault();
     const data = userInfo;
     data.category = category;
-    const userUrl = `http://localhost:8000/api/users/${userInfo.username}`;
+    const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${userInfo.username}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),
