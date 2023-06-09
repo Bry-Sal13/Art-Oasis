@@ -129,15 +129,14 @@ function App() {
   }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    // If token is falsy, then don't call getUsers
-    if (userData) {
+    if (userData && token) {
       getPosts();
     }
-  }, [userData]);
+  }, [userData, token]);
   // Get list of users only after you're logged in
   useEffect(() => {
     // If token is falsy, then don't call getUsers
-    if (userData) {
+    if (userData && token) {
       getUsers();
       getComments();
       getCarousels();

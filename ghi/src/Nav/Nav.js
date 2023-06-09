@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
 function Nav({ users, token, setUserInfo, getUser, setUser }) {
@@ -9,20 +10,25 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
   const [searchTerm, setSearchTerm] = useState("");
   const { logout } = useToken();
   const [loggedIn, setLoggedIn] = useState();
+  const { setToken } = useAuthContext();
 
   const checkLoggedIn = async () => {
     if (token) {
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
+      navigate("/login");
     }
   };
 
   async function handleLogout(event) {
     logout();
-    setLoggedIn(false);
     setUserInfo("");
-    navigate("/login");
+    setToken("");
+    if (!token) {
+      setLoggedIn(false);
+      navigate("/login");
+    }
   }
 
   async function handleSearchChange(event) {
@@ -89,7 +95,7 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
           <div className="dataResult">
             {filteredUsers.slice(0, 10).map((user) => {
               return (
-                <div className="search-result-margins " key={user.user_id}>
+                <div className="search-result-margins" key={user.user_id}>
                   <div className="dataItem d-flex flex-row align-items-center justify-content-around flex-wrap">
                     <NavLink onClick={() => handleGetUser(user)}>
                       <img
