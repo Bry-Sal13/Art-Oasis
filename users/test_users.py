@@ -180,6 +180,7 @@ def test_get_users():
     assert response.status_code == 200
     assert response.json() == desired_result
 
+
 # Justin's unit tests
 class BadUserRepo:
     def fe_get_user(self, username: str):

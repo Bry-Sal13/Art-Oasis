@@ -41,15 +41,15 @@ def test_init():
 #         )
 
 # def test_get_user():
-#     # Arrange 
+#     # Arrange
 #     app.dependency_overrides[UserRepository] = fakeUserRepo
-    
+
 #     # Act
 #     response = client.get("/api/users/Krze")
-    
+
 #     # Clean up
 #     app.dependency_overrides = {}
-    
+
 #     # Assert
 #     assert response.status_code == 200
 #     assert response.json() == UserOut(
@@ -64,4 +64,3 @@ def test_init():
 #         category="krze art",
 #         about="krze art dude"
 #     )
-
