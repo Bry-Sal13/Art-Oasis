@@ -2,6 +2,7 @@ from typing import List, Union
 from datetime import datetime
 from pydantic import BaseModel
 from queries.pool import pool
+from fastapi import HTTPException, status
 
 
 # Create Post, Post In Model
@@ -43,8 +44,11 @@ class PostRepository:
                         [post_id],
                     )
                     record = result.fetchone()
-                    if record is None:
-                        return None
+                    if db.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="post not found",
+                        )
                     return PostOut(
                         id=record[0],
                         username=record[1],
@@ -52,6 +56,8 @@ class PostRepository:
                         image=record[3],
                         created=record[4],
                     )
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return {"message": "Could not get that post"}
@@ -67,7 +73,14 @@ class PostRepository:
                         """,
                         [post_id],
                     )
+                    if db.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="post not found",
+                        )
                     return True
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return False
@@ -79,23 +92,29 @@ class PostRepository:
                     db.execute(
                         """
                     UPDATE posts
-                    SET username = %s
-                    , text = %s
+                    SET text = %s
                     , image = %s
                     WHERE id = %s
                     RETURNING *
                     """,
                         [
-                            post.username,
                             post.text,
                             post.image,
                             post_id,
                         ],
                     )
+                    if db.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="post not found",
+                        )
                     record = db.fetchone()
                     if record is not None:
+                        post.username = record[1]
                         created = record[4]
                         return self.post_in_to_out(post_id, created, post)
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return {"message": e}

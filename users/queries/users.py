@@ -95,7 +95,7 @@ class UserRepository:
                     if cur.rowcount <= 0:
                         raise HTTPException(
                             status_code=status.HTTP_404_NOT_FOUND,
-                            detail="Social not found",
+                            detail="User not found",
                         )
                     record = cur.fetchone()
                     if record is None:

@@ -21,10 +21,12 @@ def get_all(
     repo: PostRepository = Depends(),
     user_data: dict = Depends(authenticator.get_current_account_data),
 ):
+    if not repo.get_all():
+        return None
     return repo.get_all()
 
 
-@router.put("/posts{post_id}", response_model=Union[PostOut, Error])
+@router.put("/posts/{post_id}", response_model=Union[PostOut, Error])
 def update_post(
     post_id: int,
     post: PostIn,
@@ -53,4 +55,5 @@ def get_one_post(
     post = repo.get_one(post_id)
     if post is None:
         response.status_code = 404
+        return None
     return post
