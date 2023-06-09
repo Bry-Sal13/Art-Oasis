@@ -23,7 +23,7 @@ const NameForm = ({ userInfo, setUserInfo }) => {
     data.first_name = firstName;
     data.last_name = lastName;
 
-    const userUrl = `http://localhost:8000/api/users/${userInfo.username}`;
+    const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${userInfo.username}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),

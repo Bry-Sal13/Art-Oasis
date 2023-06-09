@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./MainPage.css";
 
 function MyProfileSidebar({ connections, userInfo, posts }) {
@@ -84,7 +85,7 @@ function CreatePost({ userInfo, getPosts }) {
   const handlePostSubmit = async (event) => {
     event.preventDefault();
     const username = userInfo.username;
-    const url = "http://localhost:8010/api/posts/";
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/posts/`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify({ username, text, image }),
@@ -170,7 +171,7 @@ function Feed({
     event.preventDefault();
     const text = commentText;
     const username = userInfo.username;
-    const url = "http://localhost:8010/api/comments/";
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/comments/`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify({ post_id, username, text }),
@@ -200,7 +201,7 @@ function Feed({
 
   const handleUnLikeClick = async (event, like_id) => {
     event.preventDefault();
-    const url = `http://localhost:8010/api/likes/${like_id}`;
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/likes/${like_id}`;
     const fetchConfig = {
       method: "delete",
       credentials: "include",
@@ -219,7 +220,7 @@ function Feed({
   const handleLikeClick = async (event, post_id) => {
     event.preventDefault();
     const username = userInfo.username;
-    const url = "http://localhost:8010/api/likes";
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/likes`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify({ post_id, username }),
@@ -401,11 +402,33 @@ function MainPage({
   likes,
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const { token } = useAuthContext();
+  const navigate = useNavigate();
   useEffect(() => {
     if (userInfo) {
       setIsLoading(false);
     }
   }, [userInfo]); // eslint-disable-line react-hooks/exhaustive-deps
+  
+  useEffect(() => {
+    let i =
+      performance.getEntriesByType("navigation")[0].type === "reload" ? 1 : 0;
+    if (i === 1) {
+      const timer = setTimeout(() => {
+        if (!token) {
+          navigate("/login");
+        }
+      }, 3750);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        if (!token) {
+          navigate("/login");
+        }
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [token, navigate, userInfo]);
 
   if (isLoading) {
     return;

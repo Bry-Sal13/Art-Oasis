@@ -26,7 +26,7 @@ function UserProfile({
 
   const handlePostDelete = async (event, id) => {
     event.preventDefault();
-    const postsUrl = `http://localhost:8010/api/posts/${id}`;
+    const postsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/posts/${id}`;
     const fetchConfig = {
       method: "delete",
       credentials: "include",
@@ -39,7 +39,7 @@ function UserProfile({
 
   const handleSocialDelete = async (event, id) => {
     event.preventDefault();
-    const socailsUrl = `http://localhost:8000/api/socials/${id}`;
+    const socailsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/socials/${id}`;
     const fetchConfig = {
       method: "delete",
       credentials: "include",
@@ -52,7 +52,7 @@ function UserProfile({
 
   const handleCarouselDelete = async (event, id) => {
     event.preventDefault();
-    const caroselsUrl = `http://localhost:8000/api/carousels/${id}`;
+    const caroselsUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/carousels/${id}`;
     const fetchConfig = {
       method: "delete",
       credentials: "include",
@@ -87,13 +87,13 @@ function UserProfile({
       setIsLoading(false);
     }
     let i =
-      performance.getEntriesByType("navigation")[0].type === "reload" ? 0 : 1;
+      performance.getEntriesByType("navigation")[0].type === "reload" ? 1 : 0;
     if (i === 1) {
       const timer = setTimeout(() => {
         if (!token) {
           navigate("/login");
         }
-      }, 4000);
+      }, 3750);
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
@@ -103,7 +103,7 @@ function UserProfile({
       }, 200);
       return () => clearTimeout(timer);
     }
-  }, [token, navigate]);
+  }, [token, navigate, userInfo]);
 
   useEffect(() => {
     const fetchSocials = async () => {

@@ -17,10 +17,6 @@
   font-size: large;
 }
 
-/* .delete-button{
-  z-index: ;
-} */
-
 .carousel-control-next {
   top: 50px !important;
 }
@@ -54,7 +50,6 @@
   max-width: 1200px;
 }
 
-
-#profile-body{
+#profile-body {
   min-width: 100%;
 }

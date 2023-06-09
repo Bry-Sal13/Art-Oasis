@@ -22,7 +22,7 @@ const PictureForm = ({ userInfo, setUserInfo }) => {
     data.profile_picture = profilePicture;
     data.header_image = headerImage;
 
-    const userUrl = `http://localhost:8000/api/users/${userInfo.username}`;
+    const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${userInfo.username}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),

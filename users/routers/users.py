@@ -53,6 +53,7 @@ async def create_user(
     request: Request,
     response: Response,
     repo: UserRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:
