@@ -39,10 +39,17 @@ class LikesRepository:
             """,
                         [like_id],
                     )
+                    if db.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Like not found",
+                        )
                     record = result.fetchone()
                     if record is None:
                         return None
                     return self.record_to_like_out(record)
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return {"message": "Could not get that Like"}
