@@ -396,20 +396,6 @@ def test_no_auth_update_user():
     # variable for the url
     username = "Krze"
 
-    # EXPECTED RESULT
-    updated_fake_user = UserOut(
-        user_id=1,
-        email="krze@gmail.com",
-        profile_picture="Crze pfp",
-        display_name="Eim_Crze",
-        header_image="test header image",
-        first_name="Eim",
-        last_name="Crze",
-        username="Krze",
-        category="Crze art",
-        about="Crze art dude",
-    )
-
     # Act
     response = client.put(
         f"/api/users/{username}",
@@ -440,18 +426,6 @@ def test_no_auth_get_user():
     app.dependency_overrides[UserRepository] = NoAuthUserRepo
 
     username = "Krze"
-    fake_user = UserOut(
-        user_id=1,
-        email="krze@gmail.com",
-        profile_picture="test pfp",
-        display_name="Eim_Krze",
-        header_image="test header image",
-        first_name="Eim",
-        last_name="Krze",
-        username="Krze",
-        category="krze art",
-        about="krze art dude",
-    )
 
     # Act
     response = client.get(f"/api/users/{username}")
@@ -468,20 +442,6 @@ def test_no_auth_get_users():
     # Arrange
     app.dependency_overrides[UserRepository] = NoAuthUserRepo
 
-    desired_result = [
-        {
-            "user_id": 1,
-            "email": "shane@gmail.com",
-            "profile_picture": "picture_url",
-            "display_name": "Shane",
-            "header_image": "header_image",
-            "first_name": "Shane",
-            "last_name": "McCracken",
-            "username": "Shane",
-            "category": "Art",
-            "about": "Super_dope_guy",
-        }
-    ]
     response = client.get("/api/users")
     app.dependency_overrides = {}
     # Assert
@@ -649,7 +609,7 @@ def test_missing_get_user():
     ] = fake_get_current_account_data
     app.dependency_overrides[UserRepository] = MissingUserRepo
 
-    response = client.get(f"/api/users/1")
+    response = client.get("/api/users/1")
 
     app.dependency_overrides = {}
 
@@ -808,7 +768,7 @@ def test_get_all():
         }
     ]
 
-    response = client.get(f"/api/posts")
+    response = client.get("/api/posts")
 
     # clean up
     app.dependency_overrides = {}
@@ -837,7 +797,7 @@ def test_create_post():
 
     # Act
     response = client.post(
-        f"/api/posts/",
+        "/api/posts/",
         headers={"Content-Type": "application/json"},
         json={
             "id": 1,
@@ -989,7 +949,7 @@ def test_no_auth_get_all():
     # Arrange
     app.dependency_overrides[PostRepository] = NoAuthPostRepository
 
-    response = client.get(f"/api/posts")
+    response = client.get("/api/posts")
 
     # clean up
     app.dependency_overrides = {}
@@ -1005,7 +965,7 @@ def test_no_auth_create_post():
 
     # Act
     response = client.post(
-        f"/api/posts/",
+        "/api/posts/",
         headers={"Content-Type": "application/json"},
         json={
             "id": 1,
@@ -1101,7 +1061,7 @@ def test_fail_get_post():
     ] = fake_get_current_account_data
     app.dependency_overrides[PostRepository] = FailPostRepository
 
-    response = client.get(f"/api/posts/20000")
+    response = client.get("/api/posts/20000")
     app.dependency_overrides = {}
 
     # ASSERT
@@ -1117,7 +1077,7 @@ def test_fail_update_post():
     ] = fake_get_current_account_data
     app.dependency_overrides[PostRepository] = FailPostRepository
 
-    response = client.get(f"/api/posts/20000")
+    response = client.get("/api/posts/20000")
     app.dependency_overrides = {}
 
     # ASSERT
@@ -1132,7 +1092,7 @@ def test_fail_delete_post():
     ] = fake_get_current_account_data
     app.dependency_overrides[PostRepository] = FailPostRepository
 
-    response = client.delete(f"/api/posts/20000")
+    response = client.delete("/api/posts/20000")
     app.dependency_overrides = {}
 
     # ASSERT
@@ -1208,7 +1168,7 @@ def test_bad_get_post():
         authenticator.get_current_account_data
     ] = fake_get_current_account_data
     app.dependency_overrides[PostRepository] = BadPostRepo
-    response = client.get(f"/api/posts/2000")
+    response = client.get("/api/posts/2000")
     app.dependency_overrides = {}
 
     # ASSERT
@@ -1225,7 +1185,7 @@ def test_bad_update_post():
     app.dependency_overrides[PostRepository] = BadPostRepo
 
     response = client.put(
-        f"/api/posts/20000",
+        "/api/posts/20000",
         headers={"Content-Type": "application/json"},
         json={
             "id": 1,
@@ -1251,7 +1211,7 @@ def test_bad_create_post():
     app.dependency_overrides[PostRepository] = BadPostRepo
 
     response = client.post(
-        f"/api/posts",
+        "/api/posts",
         headers={"Content-Type": "application/json"},
         json={
             "id": 1,
@@ -1337,7 +1297,7 @@ def test_missing_get_post():
         authenticator.get_current_account_data
     ] = fake_get_current_account_data
     app.dependency_overrides[PostRepository] = MissingPostRepo
-    response = client.get(f"/api/posts/2000")
+    response = client.get("/api/posts/2000")
     app.dependency_overrides = {}
 
     # ASSERT
@@ -1361,7 +1321,7 @@ def test_missing_update_post():
     app.dependency_overrides[PostRepository] = MissingPostRepo
 
     response = client.put(
-        f"/api/posts/20000",
+        "/api/posts/20000",
         headers={"Content-Type": "application/json"},
         json={
             "id": 1,
@@ -1393,7 +1353,7 @@ def test_missing_create_post():
     app.dependency_overrides[PostRepository] = MissingPostRepo
 
     response = client.post(
-        f"/api/posts",
+        "/api/posts",
         headers={"Content-Type": "application/json"},
         json={
             "id": 1,
