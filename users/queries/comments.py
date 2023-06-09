@@ -45,10 +45,17 @@ class CommentsRepository:
             """,
                         [comment_id],
                     )
+                    if db.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Comment not found",
+                        )
                     record = result.fetchone()
                     if record is None:
                         return None
                     return self.record_to_comment_out(record)
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
             return {"message": "Could not get that Comment"}
@@ -101,9 +108,6 @@ class CommentsRepository:
                         id = record[0]
                         created = record[4]
                         return self.comment_in_to_out(id, created, comment)
-                    else:
-                        return {"message": "Creating post did not work"}
-
         except Exception as e:
             print(e)
             return {"message": "Creating comment did not work"}
