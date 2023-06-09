@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import "./Nav.css";
 
 function Nav({ users, token, setUserInfo, getUser, setUser }) {
@@ -8,6 +9,7 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const { logout } = useToken();
+  const { setToken } = useAuthContext();
   const [loggedIn, setLoggedIn] = useState();
 
   const checkLoggedIn = async () => {
@@ -20,9 +22,15 @@ function Nav({ users, token, setUserInfo, getUser, setUser }) {
 
   async function handleLogout(event) {
     logout();
-    setLoggedIn(false);
-    setUserInfo("");
-    navigate("/login");
+    const timer = setTimeout(() => {
+      setUserInfo("");
+      setToken("");
+      if (!token) {
+        setLoggedIn(false);
+        navigate("/login");
+      }
+    }, 300);
+    return () => clearTimeout(timer);
   }
 
   async function handleSearchChange(event) {

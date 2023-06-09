@@ -44,7 +44,7 @@ const EditForm = ({
       setIsLoading(false);
     }
     let i =
-      performance.getEntriesByType("navigation")[0].type === "reload" ? 1 : 0;
+      performance.getEntriesByType("navigation")[0].type === "reload" ? 0 : 1;
     if (i === 1) {
       const timer = setTimeout(() => {
         if (!token) {
