@@ -5,6 +5,7 @@ from queries.posts import PostRepository, PostOut, PostIn
 from datetime import datetime
 from fastapi import HTTPException, status
 from queries.users import UserOut, UserIn, UserRepository
+from queries.comments import CommentsOut, CommentsRepository
 
 
 client = TestClient(app)
@@ -1375,3 +1376,43 @@ def test_missing_create_post():
             }
         ]
     }
+
+
+# Test Create Comment
+
+
+class FakeCommentsRepo:
+    def get_one(self, comment_id: int):
+        return CommentsOut(
+            id=1,
+            post_id=1,
+            username="string",
+            text="string",
+            created=current_time,
+        )
+
+
+def test_get_comment():
+    # Arrange
+    app.dependency_overrides[CommentsRepository] = FakeCommentsRepo
+    app.dependency_overrides[
+        authenticator.get_current_account_data
+    ] = fake_get_current_account_data
+
+    # Expected Result
+    desired_result = {
+        "id": 1,
+        "post_id": 1,
+        "username": "string",
+        "text": "string",
+        "created": current_time.strftime("%Y-%m-%dT%H:%M:%S.%f"),
+    }
+    # Act
+    response = client.get("/api/comments/1")
+
+    # Clean up
+    app.dependency_overrides = {}
+
+    # assert
+    assert response.status_code == 200
+    assert response.json() == desired_result

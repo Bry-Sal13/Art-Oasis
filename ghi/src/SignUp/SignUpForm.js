@@ -59,7 +59,7 @@ const SignUpForm = () => {
     const data = {
       email: email,
       profile_picture: profilePicture,
-      display_name: displayName,
+      display_name: username,
       header_image: headerImage,
       first_name: firstName,
       last_name: lastName,
