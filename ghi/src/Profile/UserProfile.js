@@ -383,7 +383,7 @@ function UserProfile({
                             style={{ maxHeight: "1080px" }}
                           />
                         </div>
-                        <p className="mb-0">{post.text}</p>
+                        <p className="mb-1 mt-2">{post.text}</p>
                       </div>
                     </div>
                   );
@@ -399,7 +399,6 @@ function UserProfile({
               </div>
             </div>
           </div>
-          <div className="row"></div>
         </div>
       );
     } else {
