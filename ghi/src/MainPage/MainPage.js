@@ -85,7 +85,7 @@ function CreatePost({ userInfo, getPosts }) {
   const handlePostSubmit = async (event) => {
     event.preventDefault();
     const username = userInfo.username;
-    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/posts/`;
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/posts`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify({ username, text, image }),
@@ -171,7 +171,7 @@ function Feed({
     event.preventDefault();
     const text = commentText;
     const username = userInfo.username;
-    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/comments/`;
+    const url = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/comments`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify({ post_id, username, text }),
