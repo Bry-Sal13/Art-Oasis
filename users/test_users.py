@@ -136,7 +136,7 @@ def test_get_user():
     assert response.json() == fake_user
 
 
-## SHANE'S UNIT TESTS
+# SHANE'S UNIT TESTS
 def fake_user():
     return {
         "user_id": 1,
@@ -197,7 +197,7 @@ def test_get_users():
     assert response.json() == desired_result
 
 
-## BRYANT'S UNIT TESTS
+# BRYANT'S UNIT TESTS
 
 current_time = datetime.now()
 
