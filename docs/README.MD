@@ -23,6 +23,10 @@ The back-end design uses one giant database with users's and their profile being
 comments a third model, likes a fourth, and the images they place on their profile another model, and the links they wish to display on their profile a sixth model
 and connections (followers) the final model.
 
+- [API design](docs/apis.md)
+- [Data model](docs/data-model.md)
+- [GHI](docs/ghi.md)
+
 ## Functionality
 
 - visitors to the sight are greeted by a landing page where they can sign-in or sign-up
