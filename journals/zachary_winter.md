@@ -1,9 +1,6 @@
 05/16/23:
 Today we cleaned up our excalidraw and model diagrams, and delegated out our starting tasks. Begin working on code tomorrow!
 
-05/16/23:
-Today we cleaned up our excalidraw and model diagrams, and delegated out our starting tasks. Begin working on code tomorrow!
-
 05/19/23:
 Ended up taking the whole week to really flesh out everything hopefully starting code next week
 
