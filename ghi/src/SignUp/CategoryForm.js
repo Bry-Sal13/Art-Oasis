@@ -15,7 +15,9 @@ const CategoryForm = ({ setUserInfo, userInfo }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = userInfo;
-    data.category = category;
+    if (category !== "") {
+      data.category = category;
+    }
     const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${userInfo.username}`;
     const fetchConfig = {
       method: "put",

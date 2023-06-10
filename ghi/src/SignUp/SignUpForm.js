@@ -12,7 +12,6 @@ const SignUpForm = () => {
   const [profilePicture] = useState(
     "https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
   );
-  const [displayName] = useState("Default Display Name");
   const [headerImage] = useState(
     "https://image-assets.eu-2.volcanic.cloud/api/v1/assets/images/de6fa830fed8d7fab6becd4b40c18472?t=1685096677"
   );
@@ -59,7 +58,7 @@ const SignUpForm = () => {
     const data = {
       email: email,
       profile_picture: profilePicture,
-      display_name: displayName,
+      display_name: username,
       header_image: headerImage,
       first_name: firstName,
       last_name: lastName,
