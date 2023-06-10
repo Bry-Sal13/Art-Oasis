@@ -162,7 +162,7 @@ function UserProfile({
     if (userInfo !== "" && userInfo !== null && userInfo !== undefined) {
       return (
         <div className="container">
-          <div id="profile-body" className="row mt-5 me-3">
+          <div id="profile-body" className="row mt-5">
             <div className="card mb-5">
               <div className="card inner-card m-3">
                 <div
