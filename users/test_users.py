@@ -1378,7 +1378,7 @@ def test_missing_create_post():
     }
 
 
-# Test Create Comment
+# Test Comments
 
 
 class FakeCommentsRepo:

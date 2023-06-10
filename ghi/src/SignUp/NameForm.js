@@ -20,8 +20,15 @@ const NameForm = ({ userInfo, setUserInfo }) => {
     event.preventDefault();
 
     const data = userInfo;
-    data.first_name = firstName;
-    data.last_name = lastName;
+    if (firstName !== "") {
+      data.first_name = firstName;
+    } else if (lastName !== "") { 
+      data.last_name = lastName;
+    } else {
+      data.first_name = `${userInfo.username}'s first name`;
+      data.last_name = `${userInfo.username}'s last name`;
+    }
+    
 
     const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${userInfo.username}`;
     const fetchConfig = {
