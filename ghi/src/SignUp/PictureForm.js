@@ -19,8 +19,10 @@ const PictureForm = ({ userInfo, setUserInfo }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = userInfo;
-    data.profile_picture = profilePicture;
-    data.header_image = headerImage;
+    if (profilePicture && headerImage){
+      data.profile_picture = profilePicture;
+      data.header_image = headerImage;
+    }
 
     const userUrl = `${process.env.REACT_APP_USERS_SERVICE_API_HOST}/api/users/${userInfo.username}`;
     const fetchConfig = {

@@ -70,13 +70,27 @@ const EditForm = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     const userObject = userInfo;
-    userObject.display_name = displayName;
-    userObject.profile_picture = profilePicture;
-    userObject.header_image = headerImage;
-    userObject.first_name = firstName;
-    userObject.last_name = lastName;
-    userObject.about = about;
-    userObject.category = category;
+    if (displayName !== "") {
+      userObject.display_name = displayName;
+    }
+    if (profilePicture !== "") {
+      userObject.profile_picture = profilePicture;
+    }
+    if (headerImage !== "") {
+      userObject.header_image = headerImage;
+    }
+    if (firstName !== "") {
+      userObject.first_name = firstName;
+    }
+    if (lastName !== "") {
+      userObject.last_name = lastName;
+    }
+    if (about !== "") {
+      userObject.about = about;
+    }
+    if (category !== "") {
+      userObject.category = category;
+    }
 
     const linkData = {};
     linkData["user_id"] = userInfo.user_id;
@@ -167,65 +181,92 @@ const EditForm = ({
         <div className="card-body">
           <h1 className="card-title">Edit Your Profile</h1>
           <form onSubmit={handleSubmit} className="g-3">
+            <label htmlFor="displayName">Display Name:</label>
+            <br />
             <input
               value={displayName}
               onChange={(event) => handleChange(event, setDisplayName)}
               className="form-control mb-3"
+              id="displayName"
               placeholder={`${displayName}`}
             />
+            <label htmlFor="firstName">First Name:</label>
+            <br />
             <input
               value={firstName}
               onChange={(event) => handleChange(event, setFirstName)}
               type="text"
               className="form-control mb-3"
+              id="firstName"
               placeholder={`${firstName}`}
             />
+            <label htmlFor="lastName">Last Name:</label>
+            <br />
             <input
               value={lastName}
               onChange={(event) => handleChange(event, setLastName)}
               type="text"
               className="form-control mb-3"
+              id="lastName"
               placeholder={`${lastName}`}
             />
+            <label htmlFor="profilePicutre">Profile Picture:</label>
+            <br />
             <input
               value={profilePicture}
               onChange={(event) => handleChange(event, setProfilePicture)}
               type="text"
               className="form-control mb-3"
+              id="profilePicutre"
               placeholder={`${profilePicture}`}
             />
+            <label htmlFor="headerImage">Banner image:</label>
+            <br />
             <input
               value={headerImage}
               onChange={(event) => handleChange(event, setHeaderImage)}
               type="text"
               className="form-control mb-3"
+              id="headerImage"
               placeholder={`${headerImage}`}
             />
+            <label htmlFor="categoryInput">Category text:</label>
+            <br />
             <input
               value={category}
               onChange={(event) => handleChange(event, setCategory)}
               type="text"
               className="form-control mb-3"
+              id="categoryInput"
               placeholder={`${category}`}
             />
+            <label htmlFor="aboutInput">About text:</label>
+            <br />
             <textarea
               value={about}
               onChange={(event) => handleChange(event, setAbout)}
               type="text"
+              id="aboutInput"
               className="form-control mb-3"
               placeholder={`${about}`}
             />
+            <label htmlFor="social">Social Media Link:</label>
+            <br />
             <input
               value={social}
               onChange={(event) => handleChange(event, setSocial)}
               type="text"
+              id="social"
               className="form-control mb-3"
               placeholder="social media link"
             />
+            <label htmlFor="carousel">Image Carousel Link:</label>
+            <br />
             <input
               value={carousel}
               onChange={(event) => handleChange(event, setCarousel)}
               type="text"
+              id="carousel"
               className="form-control mb-3"
               placeholder="image link"
             />
