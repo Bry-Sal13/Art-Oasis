@@ -95,3 +95,13 @@ async def update_user(
     user_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[UserOut, Error]:
     return repo.update_user(username, user)
+
+
+@router.delete("/api/users/{user_id}", response_model=UserOut | HttpError)
+async def delete_user(
+    user: UserOut,
+    user_id: int,
+    repo: UserRepository = Depends(),
+    user_data: dict = Depends(authenticator.get_current_account_data),
+) -> Union[UserOut, Error]:
+    return repo.delete_user(user_id, user)

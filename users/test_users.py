@@ -72,6 +72,9 @@ class FakeUserRepo:
             }
         ]
 
+    def delete_user(self, user_id: int):
+        return True
+
 
 def test_update_user():
     # Arrange
@@ -1701,23 +1704,23 @@ class BadCommentsRepo:
         return CommentsOut(id, post_id, username, text, created)
 
     def get_all(self):
-            id = "string"
-            post_id = 2
-            username = "string"
-            text = "string"
-            created = current_time
-            if (
-                not isinstance(id, int)
-                or not isinstance(text, str)
-                or not isinstance(post_id, int)
-                or not isinstance(username, str)
-                or not isinstance(created, datetime)
-            ):
-                raise HTTPException(
-                    status_code=422,
-                    detail="Invalid field type",
-                )
-            return [CommentsOut(id, post_id, username, text, created)]
+        id = "string"
+        post_id = 2
+        username = "string"
+        text = "string"
+        created = current_time
+        if (
+            not isinstance(id, int)
+            or not isinstance(text, str)
+            or not isinstance(post_id, int)
+            or not isinstance(username, str)
+            or not isinstance(created, datetime)
+        ):
+            raise HTTPException(
+                status_code=422,
+                detail="Invalid field type",
+            )
+        return [CommentsOut(id, post_id, username, text, created)]
 
     def create(self, comment: CommentsIn):
         id = "string"
@@ -1757,6 +1760,7 @@ class BadCommentsRepo:
             )
         return CommentsOut(id, post_id, username, text, created)
 
+
 def test_bad_get_comment():
     # ARRANGE
     app.dependency_overrides[
@@ -1772,6 +1776,7 @@ def test_bad_get_comment():
     # assert
     assert response.status_code == 422
     assert response.json() == {"detail": "Invalid field type"}
+
 
 def test_bad_get_all_comments():
     # ARRANGE
@@ -1789,31 +1794,33 @@ def test_bad_get_all_comments():
     assert response.status_code == 422
     assert response.json() == {"detail": "Invalid field type"}
 
+
 def test_bad_create_comment():
     # ARRANGE
     app.dependency_overrides[
         authenticator.get_current_account_data
     ] = fake_get_current_account_data
     app.dependency_overrides[CommentsRepository] = BadCommentsRepo
-    
+
     response = client.post(
         "/api/comments",
         headers={"Content-Type": "application/json"},
-        json = {
-            "id":"string",
+        json={
+            "id": "string",
             "post_id": 2,
             "username": "string",
             "text": "string",
-            "created": current_time.strftime("%Y-%m-%dT%H:%M:%S.%f")
-        }
+            "created": current_time.strftime("%Y-%m-%dT%H:%M:%S.%f"),
+        },
     )
-    
+
     # clean up
     app.dependency_overrides = {}
 
     # assert
     assert response.status_code == 422
     assert response.json() == {"detail": "Invalid field type"}
+
 
 def test_bad_update_comment():
     # ARRANGE
@@ -1821,23 +1828,22 @@ def test_bad_update_comment():
         authenticator.get_current_account_data
     ] = fake_get_current_account_data
     app.dependency_overrides[CommentsRepository] = BadCommentsRepo
-    
+
     response = client.put(
         "/api/comments/1",
         headers={"Content-Type": "application/json"},
-        json = {
-            "id":"string",
+        json={
+            "id": "string",
             "post_id": 2,
             "username": "strings",
             "text": "strings",
-            "created": current_time.strftime("%Y-%m-%dT%H:%M:%S.%f")
-        }
+            "created": current_time.strftime("%Y-%m-%dT%H:%M:%S.%f"),
+        },
     )
-    
+
     # clean up
     app.dependency_overrides = {}
 
     # assert
     assert response.status_code == 422
     assert response.json() == {"detail": "Invalid field type"}
-

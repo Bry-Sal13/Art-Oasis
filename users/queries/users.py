@@ -284,10 +284,14 @@ class UserRepository:
                         """,
                         [user_id],
                     )
-                    return {"deleted": True}
+                    if cur.rowcount <= 0:
+                        raise HTTPException(
+                            status_code=status.HTTP_404_NOT_FOUND,
+                            detail="User not found",
+                        )
+                    return True
+        except HTTPException:
+            raise
         except Exception as e:
             print(e)
-            return {
-                "deleted": False,
-                "message": "User with that ID does not exist",
-            }
+            return False
