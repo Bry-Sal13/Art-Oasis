@@ -195,7 +195,7 @@ def test_delete_users():
     response = client.delete("/api/users/1")
     app.dependency_overrides = {}
     # Assert
-    assert response.status_code == 200
+    assert response.status_code is 200
     assert response.json() == expected
 
 
