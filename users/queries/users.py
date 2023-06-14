@@ -289,9 +289,9 @@ class UserRepository:
                             status_code=status.HTTP_404_NOT_FOUND,
                             detail="User not found",
                         )
-                    return True
+                    return {"deleted": True}
         except HTTPException:
             raise
         except Exception as e:
             print(e)
-            return False
+            return {"deleted": False}

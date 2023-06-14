@@ -73,7 +73,7 @@ class FakeUserRepo:
         ]
 
     def delete_user(self, user_id: int):
-        return True
+        return {"deleted": True}
 
 
 def test_update_user():
@@ -183,6 +183,20 @@ def test_get_users():
     # Assert
     assert response.status_code == 200
     assert response.json() == desired_result
+
+
+def test_delete_users():
+    app.dependency_overrides[UserRepository] = FakeUserRepo
+    app.dependency_overrides[
+        authenticator.get_current_account_data
+    ] = fake_get_current_account_data
+    expected = {"deleted": True}
+
+    response = client.delete("/api/users/1")
+    app.dependency_overrides = {}
+    # Assert
+    assert response.status_code == 200
+    assert response.json() == expected
 
 
 class BadUserRepo:
