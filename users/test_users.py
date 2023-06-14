@@ -196,7 +196,7 @@ def test_delete_users():
     app.dependency_overrides = {}
     # Assert
     assert response.status_code == 200
-    assert response.json() == expected
+    assert response.json() is expected
 
 
 class BadUserRepo:
