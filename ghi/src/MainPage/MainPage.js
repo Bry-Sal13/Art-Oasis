@@ -258,7 +258,7 @@ function Feed({
                 const likeCount = likes.filter((like) => {
                     return like.post_id === post.id;
                 });
-
+                let post_id = post.id;
                 return (
                     <div key={post.id} id="feed-margins" className="card">
                         <div id="post-header" className="card-header">
@@ -377,13 +377,13 @@ function Feed({
                                 className="btn btn-primary"
                                 type="button"
                                 data-bs-toggle="collapse"
-                                data-bs-target="#multiCollapseExample2"
+                                data-bs-target={`#multiCollapseExample${post_id}`}
                                 aria-expanded="false"
-                                aria-controls="multiCollapseExample2">
+                                aria-controls={`multiCollapseExample${post_id}`}>
                                 Show Comments
                             </button>
                             <div
-                                id="multiCollapseExample2"
+                                id={`multiCollapseExample${post_id}`}
                                 className="collapse">
                                 {postComments.map((comment) => {
                                     const commentUser = users.find((user) => {
