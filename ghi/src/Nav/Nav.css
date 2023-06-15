@@ -9,6 +9,11 @@
     overflow: hidden;
     overflow-y: auto;
     border-radius: 10px;
+    display: none;
+}
+
+.search:focus-within .dataResult {
+    display: block;
 }
 
 .left-align {
@@ -32,6 +37,10 @@ input:focus {
     text-align: center;
 }
 
+.input-container {
+    display: flex;
+}
+
 .search-result-margins {
     margin: 5px 5px 10px 5px;
     height: 49px;
@@ -52,6 +61,7 @@ a {
     top: 0px !important;
     width: 100% !important;
     background-color: #a28fce;
+    box-shadow: 4px 4px 10px #444444;
 }
 
 .btn-outline-light {
@@ -62,8 +72,7 @@ a {
     width: 70%;
 }
 .search {
-    width: 35%;
-
+    width: 30.5rem;
     background-color: #a28fce;
 }
 .navbar-brand {
@@ -180,4 +189,55 @@ a {
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-duration: 400ms;
     transition-property: width, left;
+}
+
+.search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: 0.3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: rgba(0, 0, 0, 0.177);
+}
+
+/* text */
+.search-text {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    opacity: 0;
+    color: white;
+    font-size: 1.2em;
+    transition-duration: 0.3s;
+}
+/* hover effect on button width */
+.search-btn:hover {
+    width: 125px;
+    border-radius: 40px;
+    transition-duration: 0.3s;
+    background-color: rgba(0, 0, 0, 0.177);
+}
+
+.search-btn:hover .sign {
+    width: 30%;
+    transition-duration: 0.3s;
+    padding-left: 20px;
+}
+/* hover effect button's text */
+.search-btn:hover .search-text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: 0.3s;
+    padding-right: 10px;
+}
+/* button click effect*/
+.search-btn:active {
+    transform: translate(2px, 2px);
 }
