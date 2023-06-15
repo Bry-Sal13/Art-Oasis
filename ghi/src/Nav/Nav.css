@@ -1,78 +1,243 @@
 .dataResult {
-  position: absolute;
-  align-items: left;
-  margin-top: 3px;
-  width: 25%;
-  height: 150px;
-  background-color: rgb(255, 255, 255);
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  overflow: hidden;
-  overflow-y: auto;
-  border-radius: 10px;
+    position: absolute;
+    align-items: left;
+    margin-top: 3px;
+    width: 25%;
+    height: 150px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: hidden;
+    overflow-y: auto;
+    border-radius: 10px;
+    display: none;
+}
+
+.search:focus-within .dataResult {
+    display: block;
 }
 
 .left-align {
-  float: left;
+    float: left;
 }
 
 .dataResult::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 .dataResult .dataItem {
-  width: 100%;
-  color: black;
+    width: 100%;
+    color: black;
 }
 
 input:focus {
-  outline: none;
+    outline: none;
 }
 
 .text-align-right {
-  text-align: center;
+    text-align: center;
+}
+
+.input-container {
+    display: flex;
 }
 
 .search-result-margins {
-  margin: 5px 5px 10px 5px;
-  height: 49px;
+    margin: 5px 5px 10px 5px;
+    height: 49px;
 }
 
 .btn {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 a {
-  text-decoration: none;
-  border-radius: 10px;
+    text-decoration: none;
+    border-radius: 10px;
 }
 
 .navbar {
-  position: fixed;
-  z-index: 1;
-  top: 0px !important;
-  width: 100% !important;
-  background-color: #a28fce;
+    position: fixed;
+    z-index: 1;
+    top: 0px !important;
+    width: 100% !important;
+    background-color: #a28fce;
+    box-shadow: 4px 4px 10px #444444;
 }
 
 .btn-outline-light {
-  top: 9px;
+    top: 9px;
 }
 
 #search {
-  width: 70%;
+    width: 70%;
 }
 .search {
-  width: 35%;
-
-  background-color: #a28fce;
+    width: 30.5rem;
+    background-color: #a28fce;
 }
 .navbar-brand {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 900; /* Bold */
-  color: #f9f3e1 !important;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900; /* Bold */
+    color: #f9f3e1 !important;
 }
 
 .join-sign-button {
-  color: rgb(255, 255, 255); /*Change this to your desired color*/
-  text-decoration: none;
+    color: rgb(255, 255, 255); /*Change this to your desired color*/
+    text-decoration: none;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: 0.3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: rgba(0, 0, 0, 0.177);
+}
+
+/* plus sign */
+.sign {
+    width: 100%;
+    transition-duration: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign svg {
+    width: 17px;
+}
+
+.sign svg path {
+    fill: white;
+}
+/* text */
+.logout-text {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    opacity: 0;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition-duration: 0.3s;
+}
+/* hover effect on button width */
+.logout-btn:hover {
+    width: 125px;
+    border-radius: 40px;
+    transition-duration: 0.3s;
+    background-color: rgba(255, 0, 0, 0.416);
+}
+
+.logout-btn:hover .sign {
+    width: 30%;
+    transition-duration: 0.3s;
+    padding-left: 20px;
+}
+/* hover effect button's text */
+.logout-btn:hover .logout-text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: 0.3s;
+    padding-right: 10px;
+}
+/* button click effect*/
+.logout-btn:active {
+    transform: translate(2px, 2px);
+}
+
+.nav-btn-hover {
+    font-size: 18px;
+    color: #e1e1e1;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    background: none;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: color;
+}
+
+.nav-btn-hover:focus,
+.nav-btn-hover:hover {
+    color: #fff;
+}
+
+.nav-btn-hover:focus:after,
+.nav-btn-hover:hover:after {
+    width: 100%;
+    left: 0%;
+}
+
+.nav-btn-hover:after {
+    content: "";
+    pointer-events: none;
+    bottom: -2px;
+    left: 50%;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #fff;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: width, left;
+}
+
+.search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: 0.3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: rgba(0, 0, 0, 0.177);
+}
+
+/* text */
+.search-text {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    opacity: 0;
+    color: white;
+    font-size: 1.2em;
+    transition-duration: 0.3s;
+}
+/* hover effect on button width */
+.search-btn:hover {
+    width: 125px;
+    border-radius: 40px;
+    transition-duration: 0.3s;
+    background-color: rgba(0, 0, 0, 0.177);
+}
+
+.search-btn:hover .sign {
+    width: 30%;
+    transition-duration: 0.3s;
+    padding-left: 20px;
+}
+/* hover effect button's text */
+.search-btn:hover .search-text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: 0.3s;
+    padding-right: 10px;
+}
+/* button click effect*/
+.search-btn:active {
+    transform: translate(2px, 2px);
 }
